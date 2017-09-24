@@ -1,5 +1,6 @@
-M4 - User Stories for Team Area52 (#52)
----------------------------------------
+-----------------------------------------
+//M4 - User Stories for Team Area52 (#52)
+-----------------------------------------
 Eric (ID: ):
 
 -----------------------------------------------------------------------------
@@ -13,3 +14,5 @@ Heejoo (ID: ):
 
 -----------------------------------------------------------------------------
 Jake (ID: jdeerin3):
+
+    1) As a sanitation researcher, I want to view a map of all recorded rat sightings and their dates of occurrence, so that I can analyze which areas are most heavily infested with rats.
