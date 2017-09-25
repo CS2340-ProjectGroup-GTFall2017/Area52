@@ -1,3 +1,4 @@
+
 -----------------------------------------
 //M4 - User Stories for Team Area52 (#52)
 -----------------------------------------
@@ -7,7 +8,33 @@ Eric (ID: ):
 Grace (ID: ):
 
 -----------------------------------------------------------------------------
-Randy (ID: ):
+Randy (ID: rreeves32):
+
+
+
+1) As a NYC tourist, I want to view rat sightings in my part of the city, so that I can plan my route to avoid seeing a bunch of rats.
+
+2) As a NYC Resident, I want to report rat sightings that I see, so that I can have the sanitation department remedy the problem.
+
+- Tasks:
+            - Add a location variable to represent the user's location
+            - Add an option for user to manually place a pin representing a rat sighting, if no location found
+            - Automatically place pin to represent rat based on user's location
+            - Add default rat data enum
+            - Add ability for user to change details about the rat
+            - Add expiration time for rat pins on map
+        - Acceptance Scenarios:
+            - GIVEN the resident has location services turned on, WHEN the resident goes to report a rat righting, THEN the resident's location is automatically used as the rat's location
+            - GIVEN resident has location services turned off, WHEN the resident goes to report a rat sighting, THEN the resident has to manually input the sighting's location
+            - GIVEN the sanitation department removes a rat infestation in one area, WHEN the expiration time passes for rat pins, THEN the rats should be removed from the map
+            - GIVEN the resident wants to add a new rat, WHEN the resident opens the "add a rat" page, THEN the default rat enums should autopopulate
+            - GIVEN the resident wants to edit a new rat, WHEN the resident taps on the default values, THEN a list of other acceptable values should show up
+        
+        - "Done Done" Criteria
+            - Rat data autopopulates and is editable and location is automatic if turned on
+            - Unit tests are written to verify locking/unlocking works as intended, and those tests are passed
+            - Code has been reviewed by at least one other team member
+            - Code is merged w/ master branch
 
 -----------------------------------------------------------------------------
 Heejoo (ID: ):
