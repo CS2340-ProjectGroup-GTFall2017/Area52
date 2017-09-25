@@ -67,6 +67,10 @@
         <activity
             android:name=".controllers.EditCityOfficialActivity"
             android:label="@string/title_activity_edit_city_official"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".controllers.RegistrationActivity"
+            android:label="@string/title_activity_registration"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

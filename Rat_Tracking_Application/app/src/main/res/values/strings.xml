@@ -24,4 +24,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_edit_resident">EditResidentActivity</string>
     <string name="title_activity_edit_city_official">EditCityOfficialActivity</string>
+    <string name="title_activity_registration">RegistrationActivity</string>
 </resources>
