@@ -1,4 +1,4 @@
-package area52.rat_tracking_application;
+package area52.rat_tracking_application.controllers;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -31,6 +31,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import area52.rat_tracking_application.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
