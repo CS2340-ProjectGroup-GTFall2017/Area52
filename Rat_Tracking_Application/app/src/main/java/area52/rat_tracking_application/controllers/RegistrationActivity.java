@@ -1,5 +1,8 @@
 package area52.rat_tracking_application.controllers;
 
+
+import area52.rat_tracking_application.model.User;
+
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +13,9 @@ import android.view.View;
 import area52.rat_tracking_application.R;
 
 public class RegistrationActivity extends AppCompatActivity {
+    char[] newNameAsChar;
+    char[] newUserNameAsChar;
+    char[] newPasswordAsChar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,4 +34,15 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
+    public boolean validUsername() {
+        return true;//////set parameters for appropriate userName selection
+    }
+
+    public boolean validPassword() {
+         return true;///////////set parameters for appropriate password selection
+    }
+
+    public User addNewUser() {
+        return new User(newNameAsChar.toString(), newUserNameAsChar.toString(), newPasswordAsChar.toString());
+    }
 }
