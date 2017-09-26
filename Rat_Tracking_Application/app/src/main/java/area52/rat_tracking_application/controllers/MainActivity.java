@@ -16,17 +16,22 @@ import area52.rat_tracking_application.model.User;
 public class MainActivity extends Activity  {
     Button buttonOne;
     Button buttonTwo;
+    Button buttonThree;
     EditText editOne;
     EditText editTwo;
     TextView textViewOne;
     int securityCounter = 10;
+    User[] users = new User[5];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Model.getInstance().loadTestData();
+        users = Model.getInstance().getUsers();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.content_main);
         buttonOne = (Button)findViewById(R.id.button);
         buttonTwo = (Button)findViewById(R.id.button2);
+        buttonThree = (Button)findViewById(R.id.button3);
         editOne = (EditText)findViewById(R.id.editText);
         editTwo = (EditText)findViewById(R.id.editText2);
         textViewOne = (TextView)findViewById(R.id.textView3);
@@ -34,40 +39,39 @@ public class MainActivity extends Activity  {
         buttonOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(editOne.getText().toString().equals("user") &&
-                        editTwo.getText().toString().equals("pass")) {
+                for (int i = 0; i < Model.getInstance().getUsers().length; i++) {
+                    if (editOne.getText().toString().equals(Model.getInstance().getUsers()[i].getUName()) &&
+                            editTwo.getText().toString().equals(Model.getInstance().getUsers()[i].getPWord())) {
+                        Model.getInstance().setCurrentUser(Model.getInstance().getUsers()[i]);
+                        Toast.makeText(getApplicationContext(),
+                                "Welcome to the NYC Rat Tracking System!", Toast.LENGTH_SHORT).show();
+                    }
                     Toast.makeText(getApplicationContext(),
-                            "Welcome to the NYC Rat Tracking System!",Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getApplicationContext(), "Incorrect Login Info"
-                            ,Toast.LENGTH_SHORT).show();
+                            "Incorrect Login Info", Toast.LENGTH_SHORT).show();
                     textViewOne.setVisibility(View.VISIBLE);
                     textViewOne.setBackgroundColor(Color.RED);
                     securityCounter--;
-                    textViewOne.setText(Integer.toString(securityCounter));
+                    textViewOne.setText(((Integer) securityCounter).toString());
                     if (securityCounter == 0) {
                         buttonOne.setEnabled(false);
                     }
                 }
             }
         });
-
         buttonTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+        buttonThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(
+                    getApplicationContext(),
+                    "Please register below:",
+                    Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-    /**protected Boolean doInBackground(User user) {
-     Model.getInstance().setCurrentUser(user);
-     for (User u : Model.getInstance().getUsers()) {
-     if (u.equals(Model.getInstance().getCurrentUser())) {
-     Model.getInstance().showLogInConfirmation(Model.getInstance().getCurrentUser(
-     ).getUName(), Model.getInstance().getCurrentUser().getPWord());
-     return true;
-     }
-     }
-     return false;
-     }**/
 }

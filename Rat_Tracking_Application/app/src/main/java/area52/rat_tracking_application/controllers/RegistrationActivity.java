@@ -10,18 +10,23 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 
 import area52.rat_tracking_application.R;
 
+import static area52.rat_tracking_application.R.id.button3;
+
 public class RegistrationActivity extends AppCompatActivity {
-    char[] newNameAsChar;
-    char[] newUserNameAsChar;
-    char[] newPasswordAsChar;
+    String newName;
+    String newUserName;
+    String newPassword;
+    Button buttonThree;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -29,10 +34,8 @@ public class RegistrationActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Registering a new User", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "TBD", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                Intent intent = new Intent(getBaseContext(), EditUserActivity.class);
-                startActivity(intent);
             }
         });
     }
@@ -46,6 +49,6 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     public User addNewUser() {
-        return new User(newNameAsChar.toString(), newUserNameAsChar.toString(), newPasswordAsChar.toString());
+        return new User(newName, newUserName, newPassword);
     }
 }

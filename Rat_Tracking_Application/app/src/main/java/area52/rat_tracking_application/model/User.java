@@ -9,10 +9,14 @@ public class User {
     private String pWord;
     private String uName;
 
-    public User(String name) {
+    public User(String name, String uName, String pWord) {
         this.name = name;
-        this.pWord = pWord;
         this.uName = uName;
+        this.pWord = pWord;
+    }
+
+    public User(String name) {
+        this(name, null, null);
     }
 
     public void setName(String name) {

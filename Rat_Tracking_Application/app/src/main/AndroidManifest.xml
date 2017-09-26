@@ -43,12 +43,9 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".controllers.MapsDetailActivity"
-            android:label="@string/title_activity_maps" />
-        <activity
-            android:name=".controllers.EditAdminActivity"
+            android:name=".controllers.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_admin"
+            android:label="@string/title_activity_main"
             android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -61,21 +58,9 @@
             android:label="@string/title_activity_logout"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".controllers.EditResidentActivity"
-            android:label="@string/title_activity_edit_resident"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".controllers.EditCityOfficialActivity"
-            android:label="@string/title_activity_edit_city_official"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".controllers.RegistrationActivity"
             android:label="@string/title_activity_registration"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".controllers.MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
