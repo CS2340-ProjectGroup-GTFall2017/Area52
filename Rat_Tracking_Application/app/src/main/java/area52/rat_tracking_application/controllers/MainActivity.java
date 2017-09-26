@@ -13,6 +13,8 @@ import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.Model;
 import area52.rat_tracking_application.model.User;
 
+import static area52.rat_tracking_application.R.layout.activity_main;
+
 public class MainActivity extends Activity  {
     Button buttonOne;
     Button buttonTwo;
@@ -28,7 +30,7 @@ public class MainActivity extends Activity  {
         Model.getInstance().loadTestData();
         users = Model.getInstance().getUsers();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_main);
+        setContentView(activity_main);
         buttonOne = (Button)findViewById(R.id.button);
         buttonTwo = (Button)findViewById(R.id.button2);
         buttonThree = (Button)findViewById(R.id.button3);
@@ -44,16 +46,21 @@ public class MainActivity extends Activity  {
                             editTwo.getText().toString().equals(Model.getInstance().getUsers()[i].getPWord())) {
                         Model.getInstance().setCurrentUser(Model.getInstance().getUsers()[i]);
                         Toast.makeText(getApplicationContext(),
-                                "Welcome to the NYC Rat Tracking System!", Toast.LENGTH_SHORT).show();
+                                "Welcome to the NYC Rat Tracking System!", Toast.LENGTH_LONG).show();
                     }
-                    Toast.makeText(getApplicationContext(),
-                            "Incorrect Login Info", Toast.LENGTH_SHORT).show();
-                    textViewOne.setVisibility(View.VISIBLE);
-                    textViewOne.setBackgroundColor(Color.RED);
-                    securityCounter--;
-                    textViewOne.setText(((Integer) securityCounter).toString());
-                    if (securityCounter == 0) {
-                        buttonOne.setEnabled(false);
+                }
+                for (int i = 0; i < Model.getInstance().getUsers().length; i++) {
+                    if (!editOne.getText().toString().equals(Model.getInstance().getUsers()[i].getUName()) ||
+                            !editTwo.getText().toString().equals(Model.getInstance().getUsers()[i].getPWord())) {
+                        Toast.makeText(getApplicationContext(),
+                                "Incorrect Login Info", Toast.LENGTH_LONG).show();
+                        textViewOne.setVisibility(View.VISIBLE);
+                        textViewOne.setBackgroundColor(Color.WHITE);
+                        securityCounter--;
+                        if (securityCounter == 0) {
+                            buttonOne.setEnabled(false);
+                        }
+                        textViewOne.setText(((Integer) securityCounter).toString());
                     }
                 }
             }

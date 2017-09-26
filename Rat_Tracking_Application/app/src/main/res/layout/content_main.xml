@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_main"
     android:layout_width="match_parent"
@@ -9,104 +8,130 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context = "area52.rat_tracking_application.controllers.MainActivity"
+    android:visibility="visible"
+    tools:context="area52.rat_tracking_application.controllers.MainActivity"
     tools:showIn="@layout/activity_main">
 
     <TextView
-        android:text = "Login"
+        android:id="@+id/textview"
         android:layout_width="wrap_content"
-        android:layout_height = "wrap_content"
-        android:id = "@+id/textview"
-        android:textSize = "35sp"
-        android:textColor = "#00FF78"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/editText2"
         android:layout_alignLeft="@+id/textView"
         android:layout_alignStart="@+id/textView"
-        android:layout_marginBottom="46dp" />
+        android:layout_marginBottom="46dp"
+        android:text="Login"
+        android:textColor="#00FF78"
+        android:textSize="35sp" />
 
     <TextView
-        android:layout_width = "wrap_content"
-        android:layout_height = "wrap_content"
-        android:text = "NYC Rat Tracking App"
-        android:id = "@+id/textView"
-        android:textColor = "#FF0027"
-        android:textSize = "35sp"
-        android:layout_below="@+id/button3"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="12dp" />
-
-    <EditText
-        android:layout_width = "wrap_content"
-        android:layout_height = "wrap_content"
-        android:id = "@+id/editText"
-        android:hint = "USERNAME"
-        android:focusable = "true"
-        android:textColorHighlight = "#000000"
-        android:textColorHint = "#0000FF"
-        android:layout_marginTop = "175dp"
-        android:layout_alignParentLeft = "true"
-        android:layout_alignParentStart = "true"
-        android:layout_alignParentRight = "true"
-        android:layout_alignParentEnd = "true" />
-
-    <EditText
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/button3"
+        android:layout_marginTop="12dp"
+        android:text="NYC Rat Tracking App"
+        android:textColor="#FF0027"
+        android:textSize="35sp" />
+
+    <EditText
+        android:id="@+id/editText"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/textView3"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/textView3"
+        android:layout_marginTop="175dp"
+        android:layout_toEndOf="@+id/textview"
+        android:layout_toRightOf="@+id/textview"
+        android:contentDescription="@string/action_sign_in"
+        android:focusable="true"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        android:text="@string/action_sign_in"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColorLink="@android:drawable/edit_text"
+        android:maxLines="1"
+        android:visibility="visible" />
+
+    <EditText
         android:id="@+id/editText2"
-        android:layout_below="@+id/editText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/editText"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/editText"
-        android:textColorHighlight = "#000000"
-        android:textColorHint="#0000FF"
-        android:hint="PASSWORD" />
+        android:layout_alignLeft="@+id/editText"
+        android:layout_alignRight="@+id/editText"
+        android:layout_alignStart="@+id/editText"
+        android:layout_below="@+id/editText"
+        android:contentDescription="@string/prompt_password"
+        android:selectAllOnFocus="true"
+        android:inputType="textPassword"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColorLink="@android:drawable/edit_text"
+        android:maxLines="1"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/editText2"
-        android:layout_marginTop="125dp"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="24dp"
+        android:layout_toEndOf="@+id/textview"
+        android:layout_toRightOf="@+id/textview"
         android:text="Login Attempts Remaining:"
-        android:textColorHighlight="#000000"
-        android:textSize="20sp" />
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/editText2"
-        android:layout_marginTop="125dp"
-        android:text="           "
-        android:textColorHighlight="#FF0027"
-        android:textSize="20sp" />
+        android:text="###"
+        android:layout_alignBaseline="@+id/textView2"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_toRightOf="@+id/textView2"
+        android:layout_toEndOf="@+id/textView2"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="login"
         android:id="@+id/button"
         android:layout_below="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/button2" />
-
-    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cancel"
-        android:id="@+id/button2"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="false"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/textView3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignRight="@id/fab"
+        android:layout_alignEnd="@id/fab"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_toEndOf="@+id/textView2"
+        android:layout_toLeftOf="@id/fab"
+        android:layout_toStartOf="@id/fab"
+        android:layout_toRightOf="@+id/textView2"
+        android:text="login"
+        android:textColorLink="@android:color/holo_blue_light"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView2"
+        android:layout_toEndOf="@id/fab"
+        android:layout_toRightOf="@id/fab"
+        android:text="Cancel"
+        android:textColorLink="@android:color/holo_blue_light"
         android:visibility="visible" />
 
     <Button
@@ -115,6 +140,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editText2"
         android:layout_centerHorizontal="true"
-        android:text="register" />
+        android:text="register"
+        android:visibility="visible" />
 
 </RelativeLayout>

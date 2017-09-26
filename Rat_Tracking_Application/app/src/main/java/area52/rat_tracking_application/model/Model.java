@@ -4,9 +4,6 @@ package area52.rat_tracking_application.model;
  * Created by Eric on 9/25/2017.
  */
 
-import area52.rat_tracking_application.controllers.RegistrationActivity;
-import android.support.compat.BuildConfig;
-
 /**
  * Created by robert waters on 1/5/17.
  *
@@ -37,26 +34,17 @@ public class Model {
      * the currently logged in user
      */
     private User _currentUser;
-    private RegistrationActivity registrationInstance;
-
-    /**
-     * Null Object pattern, returned when no user is found
-     */
-    private final User theNullUser = new User("No Such User");
-
 
     /**
      * make a new model
      */
     private Model() {
         _users = new User[5];
-        //comment this out after full app developed
         loadTestData();
     }
 
     /**
-     * populate the model with some dummy data.  The full app would not require this.
-     * comment out when adding new courses functionality is present.
+     * populate model with data to test app.
      */
     public void loadTestData() {
         _users[0] = new User("Eric", "eric", "numbers@1");
