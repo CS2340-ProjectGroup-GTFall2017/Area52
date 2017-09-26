@@ -1,11 +1,32 @@
 
+
 -----------------------------------------
 //M4 - User Stories for Team Area52 (#52)
 -----------------------------------------
 Eric (ID: ):
 
 -----------------------------------------------------------------------------
-Grace (ID: ):
+Grace (ID: ekang40):
+
+As a NYC resident, I want to report the area where rats are infested and track all the rat sightings in NYC and around the city so that I can prevent from rat invading.
+
+- Tasks:
+	- Create an account to register for application use
+	- receives an email confirmation after creating an account. 
+	- Access to features of application
+	- Log in and Log out by clicking a button
+	- receives a message of invalid password/userName when tried to log in by typing wrong information.
+
+-Acceptance Scenarios:
+	GIVEN a message of success registering to users WHEN they have created an account correctly THEN users are eligible to access to the application.
+	GIVEN a error message to users WHEN either their account’s user’s name/ passwrod is invalid THEN they can click the retry button or cancel button.
+	GIVEN a confirmation email to users WHEN they created their account THEN they will receive the confirmation email and able to confirm themselves.
+	GIVEN a users to log out WHEN users click a log out button THEN users will be logged out from their account. 
+
+- “Done Done" Criteria:
+	- Acceptance criteria met
+	- Test cases are written
+	- Feature is tested for accessibility
 
 -----------------------------------------------------------------------------
 Randy (ID: rreeves32):
@@ -14,24 +35,25 @@ Randy (ID: rreeves32):
 
 1) As a NYC tourist, I want to view rat sightings in my part of the city, so that I can plan my route to avoid seeing a bunch of rats.
 
-2) As a NYC Resident, I want to report rat sightings that I see, so that I can have the sanitation department remedy the problem.
+2) As a NYC division EPA employee, I want to view the rat's location in proximity to majour rivers, so that I candetermine the risk of environmental contamination
 
 - Tasks:
-            - Add a location variable to represent the user's location
-            - Add an option for user to manually place a pin representing a rat sighting, if no location found
-            - Automatically place pin to represent rat based on user's location
-            - Add default rat data enum
-            - Add ability for user to change details about the rat
-            - Add expiration time for rat pins on map
+            - Add a radius to the rat's location, dependant on rat size
+            - Add local watershed data
+            - Correlate watershed location data to rat location radius
+            - Add default rat radius if no size specified
+            - If radius crosses into watershed location on map, set risk to high of contamination, else low
+            
         - Acceptance Scenarios:
-            - GIVEN the resident has location services turned on, WHEN the resident goes to report a rat righting, THEN the resident's location is automatically used as the rat's location
-            - GIVEN resident has location services turned off, WHEN the resident goes to report a rat sighting, THEN the resident has to manually input the sighting's location
-            - GIVEN the sanitation department removes a rat infestation in one area, WHEN the expiration time passes for rat pins, THEN the rats should be removed from the map
-            - GIVEN the resident wants to add a new rat, WHEN the resident opens the "add a rat" page, THEN the default rat enums should autopopulate
-            - GIVEN the resident wants to edit a new rat, WHEN the resident taps on the default values, THEN a list of other acceptable values should show up
+            - GIVEN the rat is in a watershed area, WHEN the rat's lcoation does not cross the actual vessel, THEN the risk for contamination is set to LOW
+            -GIVEN the rat is in a watershed area, WHEN the rat's location crosses into the actual vessel, THEN the risk for contamination is set to HIGH
+            -GIVEN the rat appears on the map, WHEN the EPA user opens the rat's info, THEN the watershed and risk are displayed 
+            -GIVEN the rat data is autopopulated, WHEN the rat is created, THEN radius should be set to match the default rat size
+            -GIVEN the rat data is autopopulated, WHEN the rat is created, THEN the watershed and risk should match the location of the rat and radius.
+            
         
         - "Done Done" Criteria
-            - Rat data autopopulates and is editable and location is automatic if turned on
+            - Risk and watershed criteria are met
             - Unit tests are written to verify locking/unlocking works as intended, and those tests are passed
             - Code has been reviewed by at least one other team member
             - Code is merged w/ master branch
