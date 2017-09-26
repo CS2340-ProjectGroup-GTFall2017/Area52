@@ -63,7 +63,24 @@ Randy (ID: rreeves32):
             - Code is merged w/ master branch
 
 -----------------------------------------------------------------------------
-Heejoo (ID: ):
+Heejoo (ID: hcho328):
+
+    1) As an officer at MTA in NYC, I want to report the areas people currently  reported where rats found in person or by call and remove the area from the map when I get rid of the rats, so that people get informed of current condition of specific areas about rats.
+        - Tasks:
+            - log in with given username and password from system admin.
+            - Add a location to show where a rat sighting appeared.
+            - Add a location where rats are infested often.
+            - Add a location where a measure acted.
+            - Remove a location where a rat reported is cleared.
+        - Acceptance Scenarios:
+            - GIVEN the officer wants to add a location where rats are often infested, WHEN the officer clicks “add a warning place” on a map, THEN the specific place should be pinned. 
+            - GIVEN the officer is provided their username and password by system admin through email, WHEN the officer logs in with the given information, THEN the officer can successfully log in and use the application.
+            - GIVEN the officer wants to remove the location where a rat reported currently removed, WHEN the officer clicks the pinned place and click a button, “remove pin” on the specific area, THEN the pin will be removed, and this new information will be informed to users around the area.
+            - GIVEN the officer wants to give a message for detail, WHEN the officer sets the range of area and clicks a pinned place with message, THEN the notice will be alarmed when people is in the range of area.
+        - "Done Done" Criteria
+            - Unit tests are written to verify locking/unlocking works as intended, and those tests are passed
+            - Code has been reviewed by at least one other team member
+            - Code is merged w/ master branch
 
 -----------------------------------------------------------------------------
 Jake (ID: jdeerin3):
