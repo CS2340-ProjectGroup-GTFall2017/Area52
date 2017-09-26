@@ -41,7 +41,7 @@ public class Model {
     private RegistrationActivity registrationInstance;
 
     /** Null Object pattern, returned when no user is found */
-    private final User theNullUser = new User("No Such User", null, null);
+    private final User theNullUser = new User("No Such User");
 
 
     /**
@@ -59,12 +59,12 @@ public class Model {
      * populate the model with some dummy data.  The full app would not require this.
      * comment out when adding new courses functionality is present.
      */
-    private void loadDummyData() {
-        _users.add(new User("Eric", "emal", "d@3451"));
-        _users.add(new User( "Jake", "joseph", "w#4321"));
-        _users.add(new User("Heejoo", "hCho", "j$5432"));
-        _users.add(new User("Grace", "grace", "p!uity2"));
-        _users.add(new User("Randall", "randy", "a*4192"));
+    public void loadDummyData() {
+        _users.add(new User("Eric"));
+        _users.add(new User( "Jake"));
+        _users.add(new User("Heejoo"));
+        _users.add(new User("Grace"));
+        _users.add(new User("Randall"));
     }
 
     /**
@@ -81,7 +81,7 @@ public class Model {
      * @param user  the user to be added
      * @return true if added, false if a duplicate
      */
-    public boolean addUser(User user) {
+    public boolean checkUserExists(User user) {
         for (User u : _users ) {
             if (u.equals(user)) return false;
         }
@@ -106,10 +106,8 @@ public class Model {
      * @return  the user with the matching userName and password or NullUser if no such user exists.
      *
      */
-    public User showLogInConfirmation(char[] userName, char[] password) {
-            String uName = userName.toString();
-            String pWord = password.toString();
-            if (_currentUser.getPWord().equals(pWord) && _currentUser.getUName().equals(uName)) {
+    public User showLogInConfirmation(String userName, String password) {
+            if (_currentUser.getPWord().equals(password) && _currentUser.getUName().equals(userName)) {
                 return _currentUser;
             }
             return theNullUser;
@@ -135,18 +133,16 @@ public class Model {
      * @param user the user being edited
      */
     public void replaceUserData(User user) {
-        char[] userName = user.getUName().toCharArray();
-        char[] password = user.getPWord().toCharArray();
-        User existing = showLogInConfirmation(userName, password);
+        User existing = showLogInConfirmation(user.getUName(), user.getPWord());
 
         //if existing comes back null, something is seriously wrong
         if (BuildConfig.DEBUG && (existing == null)) { throw new AssertionError(); }
 
         //update the userName
-        existing.setUName(user.getUName().toCharArray());
+        existing.setUName(user.getUName());
 
         //update the password
-        existing.setPWord(user.getPWord().toCharArray());
+        existing.setPWord(user.getPWord());
     }
 }
 

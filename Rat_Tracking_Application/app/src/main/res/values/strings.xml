@@ -25,4 +25,5 @@
     <string name="title_activity_edit_resident">EditResidentActivity</string>
     <string name="title_activity_edit_city_official">EditCityOfficialActivity</string>
     <string name="title_activity_registration">RegistrationActivity</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>
