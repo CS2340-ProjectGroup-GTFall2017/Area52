@@ -1,5 +1,6 @@
 
 
+
 -----------------------------------------
 //M4 - User Stories for Team Area52 (#52)
 -----------------------------------------
@@ -8,7 +9,10 @@ Eric (ID: ):
 -----------------------------------------------------------------------------
 Grace (ID: ekang40):
 
-As a NYC resident, I want to report the area where rats are infested and track all the rat sightings in NYC and around the city so that I can prevent from rat invading.
+1) As a rat controller, I want to view the tracking of rats where they are infested in NYC so that I can control the rats infesting in city.
+
+
+2) As a NYC resident, I want to report the area where rats are infested and track all the rat sightings in NYC and around the city so that I can prevent from rat invading.
 
 - Tasks:
 	- Create an account to register for application use
