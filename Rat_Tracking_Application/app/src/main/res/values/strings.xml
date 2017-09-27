@@ -24,4 +24,6 @@
     <string name="title_activity_edit_city_official">EditCityOfficialActivity</string>
     <string name="title_activity_registration">RegistrationActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>
