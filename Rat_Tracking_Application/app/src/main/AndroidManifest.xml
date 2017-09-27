@@ -29,6 +29,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="area52.rat_tracking_application.controllers.MainActivity" />
         </activity>
+        <activity
+            android:name=".controllers.RegistrationActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_registration"
+            android:parentActivityName=".controllers.MainActivity"
+            android:theme="@style/FullscreenTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="area52.rat_tracking_application.controllers.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

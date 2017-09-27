@@ -96,8 +96,11 @@ public class MainActivity extends Activity  {
             public void onClick(View view) {
                 Toast.makeText(
                     getApplicationContext(),
-                    "Please register below:",
-                    Toast.LENGTH_SHORT).show();
+                    "Please register on next screen",
+                    Toast.LENGTH_LONG).show();
+                Context context = view.getContext();
+                Intent intent = new Intent(context, RegistrationActivity.class);
+                context.startActivity(intent);
             }
         });
     }
