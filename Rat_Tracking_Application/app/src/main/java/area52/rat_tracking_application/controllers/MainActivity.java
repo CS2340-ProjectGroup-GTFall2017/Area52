@@ -6,6 +6,8 @@ import area52.rat_tracking_application.R;
 import static area52.rat_tracking_application.R.layout.activity_main;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -82,7 +84,9 @@ public class MainActivity extends Activity  {
 
             @Override
             public void onClick(View view) {
-                finish();
+                Context context = view.getContext();
+                Intent intent = new Intent(context, WelcomeActivity.class);
+                context.startActivity(intent);
             }
         });
 
