@@ -56,6 +56,9 @@ public class MainActivity extends Activity  {
                                 "Welcome to the NYC Rat Tracking System!",
                                 Toast.LENGTH_LONG).show();
                         match = true;
+                        Context context = view.getContext();
+                        Intent intent = new Intent(context, LogoutActivity.class);
+                        context.startActivity(intent);
                     }
                     if (match) {
                         return;
