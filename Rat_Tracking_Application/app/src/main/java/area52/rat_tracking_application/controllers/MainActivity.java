@@ -1,5 +1,10 @@
 package area52.rat_tracking_application.controllers;
 
+import area52.rat_tracking_application.model.Model;
+import area52.rat_tracking_application.model.User;
+import area52.rat_tracking_application.R;
+import static area52.rat_tracking_application.R.layout.activity_main;
+
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,12 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import area52.rat_tracking_application.R;
-import area52.rat_tracking_application.model.Model;
-import area52.rat_tracking_application.model.User;
-
-import static area52.rat_tracking_application.R.layout.activity_main;
 
 public class MainActivity extends Activity  {
     Button buttonOne;
@@ -24,9 +23,11 @@ public class MainActivity extends Activity  {
     TextView textViewOne;
     int securityCounter = 10;
     User[] users = new User[5];
+    boolean match = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         Model.getInstance().loadTestData();
         users = Model.getInstance().getUsers();
         super.onCreate(savedInstanceState);
@@ -38,40 +39,55 @@ public class MainActivity extends Activity  {
         editTwo = (EditText)findViewById(R.id.editText2);
         textViewOne = (TextView)findViewById(R.id.textView3);
         textViewOne.setVisibility(View.GONE);
+
         buttonOne.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 for (int i = 0; i < Model.getInstance().getUsers().length; i++) {
-                    if (editOne.getText().toString().equals(Model.getInstance().getUsers()[i].getUName()) &&
-                            editTwo.getText().toString().equals(Model.getInstance().getUsers()[i].getPWord())) {
+                    if (editOne.getText().toString().equals(
+                            Model.getInstance().getUsers()[i].getUName())
+                                && editTwo.getText().toString().equals(
+                                        Model.getInstance().getUsers()[i].getPWord())) {
                         Model.getInstance().setCurrentUser(Model.getInstance().getUsers()[i]);
                         Toast.makeText(getApplicationContext(),
-                                "Welcome to the NYC Rat Tracking System!", Toast.LENGTH_LONG).show();
+                                "Welcome to the NYC Rat Tracking System!",
+                                Toast.LENGTH_LONG).show();
+                        match = true;
                     }
-                }
-                for (int i = 0; i < Model.getInstance().getUsers().length; i++) {
-                    if (!editOne.getText().toString().equals(Model.getInstance().getUsers()[i].getUName()) ||
-                            !editTwo.getText().toString().equals(Model.getInstance().getUsers()[i].getPWord())) {
-                        Toast.makeText(getApplicationContext(),
-                                "Incorrect Login Info", Toast.LENGTH_LONG).show();
-                        textViewOne.setVisibility(View.VISIBLE);
-                        textViewOne.setBackgroundColor(Color.WHITE);
-                        securityCounter--;
-                        if (securityCounter == 0) {
-                            buttonOne.setEnabled(false);
+                    if (match) {
+                        return;
+                    } else {
+                        if (i == 4 && (!editOne.getText().toString().equals(
+                                Model.getInstance().getUsers()[i].getUName())
+                                    || !editTwo.getText().toString().equals(
+                                            Model.getInstance().getUsers()[i].getPWord()))) {
+                            Toast.makeText(getApplicationContext(),
+                                    "Incorrect Login Info",
+                                    Toast.LENGTH_LONG).show();
+                            textViewOne.setVisibility(View.VISIBLE);
+                            textViewOne.setBackgroundColor(Color.WHITE);
+                            securityCounter--;
+                            textViewOne.setText(((Integer) securityCounter).toString());
+                            if (securityCounter <= 0) {
+                                buttonOne.setEnabled(false);
+                            }
                         }
-                        textViewOne.setText(((Integer) securityCounter).toString());
                     }
                 }
             }
         });
+
         buttonTwo.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+
         buttonThree.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 Toast.makeText(
