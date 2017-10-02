@@ -66,6 +66,10 @@ public class Model {
         return _users.values().toArray(new User[_users.size()]);
     }
 
+    public void addUser(User user) {
+        _users.put(user.getUName(), user);
+    }
+
     /**
      * @return the currently logged in user
      */
