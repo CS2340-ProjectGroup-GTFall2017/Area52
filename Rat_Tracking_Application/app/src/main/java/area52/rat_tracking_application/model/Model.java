@@ -62,8 +62,12 @@ public class Model {
      *
      * @return a list of the users registered to use the app
      */
-    public User[] getUsers() {
-        return _users.values().toArray(new User[_users.size()]);
+    public void setUserMap(String username, User user) {
+        for (String name: _users.keySet())
+            for (User user: _users.values()) {
+                _users.put(user);
+        }
+        return userArrayList;
     }
 
     public void addUser(User user) {

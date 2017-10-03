@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 public class MainActivity extends Activity  {
     Button buttonOne;
     Button buttonTwo;
@@ -24,7 +26,7 @@ public class MainActivity extends Activity  {
     EditText editTwo;
     TextView textViewOne;
     int securityCounter = 10;
-    User[] users = new User[5];
+    HashMap<String, User> users;
     boolean match = false;
 
     @Override
@@ -46,7 +48,7 @@ public class MainActivity extends Activity  {
 
             @Override
             public void onClick(View view) {
-                for (int i = 0; i < Model.getInstance().getUsers().length; i++) {
+                for (int i = 0; i < Model.getInstance().getUsers().size(); i++) {
                     if (editOne.getText().toString().equals(
                             Model.getInstance().getUsers()[i].getUName())
                                 && editTwo.getText().toString().equals(

@@ -21,6 +21,11 @@ public class RegistrationActivity extends AppCompatActivity {
     Button registerButton;
     Button cancelButton;
 
+    private String username;
+    private String email;
+    private String password;
+    private boolean isAdmin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,17 +40,41 @@ public class RegistrationActivity extends AppCompatActivity {
         cancelButton = (Button) findViewById(R.id.button_cancel);
     }
 
-    public void registerUser(View view) {
-        String username = usernameText.getText().toString();
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
-        boolean isAdmin = adminCheckbox.isChecked();
+    private void registerUser(View view) {
+        username = usernameText.getText().toString();
+        email = emailText.getText().toString();
+        password = passwordText.getText().toString();
+        isAdmin = adminCheckbox.isChecked();
 
         if (username != null && email != null && password != null) {
-            User newlyRegisteredUser = new User(username, username, password);
+            User newlyRegisteredUser = new User(username, email, password);
             Model.getInstance().addUser(newlyRegisteredUser);
             goBackToLoginScreen(view);
         }
+    }
+
+    public void setUsername(String username){
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void goBackToLoginScreen(View view) {
