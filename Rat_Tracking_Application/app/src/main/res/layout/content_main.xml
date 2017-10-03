@@ -17,15 +17,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/editText2"
-        android:layout_alignLeft="@+id/textView"
-        android:layout_alignStart="@+id/textView"
+        android:layout_alignLeft="@+id/textView_email"
+        android:layout_alignStart="@+id/textView_email"
         android:layout_marginBottom="46dp"
         android:text="Login"
         android:textColor="#00FF78"
         android:textSize="35sp" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textView_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -102,7 +102,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/textView_email"
         android:layout_marginTop="24dp"
         android:layout_toEndOf="@+id/textview"
         android:layout_toRightOf="@+id/textview"
