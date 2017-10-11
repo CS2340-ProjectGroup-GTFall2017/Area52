@@ -2,6 +2,7 @@ package area52.rat_tracking_application.controllers;
 
 import area52.rat_tracking_application.model.Model;
 import area52.rat_tracking_application.model.User;
+
 import area52.rat_tracking_application.R;
 import static area52.rat_tracking_application.R.layout.activity_main;
 
@@ -16,24 +17,29 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.HashMap;
+/**
+ * Temp representation of login screen
+ * and branching to other activities in controllers
+ * package
+ */
 
-public class MainActivity extends Activity  {
+public class MainActivity extends Activity {
     Button buttonOne;
     Button buttonTwo;
     Button buttonThree;
     EditText editOne;
     EditText editTwo;
     TextView textViewOne;
-    int securityCounter = 10;
-    HashMap<String, User> users;
+    private int securityCounter = 3;
     boolean match = false;
+
+    /**
+     * the currently logged in user
+     */
+    private User _currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        Model.getInstance().loadTestData();
-        users = Model.getInstance().getUsers();
         super.onCreate(savedInstanceState);
         setContentView(activity_main);
         buttonOne = (Button)findViewById(R.id.button);
@@ -48,37 +54,33 @@ public class MainActivity extends Activity  {
 
             @Override
             public void onClick(View view) {
-                for (int i = 0; i < Model.getInstance().getUsers().size(); i++) {
-                    if (editOne.getText().toString().equals(
-                            Model.getInstance().getUsers()[i].getUName())
-                                && editTwo.getText().toString().equals(
-                                        Model.getInstance().getUsers()[i].getPWord())) {
-                        Model.getInstance().setCurrentUser(Model.getInstance().getUsers()[i]);
+                if (Model.getInstance().getUserMap().containsKey(
+                        editOne.getText().toString())) {
+                    if (editTwo.getText().toString().equals(
+                            Model.getInstance().getUserMap().get(
+                                    editOne.getText().toString()).getPWord())) {
+                        setCurrentUser(Model.getInstance().getUserMap().get(
+                                editOne.getText().toString()));
                         Toast.makeText(getApplicationContext(),
-                                "Welcome to the NYC Rat Tracking System!",
+                                "Welcome to the NYC Rat Tracking System, "
+                                        + getCurrentUser() + " !",
                                 Toast.LENGTH_LONG).show();
                         match = true;
                         Context context = view.getContext();
                         Intent intent = new Intent(context, LogoutActivity.class);
                         context.startActivity(intent);
                     }
-                    if (match) {
-                        return;
-                    } else {
-                        if (i == 4 && (!editOne.getText().toString().equals(
-                                Model.getInstance().getUsers()[i].getUName())
-                                    || !editTwo.getText().toString().equals(
-                                            Model.getInstance().getUsers()[i].getPWord()))) {
-                            Toast.makeText(getApplicationContext(),
-                                    "Incorrect Login Info",
-                                    Toast.LENGTH_LONG).show();
-                            textViewOne.setVisibility(View.VISIBLE);
-                            textViewOne.setBackgroundColor(Color.WHITE);
-                            securityCounter--;
-                            textViewOne.setText(((Integer) securityCounter).toString());
-                            if (securityCounter <= 0) {
-                                buttonOne.setEnabled(false);
-                            }
+                } else {
+                    if (!match) {
+                        Toast.makeText(getApplicationContext(),
+                                "Incorrect Login Info",
+                                Toast.LENGTH_SHORT).show();
+                        textViewOne.setVisibility(View.VISIBLE);
+                        textViewOne.setBackgroundColor(Color.WHITE);
+                        securityCounter--;
+                        textViewOne.setText(((Integer) securityCounter).toString());
+                        if (securityCounter <= 0) {
+                            buttonOne.setEnabled(false);
                         }
                     }
                 }
@@ -100,13 +102,31 @@ public class MainActivity extends Activity  {
             @Override
             public void onClick(View view) {
                 Toast.makeText(
-                    getApplicationContext(),
-                    "Please register on next screen",
-                    Toast.LENGTH_LONG).show();
+                        getApplicationContext(),
+                        "Please register on next screen",
+                        Toast.LENGTH_LONG).show();
                 Context context = view.getContext();
                 Intent intent = new Intent(context, RegistrationActivity.class);
                 context.startActivity(intent);
             }
         });
+    }
+
+    /**
+     * Gets the currently logged in user
+     *
+     * @return the currently logged in user
+     */
+    public User getCurrentUser() {
+        return _currentUser;
+    }
+
+    /**
+     * Sets the currently logged in user
+     *
+     * @param user the currently logged in user
+     */
+    public void setCurrentUser(User user) {
+        _currentUser = user;
     }
 }

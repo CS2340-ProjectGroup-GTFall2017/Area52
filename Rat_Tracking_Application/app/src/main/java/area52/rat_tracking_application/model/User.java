@@ -10,46 +10,80 @@ public class User {
     private String email;
     private String pWord;
     private String uName;
-    private RegistrationActivity registrationActivity;
+    private RegistrationActivity regAct;
 
+    /**
+     * no argument constructor creates instance of
+     * RegistrationActivity class.
+     */
     public User() {
-        registrationActivity = new RegistrationActivity();
+        regAct = new RegistrationActivity();
     }
 
+    /**
+     *
+     * @param uName username of user instance
+     * @param email email of user instance
+     * @param pWord password of user instance
+     */
     public User(String uName, String email, String pWord) {
         this.uName = uName;
         this.email = email;
         this.pWord = pWord;
     }
 
-    public RegistrationActivity getRegistrationActivity() {
-        return registrationActivity;
+    /**
+     *
+     * @return registration activity instance
+     */
+    public RegistrationActivity getRegAct() {
+        return regAct;
     }
 
-    public void setRegistrationActivity(RegistrationActivity registrationActivity) {
-        this.registrationActivity = registrationActivity;
+    /**
+     *
+     * @param uName username of user instance
+     */
+    public void setUName(String uName) {
+        uName = regAct.getUsername();
     }
 
-    public void setUName() {
-        uName = registrationActivity.getUName();
-    }
-
+    /**
+     *
+     * @return uName username of user instance
+     */
     public String getUName() {
         return uName;
     }
 
-    public void setEmail() {
-        email = registrationActivity.getEmail();
+    /**
+     *
+     * @param email email of user instance
+     */
+    public void setEmail(String email) {
+        this.email = email;
     }
 
+    /**
+     *
+     * @return email of user instance
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     *
+     * @param pWord password of user instance
+     */
     public void setPWord(String pWord) {
-        pWord = registrationActivity.getPassword();
+        this.pWord = pWord;
     }
 
+    /**
+     *
+     * @return password of user instance
+     */
     public String getPWord() {
         return pWord;
     }

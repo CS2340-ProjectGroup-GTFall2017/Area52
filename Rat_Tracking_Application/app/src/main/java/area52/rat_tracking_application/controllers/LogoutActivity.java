@@ -9,6 +9,9 @@ import android.widget.Button;
 
 import area52.rat_tracking_application.R;
 
+/**
+ * Logout activity class represents logout screen
+ */
 public class LogoutActivity extends Activity {
     Button button;
 

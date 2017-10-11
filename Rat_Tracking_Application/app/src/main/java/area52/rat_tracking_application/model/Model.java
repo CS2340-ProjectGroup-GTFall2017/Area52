@@ -1,87 +1,43 @@
 package area52.rat_tracking_application.model;
 
-/**
- * Created by Eric on 9/25/2017.
- */
-
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by robert waters on 1/5/17.
- *
- * modified for Area52 M4 submission for emulator testing of project requirements.
- *
- * This is our facade to the Model.  We are using a Singleton design pattern to allow
- * access to the model from each controller.
- *
- *
+ * Singleton created to function as interface between controllers and model
+ * package classes.
+ * Created by Eric on 10/11/2017.
  */
 
 public class Model {
-    /**
-     * Singleton instance
-     */
-    private static final Model _instance = new Model();
+    private static final Model model = new Model();
 
+    private static HashMap<String, User> _users = new HashMap<>();
+
+    /**
+     * return static singleton instance of model for app data retrieval
+     * @return
+     */
     public static Model getInstance() {
-        return _instance;
-    }
-
-    /**
-     * holds the list of all Users
-     */
-    private HashMap<String, User> _users;
-
-    /**
-     * the currently logged in user
-     */
-    private User _currentUser;
-
-    /**
-     * make a new model
-     */
-    private Model() {
-        _users = new HashMap<>();
         loadTestData();
+        return model;
     }
-
     /**
      * populate model with data to test app.
      */
-    public void loadTestData() {
-        _users.put("eric", new User("Eric", "eric", "numbers@1"));
-        _users.put("jake", new User("Jake", "jake", "numbers@2"));
-        _users.put("heejoo", new User("Heejoo", "heejoo", "numbers@3"));
-        _users.put("grace", new User("Grace", "grace", "numbers@4"));
-        _users.put("randy", new User("Randall", "randy", "numbers@5"));
+    private static void loadTestData() {
+        _users.put("eric", new User("eric", "eric", "numbers@1"));
+        _users.put("jake", new User("jake", "jake", "numbers@2"));
+        _users.put("heejoo", new User("heejoo", "heejoo", "numbers@3"));
+        _users.put("grace", new User("grace", "grace", "numbers@4"));
+        _users.put("randy", new User("randy", "randy", "numbers@5"));
     }
 
     /**
-     * get the users
      *
-     * @return a list of the users registered to use the app
+     *
+     * @return a HashMap of the users registered to use the app
      */
-    public void setUserMap(String username, User user) {
-        for (String name: _users.keySet())
-            for (User user: _users.values()) {
-                _users.put(user);
-        }
-        return userArrayList;
-    }
-
-    public void addUser(User user) {
-        _users.put(user.getUName(), user);
-    }
-
-    /**
-     * @return the currently logged in user
-     */
-    public User getCurrentUser() {
-        return _currentUser;
-    }
-
-    public void setCurrentUser(User user) {
-        _currentUser = user;
+    public HashMap<String, User> getUserMap() {
+        return _users;
     }
 }

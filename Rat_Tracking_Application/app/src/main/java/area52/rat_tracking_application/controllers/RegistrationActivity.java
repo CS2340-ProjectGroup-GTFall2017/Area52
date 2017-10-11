@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import area52.rat_tracking_application.R;
+import area52.rat_tracking_application.model.Admin;
 import area52.rat_tracking_application.model.Model;
 import area52.rat_tracking_application.model.User;
 
@@ -24,6 +25,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private String username;
     private String email;
     private String password;
+    private User newUser;
     private boolean isAdmin;
 
     @Override
@@ -38,18 +40,34 @@ public class RegistrationActivity extends AppCompatActivity {
 
         registerButton = (Button) findViewById(R.id.button_register);
         cancelButton = (Button) findViewById(R.id.button_cancel);
+
     }
 
-    private void registerUser(View view) {
+    public void registerUser(View view) {
         username = usernameText.getText().toString();
+        setUsername(username);
         email = emailText.getText().toString();
+        setEmail(email);
         password = passwordText.getText().toString();
+        setPassword(password);
         isAdmin = adminCheckbox.isChecked();
 
         if (username != null && email != null && password != null) {
-            User newlyRegisteredUser = new User(username, email, password);
-            Model.getInstance().addUser(newlyRegisteredUser);
-            goBackToLoginScreen(view);
+            if (isAdmin) {
+                newUser = new Admin();
+                newUser.setUName(getUsername());
+                newUser.setEmail(getEmail());
+                newUser.setPWord(getPassword());
+                Model.getInstance().getUserMap().put(getUsername(), newUser);
+                goBackToLoginScreen(view);
+            } else {
+                newUser = new User();
+                newUser.setUName(getUsername());
+                newUser.setEmail(getEmail());
+                newUser.setPWord(getPassword());
+                Model.getInstance().getUserMap().put(getUsername(), newUser);
+                goBackToLoginScreen(view);
+            }
         }
     }
 
