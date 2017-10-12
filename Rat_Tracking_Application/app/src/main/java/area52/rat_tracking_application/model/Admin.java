@@ -11,7 +11,7 @@ public class Admin extends User {
 
     /**
      * no argument constructor creates instance of
-     * RegistrationActivity class.
+     * Admin class.
      */
     public Admin() {
     }

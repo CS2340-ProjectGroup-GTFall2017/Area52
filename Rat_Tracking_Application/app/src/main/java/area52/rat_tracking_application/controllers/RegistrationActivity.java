@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import java.util.HashMap;
+
 import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.Admin;
 import area52.rat_tracking_application.model.Model;
@@ -58,15 +60,22 @@ public class RegistrationActivity extends AppCompatActivity {
                 newUser.setUName(getUsername());
                 newUser.setEmail(getEmail());
                 newUser.setPWord(getPassword());
-                Model.getInstance().getUserMap().put(getUsername(), newUser);
-                goBackToLoginScreen(view);
+                HashMap<String, User> userMap = Model.model.getUserMap();//.put(getUsername(), newUser);
+                if (!userMap.containsKey(getUsername())){
+                    Model.model.getUserMap().put(getUsername(), newUser);
+                    goBackToLoginScreen(view);
+                }
+
             } else {
                 newUser = new User();
                 newUser.setUName(getUsername());
                 newUser.setEmail(getEmail());
                 newUser.setPWord(getPassword());
-                Model.getInstance().getUserMap().put(getUsername(), newUser);
-                goBackToLoginScreen(view);
+                HashMap<String, User> userMap = Model.model.getUserMap();//.put(getUsername(), newUser);
+                if (!userMap.containsKey(getUsername())){
+                    Model.model.getUserMap().put(getUsername(), newUser);
+                    goBackToLoginScreen(view);
+                }
             }
         }
     }

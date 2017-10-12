@@ -9,7 +9,7 @@ import java.util.HashMap;
  */
 
 public class Model {
-    private static final Model model = new Model();
+    public static final Model model = new Model();
 
     private static HashMap<String, User> _users = new HashMap<>();
 
