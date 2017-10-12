@@ -75,7 +75,7 @@ public class MainActivity extends Activity  {
                                             Model.getInstance().getUserMap()[i].getPWord()))) {
                             Toast.makeText(getApplicationContext(),
                                     "Incorrect Login Info",
-                                    Toast.LENGTH_SHORT.show();
+                                    Toast.LENGTH_SHORT.show());
                             textViewOne.setVisibility(View.VISIBLE);
                             textViewOne.setBackgroundColor(Color.WHITE);
                             securityCounter--;
