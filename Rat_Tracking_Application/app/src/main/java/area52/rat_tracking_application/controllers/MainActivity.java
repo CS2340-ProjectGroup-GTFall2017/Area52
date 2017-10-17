@@ -42,6 +42,29 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(activity_main);
+
+        setupButtonsOnStartup();
+    }
+
+    /**
+     * Gets the currently logged in user
+     *
+     * @return the currently logged in user
+     */
+    public User getCurrentUser() {
+        return _currentUser;
+    }
+
+    /**
+     * Sets the currently logged in user
+     *
+     * @param user the currently logged in user
+     */
+    public void setCurrentUser(User user) {
+        _currentUser = user;
+    }
+
+    public void setupButtonsOnStartup() {
         buttonOne = (Button)findViewById(R.id.button);
         buttonTwo = (Button)findViewById(R.id.button2);
         buttonThree = (Button)findViewById(R.id.button3);
@@ -110,23 +133,5 @@ public class MainActivity extends Activity {
                 context.startActivity(intent);
             }
         });
-    }
-
-    /**
-     * Gets the currently logged in user
-     *
-     * @return the currently logged in user
-     */
-    public User getCurrentUser() {
-        return _currentUser;
-    }
-
-    /**
-     * Sets the currently logged in user
-     *
-     * @param user the currently logged in user
-     */
-    public void setCurrentUser(User user) {
-        _currentUser = user;
     }
 }

@@ -2,10 +2,6 @@ package area52.rat_tracking_application.model;
 
 import java.util.Date;
 
-/**
- * Created by 2016d on 10/16/2017.
- */
-
 public class RatReport {
     private long key;
     private Date creationDate;
@@ -23,4 +19,9 @@ public class RatReport {
 
     public void setCreationDate(Date newDate) { creationDate = newDate; }
     public void setLocation(ReportLocation newLocation) { location = newLocation; }
+
+    @Override
+    public String toString() {
+        return "" + key + "| " + creationDate;
+    }
 }

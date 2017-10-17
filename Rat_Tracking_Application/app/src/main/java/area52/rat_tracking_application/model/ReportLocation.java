@@ -1,9 +1,5 @@
 package area52.rat_tracking_application.model;
 
-/**
- * Created by 2016d on 10/16/2017.
- */
-
 public class ReportLocation {
     private double latitude;
     private double longitude;
