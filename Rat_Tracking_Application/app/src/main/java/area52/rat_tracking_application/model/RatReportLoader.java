@@ -16,8 +16,8 @@ import java.util.Locale;
 
 public class RatReportLoader {
     public static HashMap<Long, RatReport> reports;
-    private HashMap<String, Integer> indexOfCSVColumn;
-    private String[] wantedCSVColumns = {"Unique Key", "Created Date", "Location Type",
+    private static HashMap<String, Integer> indexOfCSVColumn;
+    private static String[] wantedCSVColumns = {"Unique Key", "Created Date", "Location Type",
             "Incident Zip", "Incident Address", "City", "Borough", "Latitude",
             "Longitude"};
 
@@ -31,7 +31,7 @@ public class RatReportLoader {
     /*
      * From the given CSV InputStream, adds all rat reports in the stream to memory
      */
-    public void loadRatReportsFromCSV(InputStream csvInput) {
+    public static void loadRatReportsFromCSV(InputStream csvInput) {
         if (!reports.isEmpty()) { return; }
         BufferedReader csvReader = new BufferedReader(new InputStreamReader(csvInput));
 
@@ -51,7 +51,7 @@ public class RatReportLoader {
         }
     }
 
-    private void getIndicesOfWantedCSVColumns(String[] csvHeader) {
+    private static void getIndicesOfWantedCSVColumns(String[] csvHeader) {
         for (int i = 0; i < csvHeader.length; i++) {
             if (contains(wantedCSVColumns, csvHeader[i])) {
                 indexOfCSVColumn.put(csvHeader[i], i);
@@ -59,14 +59,14 @@ public class RatReportLoader {
         }
     }
 
-    private boolean contains(String[] arr, String element) {
+    private static boolean contains(String[] arr, String element) {
         for (int i = 0; i < arr.length; i++) {
             if (arr[i].equals(element)) { return true; }
         }
         return false;
     }
 
-    private RatReport convertCSVRowToRatReport(String[] csvRow) {
+    private static RatReport convertCSVRowToRatReport(String[] csvRow) {
         long key = getReportKey(csvRow);
         Date creationDate = getReportDate(csvRow);
         String locationType = getCSVStringForColumn(wantedCSVColumns[2], csvRow);
@@ -84,11 +84,11 @@ public class RatReportLoader {
         return report;
     }
 
-    private long getReportKey(String[] csvRow) {
+    private static long getReportKey(String[] csvRow) {
         String keyString = getCSVStringForColumn(wantedCSVColumns[0], csvRow);
         return (isNum(keyString)) ? Long.valueOf(keyString) : 0;
     }
-    private boolean isNum(String toBeChecked) {
+    private static boolean isNum(String toBeChecked) {
         try {
             double d = Double.parseDouble(toBeChecked);
         } catch (NumberFormatException e) {
@@ -96,7 +96,7 @@ public class RatReportLoader {
         }
         return true;
     }
-    private Date getReportDate(String[] csvRow) {
+    private static Date getReportDate(String[] csvRow) {
         String dateString = getCSVStringForColumn(wantedCSVColumns[1], csvRow);
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
         Date date = new Date();
@@ -107,20 +107,20 @@ public class RatReportLoader {
         }
         return date;
     }
-    private int getReportZip(String[] csvRow) {
+    private static int getReportZip(String[] csvRow) {
         String zipString = getCSVStringForColumn(wantedCSVColumns[3], csvRow);
         return (isNum(zipString)) ? Integer.valueOf(zipString) : 0;
     }
-    private double getReportLatitude(String[] csvRow) {
+    private static double getReportLatitude(String[] csvRow) {
         String latitudeString = getCSVStringForColumn(wantedCSVColumns[7], csvRow);
         return (isNum(latitudeString)) ? Double.valueOf(latitudeString) : 0;
     }
-    private double getReportLongitude(String[] csvRow) {
+    private static double getReportLongitude(String[] csvRow) {
         String longitudeString = getCSVStringForColumn(wantedCSVColumns[8], csvRow);
         return (isNum(longitudeString)) ? Double.valueOf(longitudeString) : 0;
     }
 
-    private String getCSVStringForColumn(String wantedColumn, String[] csvRow) {
+    private static String getCSVStringForColumn(String wantedColumn, String[] csvRow) {
         int columnIndex = indexOfCSVColumn.get(wantedColumn);
         boolean columnIndexIsValid = columnIndex > -1 && columnIndex < csvRow.length;
         return (columnIndexIsValid) ? csvRow[columnIndex] : "";

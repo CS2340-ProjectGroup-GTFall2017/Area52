@@ -1,6 +1,10 @@
 package area52.rat_tracking_application.model;
 
+import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
+
+import static area52.rat_tracking_application.R.raw.rat_sightings;
 
 /**
  * Singleton created to function as interface between controllers and model
@@ -39,5 +43,9 @@ public class Model {
      */
     public HashMap<String, User> getUserMap() {
         return _users;
+    }
+    public static HashMap<Long, RatReport> getRatReports() {
+        loadRatReportsFromCSV(rat_sightings);
+        return RatReportLoader.reports;
     }
 }
