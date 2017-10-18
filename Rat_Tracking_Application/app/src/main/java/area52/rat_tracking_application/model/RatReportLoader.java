@@ -12,10 +12,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class RatReportLoader {
     public static HashMap<Long, RatReport> reports;
+    public static List<RatReport> reportList;
     private static HashMap<String, Integer> indexOfCSVColumn;
     private static String[] wantedCSVColumns = {"Unique Key", "Created Date", "Location Type",
             "Incident Zip", "Incident Address", "City", "Borough", "Latitude",

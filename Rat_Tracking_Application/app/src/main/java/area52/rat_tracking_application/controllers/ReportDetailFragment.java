@@ -1,4 +1,4 @@
-package cs2340.gatech.edu.lab3.controllers;
+package area52.rat_tracking_application.controllers;
 
 import android.app.Activity;
 import android.content.Context;
@@ -45,7 +45,7 @@ public class ReportDetailFragment extends Fragment {
     /**
      * The adapter for the recycle view list of students
      */
-    private SimpleStudentRecyclerViewAdapter adapter;
+    private RatReportRecyclerViewAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -115,8 +115,8 @@ public class ReportDetailFragment extends Fragment {
          *
          * In this case, we are just mapping the toString of the Student object to a text field.
          */
-        public class SimpleStudentRecyclerViewAdapter
-                extends RecyclerView.Adapter<SimpleStudentRecyclerViewAdapter.ViewHolder> {
+        public class RatReportRecyclerViewAdapter
+                extends RecyclerView.Adapter<RatReportRecyclerViewAdapter.ViewHolder> {
 
             /**
              * Collection of the items to be shown in this list.
@@ -234,8 +234,8 @@ public class ReportDetailFragment extends Fragment {
             Model model = Model.getInstance();
             // mCourse = model.getCourseById(getArguments().getInt(ARG_COURSE_ID));
             mCourse = model.getCurrentCourse();
-            Log.d("CourseDetailFragment", "Passing over course: " + mCourse);
-            Log.d("CourseDetailFragment", "Got students: " + mCourse.getStudents().size());
+            Log.d("ReportDetailFragment", "Passing over course: " + mCourse);
+            Log.d("ReportDetailFragment", "Got students: " + mCourse.getStudents().size());
 
             Activity activity = this.getActivity();
 
@@ -250,10 +250,10 @@ public class ReportDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.course_detail, container, false);
+        View rootView = inflater.inflate(R.layout.report_detail, container, false);
 
         //Step 1.  Setup the recycler view by getting it from our layout in the main window
-        View recyclerView = rootView.findViewById(R.id.student_list);
+        View recyclerView = rootView.findViewById(R.id.report_list);
         assert recyclerView != null;
         //Step 2.  Hook up the adapter to the view
         setupRecyclerView((RecyclerView) recyclerView);
@@ -273,7 +273,7 @@ public class ReportDetailFragment extends Fragment {
      * @param recyclerView  the view that needs this adapter
      */
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        adapter = new SimpleStudentRecyclerViewAdapter(mCourse.getStudents());
+        adapter = new RatReportRecyclerViewAdapter(mReport.getRatReports());
         Log.d("Adapter", adapter.toString());
         recyclerView.setAdapter(adapter);
     }
@@ -284,19 +284,19 @@ public class ReportDetailFragment extends Fragment {
      *
      * In this case, we are just mapping the toString of the Student object to a text field.
      */
-    public class SimpleStudentRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleStudentRecyclerViewAdapter.ViewHolder> {
+    public class RatReportRecyclerViewAdapter
+            extends RecyclerView.Adapter<RatReportRecyclerViewAdapter.ViewHolder> {
 
         /**
          * Collection of the items to be shown in this list.
          */
-        private final List<Student> mValues;
+        private final List<RatReport> mValues;
 
         /**
          * set the items to be used by the adapter
          * @param items the list of items to be displayed in the recycler view
          */
-        public SimpleStudentRecyclerViewAdapter(List<Student> items) {
+        public RatReportRecyclerViewAdapter(List<RatReport> items) {
             mValues = items;
         }
 

@@ -1,5 +1,6 @@
 package area52.rat_tracking_application.controllers;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -36,7 +37,7 @@ public class ReportDetailActivity {
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_course_detail);
+            setContentView(R.layout.activity_report_detail);
             Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
             setSupportActionBar(toolbar);
 
@@ -44,9 +45,9 @@ public class ReportDetailActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar.make(view, "Creating a new Student", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "Creating a new Report", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                    Intent intent = new Intent(getBaseContext(), EditStudentActivity.class);
+                    Intent intent = new Intent(getBaseContext(), ReportDetailFragment.class);
                     startActivity(intent);
                 }
             });
@@ -71,13 +72,13 @@ public class ReportDetailActivity {
                 // using a fragment transaction.  Pass the course info to
                 //the fragment
                 Bundle arguments = new Bundle();
-                arguments.putInt(CourseDetailFragment.ARG_COURSE_ID,
-                        getIntent().getIntExtra(CourseDetailFragment.ARG_COURSE_ID, 0));
+                arguments.putInt(ReportDetailFragment.ARG_REPORT_ID,
+                        getIntent().getIntExtra(ReportDetailFragment.ARG_REPORT_ID, 0));
 
-                CourseDetailFragment fragment = new CourseDetailFragment();
+                ReportDetailFragment fragment = new ReportDetailFragment();
                 fragment.setArguments(arguments);
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.course_detail_container, fragment)
+                        .add(R.id.report_detail_container, fragment)
                         .commit();
             }
 
@@ -85,6 +86,7 @@ public class ReportDetailActivity {
         }
 
         @Override
+        @TargetApi(16)
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
@@ -94,7 +96,7 @@ public class ReportDetailActivity {
                 //
                 // http://developer.android.com/design/patterns/navigation.html#up-vs-back
                 //
-                navigateUpTo(new Intent(this, CourseListActivity.class));
+                navigateUpTo(new Intent(this, ReportListActivity.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);

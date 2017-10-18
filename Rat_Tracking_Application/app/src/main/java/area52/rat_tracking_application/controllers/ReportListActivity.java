@@ -1,4 +1,4 @@
-package cs2340.gatech.edu.lab3.controllers;
+package area52.rat_tracking_application.controllers;
 
 import android.content.Context;
 import android.content.Intent;

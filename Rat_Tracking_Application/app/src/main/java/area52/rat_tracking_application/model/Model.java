@@ -1,5 +1,6 @@
 package area52.rat_tracking_application.model;
-
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,9 @@ public class Model {
     public static final Model model = new Model();
 
     private static HashMap<String, User> _users = new HashMap<>();
+    private static RatReportLoader loader = new RatReportLoader();
+    private static InputStream csvInput = new FileInputStream(
+            "c:\\Area52\\Rat_Tracking_Application\\res\\raw\\rat_sightings.csv");
 
     /**
      * return static singleton instance of model for app data retrieval
@@ -45,7 +49,12 @@ public class Model {
         return _users;
     }
     public static HashMap<Long, RatReport> getRatReports() {
-        loadRatReportsFromCSV(rat_sightings);
-        return RatReportLoader.reports;
-    }
+            @Override
+            public int read() throws IOException {
+                return 0;
+            }
+        }
+        loader.loadRatReportsFromCSV(csvInput)
+        return
+}
 }
