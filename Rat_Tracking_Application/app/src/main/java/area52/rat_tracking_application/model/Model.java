@@ -1,11 +1,6 @@
 package area52.rat_tracking_application.model;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
 
-import static area52.rat_tracking_application.R.raw.rat_sightings;
+import java.util.HashMap;
 
 /**
  * Singleton created to function as interface between controllers and model
@@ -17,9 +12,6 @@ public class Model {
     public static final Model model = new Model();
 
     private static HashMap<String, User> _users = new HashMap<>();
-    private static RatReportLoader loader = new RatReportLoader();
-    private static InputStream csvInput = new FileInputStream(
-            "c:\\Area52\\Rat_Tracking_Application\\res\\raw\\rat_sightings.csv");
 
     /**
      * return static singleton instance of model for app data retrieval
@@ -48,13 +40,4 @@ public class Model {
     public HashMap<String, User> getUserMap() {
         return _users;
     }
-    public static HashMap<Long, RatReport> getRatReports() {
-            @Override
-            public int read() throws IOException {
-                return 0;
-            }
-        }
-        loader.loadRatReportsFromCSV(csvInput)
-        return
-}
 }
