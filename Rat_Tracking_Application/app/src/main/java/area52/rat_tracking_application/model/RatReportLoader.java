@@ -1,22 +1,18 @@
 package area52.rat_tracking_application.model;
 
-import android.support.v4.content.res.TypedArrayUtils;
-import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
 public class RatReportLoader {
     public static HashMap<Long, RatReport> reports;
     private HashMap<String, Integer> indexOfCSVColumn;
+    ///private static RatReportHashMap<RatReport, ReportLocation> ratReportHashMap;
     private String[] wantedCSVColumns = {"Unique Key", "Created Date", "Location Type",
             "Incident Zip", "Incident Address", "City", "Borough", "Latitude",
             "Longitude"};
@@ -24,8 +20,10 @@ public class RatReportLoader {
     public RatReportLoader() {
         if (reports == null) {
             reports = new HashMap<>();
+            ///ratReportHashMap = new RatReportHashMap<>();
         }
         indexOfCSVColumn = new HashMap<>();
+        loadRatReportsFromCSV();
     }
 
     /*
@@ -66,7 +64,7 @@ public class RatReportLoader {
         return false;
     }
 
-    private RatReport convertCSVRowToRatReport(String[] csvRow) {
+    public RatReport convertCSVRowToRatReport(String[] csvRow) {
         long key = getReportKey(csvRow);
         Date creationDate = getReportDate(csvRow);
         String locationType = getCSVStringForColumn(wantedCSVColumns[2], csvRow);
@@ -84,7 +82,7 @@ public class RatReportLoader {
         return report;
     }
 
-    private long getReportKey(String[] csvRow) {
+    public long getReportKey(String[] csvRow) {
         String keyString = getCSVStringForColumn(wantedCSVColumns[0], csvRow);
         return (isNum(keyString)) ? Long.valueOf(keyString) : 0;
     }
