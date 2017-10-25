@@ -6,16 +6,17 @@ import area52.rat_tracking_application.model.User;
 import area52.rat_tracking_application.R;
 import static area52.rat_tracking_application.R.layout.activity_main;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 /**
  * Temp representation of login screen
@@ -23,7 +24,7 @@ import android.widget.Toast;
  * package
  */
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     Button buttonOne;
     Button buttonTwo;
     Button buttonThree;
@@ -37,6 +38,7 @@ public class MainActivity extends Activity {
      * the currently logged in user
      */
     private User _currentUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +91,9 @@ public class MainActivity extends Activity {
                                         + getCurrentUser() + " !",
                                 Toast.LENGTH_LONG).show();
                         match = true;
-                        Context context = view.getContext();
-                        Intent intent = new Intent(context, LogoutActivity.class);
-                        context.startActivity(intent);
+                        Context reportDetailContext = view.getContext();
+                        Intent reportDetailIntent = new Intent(reportDetailContext, ReportDetailActivity.class);
+                        reportDetailContext.startActivity(reportDetailIntent);
                     }
                 } else {
                     if (!match) {
@@ -128,9 +130,9 @@ public class MainActivity extends Activity {
                         getApplicationContext(),
                         "Please register on next screen",
                         Toast.LENGTH_LONG).show();
-                Context context = view.getContext();
-                Intent intent = new Intent(context, RegistrationActivity.class);
-                context.startActivity(intent);
+                Context registrationContext = view.getContext();
+                Intent registrationIntent = new Intent(registrationContext, RegistrationActivity.class);
+                registrationContext.startActivity(registrationIntent);
             }
         });
     }

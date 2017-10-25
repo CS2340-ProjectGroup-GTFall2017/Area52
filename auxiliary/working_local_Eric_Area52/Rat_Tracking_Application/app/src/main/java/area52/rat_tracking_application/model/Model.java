@@ -1,14 +1,6 @@
 package area52.rat_tracking_application.model;
-import android.view.View;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
-import static area52.rat_tracking_application.R.raw.rat_sightings;
 
 /**
  * Singleton created to function as interface between controllers and model
@@ -20,8 +12,6 @@ public class Model {
     public static final Model model = new Model();
 
     private static HashMap<String, User> _users = new HashMap<>();
-    private static RatReportLoader loader = new RatReportLoader();
-    private RatReport report;
 
     /**
      * return static singleton instance of model for app data retrieval
@@ -50,17 +40,4 @@ public class Model {
     public HashMap<String, User> getUserMap() {
         return _users;
     }
-    public static HashMap<Long, RatReport> getRatReports() {
-        return loader.reports;
-    }
-    public static List<RatReport> getUniqueIDsAsList() {
-        return (LinkedList) loader.reports.keySet();
-    }
-    public void setCurrentReport(RatReport report) {
-        this.report = report;
-    }
-    public View getCurrentReport(View mView) {
-        return mView;
-    }
-
 }

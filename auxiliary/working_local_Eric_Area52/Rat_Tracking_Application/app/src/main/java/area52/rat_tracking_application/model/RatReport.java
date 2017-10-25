@@ -1,13 +1,15 @@
 package area52.rat_tracking_application.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 public class RatReport {
-    private long key;
+    private Long key;
     private Date creationDate;
     private ReportLocation location;
 
-    public RatReport(long key, Date creation, ReportLocation location) {
+    public RatReport(Long key, Date creation, ReportLocation location) {
         this.key = key;
         this.creationDate = creation;
         this.location = location;
@@ -24,4 +26,5 @@ public class RatReport {
     public String toString() {
         return "" + key + "| " + creationDate;
     }
+
 }

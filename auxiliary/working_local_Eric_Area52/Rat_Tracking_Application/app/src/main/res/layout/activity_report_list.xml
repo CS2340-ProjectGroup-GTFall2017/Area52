@@ -10,7 +10,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
@@ -27,6 +27,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <include layout="@layout/report_list" />
     </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -39,3 +40,4 @@
 
 
 </android.support.design.widget.CoordinatorLayout>
+

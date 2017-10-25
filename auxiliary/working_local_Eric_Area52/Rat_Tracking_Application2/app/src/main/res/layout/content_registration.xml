@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    tools:context="area52.rat_tracking_application.controllers.RegistrationActivity"
+    tools:showIn="@layout/activity_registration">
+
+    <Button
+        android:id="@+id/button_register"
+        style="?metaButtonBarButtonStyle"
+        android:layout_width="300dp"
+        android:layout_height="67dp"
+        android:background="@android:color/holo_green_light"
+        android:onClick="registerUser"
+        android:text="@string/register"
+        android:textAlignment="center"
+        android:textColor="#efefef"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_below="@+id/editText_password"
+        android:layout_alignLeft="@+id/button_cancel"
+        android:layout_alignStart="@+id/button_cancel"
+        android:layout_marginTop="51dp" />
+
+    <Button
+        android:id="@+id/button_cancel"
+        style="?metaButtonBarButtonStyle"
+        android:layout_width="300dp"
+        android:layout_height="67dp"
+        android:layout_marginBottom="64dp"
+        android:background="#f00f0f"
+        android:onClick="goBackToLoginScreen"
+        android:text="Cancel"
+        android:textAlignment="center"
+        android:textColor="#5f0f0f"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <CheckBox
+        android:id="@+id/checkBox_admin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/prompt_admin"
+        android:textColor="#efefef"
+        android:textSize="18sp"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button_register"
+        android:layout_marginTop="58dp"
+        android:layout_below="@+id/textView_username"
+        android:layout_alignLeft="@+id/editText_email"
+        android:layout_alignStart="@+id/editText_email" />
+
+    <TextView
+        android:id="@+id/textView_password"
+        android:layout_width="328dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/prompt_password"
+        android:textAlignment="center"
+        android:textColor="#efefef"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_email" />
+
+    <TextView
+        android:id="@+id/textView_email"
+        android:layout_width="328dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/prompt_email"
+        android:textAlignment="center"
+        android:textColor="#efefef"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_username" />
+
+    <EditText
+        android:id="@+id/editText_email"
+        android:layout_width="327dp"
+        android:layout_height="44dp"
+        android:ems="10"
+        android:hint="Type your email address here"
+        android:inputType="textEmailAddress"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_email"
+        android:layout_marginTop="13dp"
+        android:layout_below="@+id/checkBox_admin"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/editText_password"
+        android:layout_width="327dp"
+        android:layout_height="44dp"
+        android:ems="10"
+        android:hint="Type your password here"
+        android:inputType="textPassword"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_password"
+        android:layout_below="@+id/editText_username"
+        android:layout_alignLeft="@+id/editText_username"
+        android:layout_alignStart="@+id/editText_username" />
+
+    <EditText
+        android:id="@+id/editText_username"
+        android:layout_width="327dp"
+        android:layout_height="44dp"
+        android:ems="10"
+        android:hint="Type your username here"
+        android:inputType="text"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_username"
+        android:layout_below="@+id/editText_email"
+        android:layout_alignLeft="@+id/editText_email"
+        android:layout_alignStart="@+id/editText_email" />
+
+    <TextView
+        android:id="@+id/textView_username"
+        android:layout_width="328dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/action_sign_in"
+        android:textAlignment="center"
+        android:textColor="#efefef"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="41dp" />
+
+</RelativeLayout>

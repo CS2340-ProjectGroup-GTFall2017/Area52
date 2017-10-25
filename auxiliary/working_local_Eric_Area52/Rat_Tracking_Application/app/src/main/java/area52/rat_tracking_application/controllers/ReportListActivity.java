@@ -14,33 +14,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
-import area52.rat_tracking_application.model.RatReport;
-import area52.rat_tracking_application.model.Model;
-import area52.rat_tracking_application.R;
-
 import java.util.List;
 
+import area52.rat_tracking_application.model.Model;
+import area52.rat_tracking_application.model.RatReport;
+
 /**
- * ***Please note that this template has been provided by Prof. Bob Waters.***
- * Top_level window seen by user upon successful application account login.
+ * Acknowledgements:
  *
- * An activity representing a list of reported rat sightings. Different presentations
- * for handset and tablet-size devices.
- * On handsets, the activity presents a list of items, which when touched,
- * lead to a {@link area52.rat_tracking_application.controllers.ReportDetailActivity} representing
+ * Prof. Bob Waters ([Template provided by Prof. Waters] for Android
+ * project guidance [GaTech - Fall 2017 - cs2340 - Objects & Design]).
+ * Classes, methods, method params, instance and local variables named
+ * to reflect our [class final project] --> [Rat Tracking App]:
+ *
+ * "THIS IS OUR TOP_LEVEL WINDOW THAT THE USER FIRST SEES IN THE APPLICATION!
+ *
+ * An activity representing a list of Reports. This activity
+ * has different presentations for handset and tablet-size devices. On
+ * handsets, the activity presents a list of items, which when touched,
+ * lead to a {@link ReportDetailActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  *
  * This is using a RecyclerView, which is the preferred standard for displaying
- * lists of things like rat sightings.
+ * lists of things like our" reports.
  */
 public class ReportListActivity extends AppCompatActivity {
+
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device. Multi-display support is extra credit for our project.
+     * device.
      */
-    private boolean mTwoPane;
+    private boolean ratsTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +77,7 @@ public class ReportListActivity extends AppCompatActivity {
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
             // activity should be in two-pane mode.
-            mTwoPane = true;
+            ratsTwoPane = true;
         }
     }
 
@@ -82,41 +87,43 @@ public class ReportListActivity extends AppCompatActivity {
      */
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         Model model = Model.getInstance();
-        recyclerView.setAdapter(new RatReportRecyclerViewAdapter(Model.getInstance().getUniqueIDsAsList()));
+        recyclerView.setAdapter(new SimpleReportRecyclerViewAdapter(RatReportLoader.getReports()));
     }
 
     /**
      * This inner class is our custom adapter.  It takes our basic model information and
      * converts it to the correct layout for this view.
      *
-     * In this case, we are just mapping the toString of the Course object to a text field.
+     * In this case, we are just mapping the toString of the RatReport object to a text field.
      */
-    public class RatReportRecyclerViewAdapter
-            extends RecyclerView.Adapter<RatReportRecyclerViewAdapter.ViewHolder> {
+    public class SimpleReportRecyclerViewAdapter
+            extends RecyclerView.Adapter<SimpleReportRecyclerViewAdapter.ViewHolder> {
 
         /**
          * Collection of the items to be shown in this list.
          */
-        private final List<RatReport> mReports;
+        private final List<RatReport> ratReportDataList = ;
 
         /**
          * set the items to be used by the adapter
-         * @param items the list of items to be displayed in the recycler view
+         * @param dataList the list of rat report items to be displayed
+         * in the recycler view
          */
-        public RatReportRecyclerViewAdapter(List<RatReport> items) {
-            mReports = items;
+        public SimpleReportRecyclerViewAdapter(List<RatReport> dataList) {
+            ratReportDataList = dataList;
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             /*
+              As per Prof. Bob Waters [GaTech - Fall 2017 - cs2340 - Objects & Design]:
 
-              This sets up the view for each individual item in the recycler display
-              To edit the actual layout, we would look at: res/layout/course_list_content.xml
-              If you look at the example file, you will see it currently just 2 TextView elements
+              "This sets up the view for each individual row in the recycler display
+              To edit the actual layout, we would look at: res/layout/report_list_content.xml
+              If you look at the example file, you will see it currently just 2 TextView elements"
              */
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.content_report_list, parent, false);
+                    .inflate(R.layout.report_list_content, parent, false);
             return new ViewHolder(view);
         }
 
@@ -129,13 +136,13 @@ public class ReportListActivity extends AppCompatActivity {
             to an element in the view (which is one of our two TextView widgets
              */
             //start by getting the element at the correct position
-            holder.mReport = mReports.get(position);
+            holder.ratReportData = mCourses.get(position);
             /*
               Now we bind the data to the widgets.  In this case, pretty simple, put the id in one
               textview and the string rep of a course in the other.
              */
-            holder.mIdView.setText("" + mReports.get(position).getKey());
-            holder.mContentView.setText(mReports.get(position).toString());
+            holder.mIdView.setText("" + mCourses.get(position).getId());
+            holder.mContentView.setText(mCourses.get(position).toString());
 
             /*
              * set up a listener to handle if the user clicks on this list item, what should happen?
@@ -146,25 +153,25 @@ public class ReportListActivity extends AppCompatActivity {
                     if (mTwoPane) {
                         //if a two pane window, we change the contents on the main screen
                         Bundle arguments = new Bundle();
-                        arguments.putInt(ReportDetailFragment.ARG_REPORT_ID, holder.mView.getId());
+                        arguments.putInt(CourseDetailFragment.ARG_COURSE_ID, holder.mCourse.getId());
 
-                        ReportDetailFragment fragment = new ReportDetailFragment();
+                        CourseDetailFragment fragment = new CourseDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.report_detail_container, fragment)
+                                .replace(R.id.course_detail_container, fragment)
                                 .commit();
                     } else {
                         //on a phone, we need to change windows to the detail view
                         Context context = v.getContext();
                         //create our new intent with the new screen (activity)
-                        Intent intent = new Intent(context, ReportDetailActivity.class);
+                        Intent intent = new Intent(context, CourseDetailActivity.class);
                         /*
                             pass along the id of the course so we can retrieve the correct data in
                             the next window
                          */
-                        intent.putExtra(ReportDetailFragment.ARG_REPORT_ID, holder.mView.getId());
+                        intent.putExtra(CourseDetailFragment.ARG_COURSE_ID, holder.mCourse.getId());
 
-                        Model.getInstance().getCurrentReport(holder.mView);
+                        model.setCurrentCourse(holder.mCourse);
 
                         //now just display the new window
                         context.startActivity(intent);
@@ -175,7 +182,7 @@ public class ReportListActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return mReports.size();
+            return mCourses.size();
         }
 
         /**
@@ -188,7 +195,7 @@ public class ReportListActivity extends AppCompatActivity {
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
-            public RatReport mReport;
+            public Course mCourse;
 
             public ViewHolder(View view) {
                 super(view);
@@ -204,3 +211,4 @@ public class ReportListActivity extends AppCompatActivity {
         }
     }
 }
+
