@@ -7,13 +7,13 @@ public class ReportLocation {
     private String address;
     private String city;
     private String borough; //TODO: Convert to an enum if possible
-    private int zipCode;
+    private String zipCode;
 
     /*
      * Creates a new ReportLocation with the given data
      */
     public ReportLocation(double lat, double lng, String loc, String addr, String city,
-                          String borough, int zip){
+                          String borough, String zip){
         latitude = lat;
         longitude = lng;
         locationType = loc;
@@ -29,7 +29,7 @@ public class ReportLocation {
     public String getAddress() { return address; }
     public String getCity() { return city; }
     public String getBorough() { return borough; }
-    public int getZipCode() { return zipCode; }
+    public String getZipCode() { return zipCode; }
 
     public void setLatitude(double lat) { latitude = lat; }
     public void setLongitude(double lng) { longitude = lng; }
@@ -37,5 +37,5 @@ public class ReportLocation {
     public void setAddress(String address) { this.address = address; }
     public void setCity(String city) { this.city = city; }
     public void setBorough(String borough) { this.borough = borough; }
-    private void setZipCode(int zip) { zipCode = zip; }
+    public void setZipCode(String zip) { zipCode = zip; }
 }

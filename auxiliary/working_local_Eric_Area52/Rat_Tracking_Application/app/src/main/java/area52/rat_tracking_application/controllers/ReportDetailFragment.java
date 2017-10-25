@@ -3,6 +3,7 @@ package area52.rat_tracking_application.controllers;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
@@ -12,29 +13,36 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
 
-import area52.rat_tracking_application.model.Model;
 import area52.rat_tracking_application.model.RatReport;
-import area52.rat_tracking_application.model.ReportLocation;
-import area52.rat_tracking_application.model.User;
 import area52.rat_tracking_application.R;
 
+import static java.lang.System.exit;
+
 /**
- * A fragment representing a single Course detail screen.
- *
- * Basically this displays a list of students that are in a particular course
- * that was selected from the main screen.
- *
- * This fragment is either contained in a {@link ReportDetailActivity}
- * in two-pane mode (on tablets) or a {@link ReportDetailActivity}
- * on handsets.
- */
+* Acknowledgements:
+*
+* Prof. Bob Waters ([Template provided by Prof. Waters] for Android
+* project guidance [GaTech - Fall 2017 - cs2340 - Objects & Design]).
+* Classes, methods, method params, instance and local variables named
+* to reflect our [class final project] --> [Rat Tracking App]:
+*
+* A fragment representing a single Rat Report detail screen.
+*
+* This displays a report that are was selected from the expandable list view
+* on the Report detail activity screen.
+*
+* This fragment is either contained in a {@link ReportDetailActivity}
+* in two-pane mode (on tablets) or a {@link ReportDetailActivity}
+* on handsets.
+*/
 public class ReportDetailFragment extends Fragment {
     /**
-     * The fragment arguments representing the  ID's that this fragment
+     * The fragment arguments representing the ID's that this fragment
      * represents.  Used to pass keys into other activities through Bundle/Intent
      */
     public static final String ARG_UNIQUE_KEY_ID = "unique_key_id";//1
@@ -47,15 +55,19 @@ public class ReportDetailFragment extends Fragment {
     public static final String ARG_LATITUDE_ID = "latitude_id";//8
     public static final String ARG_LONGITUDE_ID = "longitude_id";//9
 
+
     /**
      * The rat report that this detail view is for.
      */
-    private RatReport ratData;
+    private RatReport ratDataSingleReport;
+    private String ratReportKeyCreateDate;
+    private RatReportLoader loader;
+    private ListView ratDataListView;
 
     /**
-     * The adapter for the recycle view list of students
+     * The adapter for the recycle view list of reports
      */
-    private SimpleStudentRecyclerViewAdapter adapter;
+    private SimpleReportRecyclerViewAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -67,22 +79,22 @@ public class ReportDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new ReportLoaderExtender();
+        RatReport ratDataSingleReport;
 
         //Check if we got a valid report passed to us
-        if (getArguments().containsKey(ARG_UNIQUE_KEY_ID)) {
+        if (getArguments().containsKey(ARG_UNIQUE_KEY_ID + ARG_CREATED_DATE_ID)) {
             // Get the id from the intent arguments (bundle) and
-            //ask the model to give us the rat report object
-            Model model = Model.getInstance();
-            // mCourse = model.getCourseById(getArguments().getInt(ARG_COURSE_ID));
-            ratData = RatReportLoader.;
-            Log.d("ReportDetailFragment", "Passing over report: " + ratData);
-            Log.d("ReportDetailFragment", "Got report quantity: " + mCourse.getStudents().size());
+            //ask the RatReportLoader to give us the rat report object
+            ratDataSingleReport = loader.convertCSVRowToRatReport(loader.wantedCSVColumns);
+            ratDataListView = loader.getReports();
+            Log.d("ReportDetailFragment", "Retrieving the following report: " + ratDataSingleReport);
 
             Activity activity = this.getActivity();
-
+            RatReportLoader loader = new RatReportLoader();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
-                appBarLayout.setTitle(mCourse.toString());
+                appBarLayout.setTitle(loader.getCSVHeaderIndices().toString());
             }
         }
 
@@ -91,10 +103,10 @@ public class ReportDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.course_detail, container, false);
+        View rootView = inflater.inflate(R.layout.report_detail, container, false);
 
         //Step 1.  Setup the recycler view by getting it from our layout in the main window
-        View recyclerView = rootView.findViewById(R.id.student_list);
+        View recyclerView = rootView.findViewById(R.id.report_list);
         assert recyclerView != null;
         //Step 2.  Hook up the adapter to the view
         setupRecyclerView((RecyclerView) recyclerView);
@@ -108,13 +120,42 @@ public class ReportDetailFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    protected class ReportLoaderExtender extends AsyncTask<Object, Object, SimpleReportRecyclerViewAdapter> {
+        private RatReportLoader reportLoader = new RatReportLoader();
+        private static final String TAG = "Rat Reports Loading ";
+
+        protected SimpleReportRecyclerViewAdapter doInBackground(Object... urls) {
+            SimpleReportRecyclerViewAdapter adapter = new SimpleReportRecyclerViewAdapter(reportLoader.getReports());
+
+            return adapter;
+        }
+
+
+
+
+        protected void onPostExecute(SimpleReportRecyclerViewAdapter adapter) {
+            super.onPostExecute(adapter);
+            Log.d(TAG, " ");
+    }
+
+        protected void onCancelled() {
+            exit(0);
+        }
+
+
+    }
+
     /**
      * Set up an adapter and hook it to the provided view
      *
-     * @param recyclerView  the view that needs this adapter
+     * @param recyclerView the view that needs this adapter
      */
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        adapter = new SimpleStudentRecyclerViewAdapter(mCourse.getStudents());
+        loader = new RatReportLoader();
+        ratDataSingleReport = loader.convertCSVRowToRatReport(loader.wantedCSVColumns);
+        ratReportKeyCreateDate = ratDataSingleReport.toString();
+        System.out.println();
+        adapter = new SimpleReportRecyclerViewAdapter(loader.getReports());
         Log.d("Adapter", adapter.toString());
         recyclerView.setAdapter(adapter);
     }
@@ -122,68 +163,61 @@ public class ReportDetailFragment extends Fragment {
     /**
      * This inner class is our custom adapter.  It takes our basic model information and
      * converts it to the correct layout for this view.
-     *
+     * <p>
      * In this case, we are just mapping the toString of the Student object to a text field.
      */
-    public class SimpleStudentRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleStudentRecyclerViewAdapter.ViewHolder> {
+    public class SimpleReportRecyclerViewAdapter
+            extends RecyclerView.Adapter<SimpleReportRecyclerViewAdapter.ViewHolder> {
+
+        private final ListView mValues;
 
         /**
-         * Collection of the items to be shown in this list.
+         * Collection of the items to be shown in this expandable list view.
          */
-        private final List<Student> mValues;
-
-        /**
-         * set the items to be used by the adapter
-         * @param items the list of items to be displayed in the recycler view
-         */
-        public SimpleStudentRecyclerViewAdapter(List<Student> items) {
+        public SimpleReportRecyclerViewAdapter(ListView items) {
             mValues = items;
         }
 
         @Override
-        public SimpleStudentRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public SimpleReportRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             /*
               This sets up the view for each individual item in the recycler display
               To edit the actual layout, we would look at: res/layout/course_list_content.xml
               If you look at the example file, you will see it currently just 2 TextView elements
              */
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.student_detail, parent, false);
-            return new SimpleStudentRecyclerViewAdapter.ViewHolder(view);
+                    .inflate(R.layout.report_detail, parent, false);
+            return new SimpleReportRecyclerViewAdapter.ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(final SimpleStudentRecyclerViewAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(final SimpleReportRecyclerViewAdapter.ViewHolder holder, int position) {
             /*
             This is where we have to bind each data element in the list (given by position parameter)
             to an element in the view (which is one of our two TextView widgets
              */
             //start by getting the element at the correct position
-            holder.mStudent = mValues.get(position);
-            Log.d("Adapter", "student: " + holder.mStudent);
+            holder.reportView = ratDataListView.getChildAt(position);
+            Log.d("Adapter", "rat report: " + holder.reportView);
             /*
               Now we bind the data to the widgets.  In this case, pretty simple, put the id in one
               textview and the string rep of a course in the other.
              */
-            holder.mIdView.setText("" + mValues.get(position).getId());
-            holder.mContentView.setText(mValues.get(position).toString());
+            holder.mIdView.setText("" + mValues.getChildAt(position).getId());
+            holder.mContentView.setText(mValues.getChildAt(position).toString());
 
-            /*
-             * set up a listener to handle if the user clicks on this list item, what should happen?
-             */
-            holder.mView.setOnClickListener(new View.OnClickListener() {
+            holder.reportView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //on a phone, we need to change windows to the detail view
                     Context context = v.getContext();
                     //create our new intent with the new screen (activity)
-                    Intent intent = new Intent(context, EditStudentActivity.class);
+                    Intent intent = new Intent(context, ReportEntryActivity.class);
                         /*
-                            pass along the selected student we can retrieve the correct data in
+                            pass along the selected report we can retrieve the correct data in
                             the next window
                          */
-                    intent.putExtra(CourseDetailFragment.ARG_STUDENT_ID, holder.mStudent);
+                    //intent.putExtra(ARG_UNIQUE_KEY_ID + ARG_CREATED_DATE_ID);
 
                     //now just display the new window
                     context.startActivity(intent);
@@ -194,7 +228,11 @@ public class ReportDetailFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return mValues.size();
+            int i = 0;
+            for (Object report : (List) mValues) {
+                i++;
+            }
+            return i;
         }
 
         /**
@@ -204,17 +242,17 @@ public class ReportDetailFragment extends Fragment {
          */
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
-            public final TextView mIdView;
-            public final TextView mContentView;
-            public Student mStudent;
+            public View reportView;
+            public TextView mIdView;
+            public TextView mContentView;
+            public RatReport ratReport;
 
             public ViewHolder(View view) {
                 super(view);
-                mView = view;
-                mIdView = (TextView) view.findViewById(R.id.student_id);
+                reportView = view;
+                mIdView = (TextView) view.findViewById(R.id.report_list);
                 Log.d("Holder", mIdView.toString());
-                mContentView = (TextView) view.findViewById(R.id.student_details);
+                mContentView = (TextView) view.findViewById(R.id.report_detail_container);
             }
 
             @Override
@@ -222,5 +260,7 @@ public class ReportDetailFragment extends Fragment {
                 return super.toString() + " '" + mContentView.getText() + "'";
             }
         }
+
+
     }
 }

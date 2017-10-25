@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ScrollingTabContainerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,60 +28,37 @@ import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.model.ReportLocation;
 
-import static java.lang.System.exit;
-
 public class RatReportLoader extends AppCompatActivity {
-    public static HashMap<Long, RatReport> reports;
-    private static HashMap<String, Integer> indexOfCSVColumn;
-    private static String[] wantedCSVColumns = {"Unique Key", "Created Date", "Location Type",
+    private HashMap<Long, RatReport> reports;
+    protected HashMap<String, Integer> indexOfCSVColumn;
+    protected String[] wantedCSVColumns = {"Unique Key", "Created Date", "Location Type",
             "Incident Zip", "Incident Address", "City", "Borough", "Latitude",
             "Longitude"};
+    private String keyCreationDate;
+    private List<String> keyCreationDateList;
 
-    private static final String TAG = "ReportListActivity";
-    private Runnable url1;
+    //private static final String TAG = "ReportListActivity";
+    //private Runnable url1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_list);
-        new ReportLoaderExtender().execute(url1);
+
     }
 
 
 
-    ScrollingTabContainerView scrollingTab = (ScrollingTabContainerView) findViewById(R.id.tab_scrolling);
+    /***RecyclerView.SmoothScroller.ScrollVectorProvider scrollingTab = (ScrollingTabContainerView) findViewById(R.id.tab_scrolling);
     scrollingTab.setOnClickListener(new View.OnClickListener() {
         @Override
-        public void onClick(View view) {
+        public void onClick(View view){
             Context context = view.getContext();
             Intent intent = new Intent(context, WelcomeActivity.class);
             context.startActivity(intent);
         }
-    }
+    }***/
 
-
-    private class ReportLoaderExtender extends AsyncTask<Object, Object, ReportDetailFragment.SimpleStudentRecyclerViewAdapter> {
-        private RatReportLoader reportLoader = new RatReportLoader();
-        private static final String TAG = "Rat Reports Loading ";
-        protected ReportDetailActivity.ReportListAdapter doInBackground(Object... urls) {
-            reportLoader.loadRatReports();
-            return new ReportDetailActivity.ReportListAdapter(R.layout.activity_report_list, );
-        }
-
-        protected void onProgressUpdate(Object... progress) {
-            int i = 0;
-            setProgressPercent(progress[i++]);
-        }
-
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            Log.d(TAG, "onPostExecute: parameter is " + s);
-        }
-
-        protected void onCancelled() {
-            exit(0);
-        }
-    }
 
     RatReportLoader() {
         if (reports == null) {
@@ -86,21 +66,32 @@ public class RatReportLoader extends AppCompatActivity {
         }
         indexOfCSVColumn = new HashMap<>();
     }
-    private void loadRatReports() {
+    protected void loadRatReports() {
         InputStream csvReportFile = getResources().openRawResource(R.raw.rat_sightings);
         loadRatReportsFromCSV(csvReportFile);
     }
 
-    public static List<String> getReports() {
-        String keyCreationDate = wantedCSVColumns[0] + wantedCSVColumns[1];
-        List<String> keyCreationDateList = new ArrayList<>();
-        int i = 0;
+    /***
+     * What appears in Expandable scrolling list view of rat reports
+     *
+     * @return keyCreationDateList from instance of rat report
+     * and its overridden toString() method
+     */
+    protected ListView getReports() {
+        keyCreationDate = wantedCSVColumns[0] + wantedCSVColumns[1];
+        keyCreationDateList = new ArrayList<>();
         for (RatReport report : reports.values()) {
-            if (keyCreationDate == null) {
-                keyCreationDateList.add(keyCreationDate);
+            if (keyCreationDate != null) {
+                if (report.toString() == keyCreationDate) {
+                    keyCreationDateList.add(keyCreationDate);
+                }
             }
         }
-        return keyCreationDateList;
+        return (ListView) keyCreationDateList;
+    }
+
+    protected void addReport(Long key, RatReport report) {
+        reports.put(key, report);
     }
 
     /*
@@ -117,20 +108,20 @@ public class RatReportLoader extends AppCompatActivity {
             String csvHeaderLine = csvReader.readLine();
 
             String[] headerRow = csvHeaderLine.split(",");
-            getIndicesOfWantedCSVColumns(headerRow);
+            setIndicesOfWantedCSVColumns(headerRow);
 
             String currentLine = "";
             int count = 0;
             for (int i = 0; (currentLine = csvHeaderLine) != null; i++) {
                 try
                 {
-                    publishProgress((int) ((i / (float) count) * 100));
+                    //publishProgress((int) ((i / (float) count) * 100));
 
                     String[] row = currentLine.split(",");
                     RatReport reportFromFile = convertCSVRowToRatReport(row);
                     reports.put(reportFromFile.getKey(), reportFromFile);
                 }
-                catch (IOException e)
+                catch (Exception e)
                 {
                     e.printStackTrace();
                 }
@@ -142,7 +133,7 @@ public class RatReportLoader extends AppCompatActivity {
         }
     }
 
-    private void getIndicesOfWantedCSVColumns(String[] csvHeader) {
+    private void setIndicesOfWantedCSVColumns(String[] csvHeader) {
         for (int i = 0; i < csvHeader.length; i++) {
             if (contains(wantedCSVColumns, csvHeader[i])) {
                 indexOfCSVColumn.put(csvHeader[i], i);
@@ -168,7 +159,7 @@ public class RatReportLoader extends AppCompatActivity {
      * @param csvRow
      * @return
      */
-    public static long getReportKey(String[] csvRow) {
+    protected long getReportKey(String[] csvRow) {
         String keyString = getCSVStringForColumn(wantedCSVColumns[0], csvRow);
         return (isNum(keyString)) ? Long.valueOf(keyString) : 0;
     }
@@ -181,7 +172,7 @@ public class RatReportLoader extends AppCompatActivity {
      * @param csvRow
      * @return report instance of RatReport
      */
-    public static RatReport convertCSVRowToRatReport(String[] csvRow) {
+    protected RatReport convertCSVRowToRatReport(String[] csvRow) {
         long key = getReportKey(csvRow);
         Date creationDate = getReportDate(csvRow);
         String locationType = getCSVStringForColumn(wantedCSVColumns[2], csvRow);
@@ -199,7 +190,7 @@ public class RatReportLoader extends AppCompatActivity {
         return report;
     }
 
-    private static boolean isNum(String toBeChecked) {
+    protected boolean isNum(String toBeChecked) {
         try {
             double d = Double.parseDouble(toBeChecked);
         } catch (NumberFormatException e) {
@@ -207,7 +198,7 @@ public class RatReportLoader extends AppCompatActivity {
         }
         return true;
     }
-    private static Date getReportDate(String[] csvRow) {
+    private Date getReportDate(String[] csvRow) {
         String dateString = getCSVStringForColumn(wantedCSVColumns[1], csvRow);
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
         Date date = new Date();
@@ -218,22 +209,26 @@ public class RatReportLoader extends AppCompatActivity {
         }
         return date;
     }
-    private static int getReportZip(String[] csvRow) {
+    private int getReportZip(String[] csvRow) {
         String zipString = getCSVStringForColumn(wantedCSVColumns[3], csvRow);
         return (isNum(zipString)) ? Integer.valueOf(zipString) : 0;
     }
-    private static double getReportLatitude(String[] csvRow) {
+    private double getReportLatitude(String[] csvRow) {
         String latitudeString = getCSVStringForColumn(wantedCSVColumns[7], csvRow);
         return (isNum(latitudeString)) ? Double.valueOf(latitudeString) : 0;
     }
-    private static double getReportLongitude(String[] csvRow) {
+    private double getReportLongitude(String[] csvRow) {
         String longitudeString = getCSVStringForColumn(wantedCSVColumns[8], csvRow);
         return (isNum(longitudeString)) ? Double.valueOf(longitudeString) : 0;
     }
 
-    private static String getCSVStringForColumn(String wantedColumn, String[] csvRow) {
+    private String getCSVStringForColumn(String wantedColumn, String[] csvRow) {
         int columnIndex = indexOfCSVColumn.get(wantedColumn);
         boolean columnIndexIsValid = columnIndex > -1 && columnIndex < csvRow.length;
         return (columnIndexIsValid) ? csvRow[columnIndex] : "";
+    }
+
+    protected HashMap<String, Integer> getCSVHeaderIndices() {
+        return indexOfCSVColumn;
     }
 }

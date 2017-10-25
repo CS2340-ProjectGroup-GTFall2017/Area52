@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,50 +16,53 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import area52.rat_tracking_application.R;
+import area52.rat_tracking_application.model.RatReport;
+import area52.rat_tracking_application.model.ReportLocation;
 import area52.rat_tracking_application.model.User;
 
+import static area52.rat_tracking_application.model.User.findPosition;
+
 /**
+ * Acknowledgements:
+ *
+ * Prof. Bob Waters ([Template provided by Prof. Waters] for Android
+ * project guidance [GaTech - Fall 2017 - cs2340 - Objects & Design]).
+ * Classes, methods, method params, instance and local variables named
+ * to reflect our [class final project] --> [Rat Tracking App]:
+ *
+ * An activity representing a single Rat Report Entry detail screen.
+ *
  * Created by Eric on 10/24/2017.
  */
 
 public class ReportEntryActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
 
-    /* ************************
-        Widgets we will need for binding and getting information
-     */
-    private TextView idField;
-    private EditText nameField;
+    private TextView adminGeneratedUniqueKey;
+    private TextView username;
     private Spinner boroughSpinner;
-    private Spinner majorSpinner;
-    private Spinner majorSpinner;
-
-    /***public double getLatitude() { return latitude; }
-    public double getLongitude() { return longitude; }
-    public String getLocationType() { return locationType; }
-    public String getAddress() { return address; }
-    public String getCity() { return city; }
-    public String getBorough() { return borough; }
-    public int getZipCode() { return zipCode; }
-
-    public void setLatitude(double lat) { latitude = lat; }
-    public void setLongitude(double lng) { longitude = lng; }
-    public void setLocationType(String type) { locationType = type; }
-    public void setAddress(String address) { this.address = address; }
-    public void setCity(String city) { this.city = city; }
-    public void setBorough(String borough) { this.borough = borough; }
-    private void setZipCode(int zip) { zipCode = zip; }***/
-
+    private Spinner zipCodeSpinner;
+    private Spinner addressCitySpinner;
+    private Spinner locationTypeSpinner;
+    private ReportLocation reportLocation;
+    private TextView location;
+    private TextView creationDate;
+    private String locationBorough;
+    private String locationZipCode;
+    private String locationCity;
+    private String locationType;
 
     /* ***********************
            Data for user being entered.
          */
-    private User _student;
+    private RatReport _report;
+
+    private RatReportLoader reportLoader;
 
     /* ***********************
        flag for whether this is a new report being added or an existing report being edited;
      */
-    private boolean editing;
+    private boolean creating;
 
     public ReportEntryActivity() {
         super();
@@ -71,6 +75,7 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
         setContentView(R.layout.activity_report_entry);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        reportLoader = new RatReportLoader();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -84,31 +89,76 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
         /**
          * Grab the dialog widgets so we can get info for later
          */
-        nameField = (EditText) findViewById(R.id.student_name_input);
-        majorSpinner = (Spinner) findViewById(R.id.spinner);
-        idField = (TextView) findViewById(R.id.student_id_field);
+        username = (TextView) findViewById(R.id.user_name);
+        boroughSpinner = (Spinner) findViewById(R.id.borough_spinner);
+        zipCodeSpinner = (Spinner) findViewById(R.id.zip_code_spinner);
+        addressCitySpinner = (Spinner) findViewById(R.id.address_city_spinner);
+        adminGeneratedUniqueKey = (TextView) findViewById(R.id.admin_gen_unique_key);
+        location = (TextView) findViewById(R.id._location_);
+        creationDate = (TextView) findViewById(R.id.creation_date);
 
     /*
-      Set up the adapter to display the allowable majors in the spinner
+      Set up the adapter to display the allowable indices in the spinner
+       {"Unique Key", "Created Date", "Location Type",
+            "Incident Zip", "Incident Address", "City", "Borough", "Latitude",
+            "Longitude"};
      */
-        ArrayAdapter<String> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, RatReportLoader.getReports());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        majorSpinner.setAdapter(adapter);
+        ArrayAdapter<String> adapterBoroughs = new ArrayAdapter(
+                this,android.R.layout.simple_spinner_item, reportLoader.wantedCSVColumns);
+        adapterBoroughs.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        boroughSpinner.setAdapter(adapterBoroughs);
 
-    /*
-       If a student has been passed in, this was an edit, if not, this is a new add
-     */
-        if (getIntent().hasExtra(CourseDetailFragment.ARG_STUDENT_ID)) {
-            _student = (Student) getIntent().getParcelableExtra(CourseDetailFragment.ARG_STUDENT_ID);
-            majorSpinner.setSelection(Student.findPosition(_student.getMajor()));
-            editing = true;
+
+        if (getIntent().hasExtra(ReportDetailFragment.ARG_BOROUGH_ID)) {
+            _report = getIntent().getParcelableExtra(ReportDetailFragment.ARG_BOROUGH_ID);
+            boroughSpinner.setSelection(findPosition(_report.getLocation().getBorough()));
+            creating = true;
         } else {
-            _student = new Student();
-            editing = false;
+            creating = false;
         }
 
-        nameField.setText(_student.getName());
-        idField.setText("" + _student.getId());
+        ArrayAdapter<String> adapterZip = new ArrayAdapter(
+                this,android.R.layout.simple_spinner_item, reportLoader.wantedCSVColumns);
+        adapterZip.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        zipCodeSpinner.setAdapter(adapterZip);
+
+
+        if (getIntent().hasExtra(ReportDetailFragment.ARG_INCIDENT_ZIP_ID)) {
+            _report = getIntent().getParcelableExtra(ReportDetailFragment.ARG_INCIDENT_ZIP_ID);
+            zipCodeSpinner.setSelection(findPosition(_report.getLocation().getZipCode()));
+            creating = true;
+        } else {
+            creating = false;
+        }
+
+        ArrayAdapter<String> adapterLocationType = new ArrayAdapter(
+                this,android.R.layout.simple_spinner_item, reportLoader.wantedCSVColumns);
+        adapterLocationType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        locationTypeSpinner.setAdapter(adapterLocationType);
+
+
+        if (getIntent().hasExtra(ReportDetailFragment.ARG_LOCATION_TYPE_ID)) {
+            _report = getIntent().getParcelableExtra(ReportDetailFragment.ARG_LOCATION_TYPE_ID);
+            locationTypeSpinner.setSelection(findPosition(_report.getLocation().getLocationType()));
+            creating = true;
+        } else {
+            creating = false;
+        }
+        ArrayAdapter<String> adapterCity = new ArrayAdapter(
+                this,android.R.layout.simple_spinner_item, reportLoader.wantedCSVColumns);
+        adapterCity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        addressCitySpinner.setAdapter(adapterCity);
+
+
+        if (getIntent().hasExtra(ReportDetailFragment.ARG_CITY_ID)) {
+            _report = getIntent().getParcelableExtra(ReportDetailFragment.ARG_CITY_ID);
+            addressCitySpinner.setSelection(findPosition(_report.getLocation().getCity()));
+            creating = true;
+        } else {
+            creating = false;
+        }
+
+        adminGeneratedUniqueKey.setText("" + _report.getKey());
 
     }
 
@@ -117,18 +167,16 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
      * @param view the button
      */
     protected void onAddPressed(View view) {
-        Log.d("Edit", "Add Student");
-        Model model = Model.getInstance();
+        Log.d("Add New Entry", "Add Report");
 
-        _student.setName(nameField.getText().toString());
-        _student.setMajor((String) majorSpinner.getSelectedItem());
+        reportLocation.setBorough((String) boroughSpinner.getSelectedItem());
+        reportLocation.setCity((String) addressCitySpinner.getSelectedItem());
+        reportLocation.setZipCode((String) zipCodeSpinner.getSelectedItem());
+        reportLocation.setLocationType((String) locationTypeSpinner.getSelectedItem());
 
-        Log.d("Edit", "Got new student data: " + _student);
-        if (!editing) {
-            model.addStudent(_student);
-        }  else {
-            model.replaceStudentData(_student);
-        }
+        Log.d("New Entry", "New report data: " + _report);
+
+        reportLoader.addReport(_report.getKey(), _report);
 
         finish();
     }
@@ -139,18 +187,18 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
      * @param view the button pressed
      */
     protected void onCancelPressed(View view) {
-        Log.d("Edit", "Cancel Student");
+        Log.d("Edit", "Cancel Report Entry");
         finish();
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-        _major = parent.getItemAtPosition(position).toString();
+        String report = _report.toString();
+        report = parent.getItemAtPosition(position).toString();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        _major = "NA";
+        _report= "N/A";
     }
 }

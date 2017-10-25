@@ -14,66 +14,66 @@
     tools:showIn="@layout/activity_report_entry">
 
     <TextView
-        android:text=""
+        android:text="Username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/student_id_field"
+        android:id="@+id/user_name"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:text="Creation Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/creation_date"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:text="Location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/_location_"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:text="Report ID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/admin_gen_unique_key"
         android:layout_alignParentLeft="true" />
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/_location_"
         android:layout_alignParentStart="true"
         android:layout_marginTop="32dp"
-        android:id="@+id/spinner"
+        android:id="@+id/borough_spinner"
         android:layout_alignParentLeft="true" />
 
-    <Button
-        android:text="Cancel"
-        android:layout_width="wrap_content"
+    <Spinner
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/add_button"
-        android:layout_toEndOf="@+id/add_button"
-        android:layout_marginStart="68dp"
-        android:id="@+id/cancel_button"
-        android:layout_alignBottom="@+id/add_button"
-        android:onClick="onCancelPressed"
-        android:layout_marginLeft="68dp"
-        android:layout_toRightOf="@+id/add_button" />
-
-    <TextView
-        android:text="Major"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:layout_below="@+id/student_name_input"
+        android:layout_below="@+id/borough_spinner"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="38dp"
-        android:layout_alignParentLeft="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:ems="10"
-        android:id="@+id/student_name_input"
         android:layout_marginTop="32dp"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentStart="true"
+        android:id="@+id/address_city_spinner"
         android:layout_alignParentLeft="true" />
 
-    <TextView
-        android:text="Name:"
-        android:layout_width="wrap_content"
+    <Spinner
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:layout_below="@+id/student_id_field"
+        android:layout_below="@+id/address_city_spinner"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="32dp"
+        android:id="@+id/zip_code_spinner"
         android:layout_alignParentLeft="true" />
 
     <Button
@@ -82,7 +82,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/add_button"
         android:onClick="onAddPressed"
-        android:layout_below="@+id/spinner"
+        android:layout_below="@+id/zip_code_spinner"
         android:layout_alignParentStart="true"
         android:layout_marginTop="52dp"
         android:layout_alignParentLeft="true" />

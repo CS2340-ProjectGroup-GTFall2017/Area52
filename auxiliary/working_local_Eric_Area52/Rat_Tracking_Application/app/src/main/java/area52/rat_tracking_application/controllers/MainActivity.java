@@ -5,12 +5,15 @@ import area52.rat_tracking_application.model.User;
 
 import area52.rat_tracking_application.R;
 import static area52.rat_tracking_application.R.layout.activity_main;
+import static java.lang.System.exit;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,14 +41,17 @@ public class MainActivity extends AppCompatActivity {
      * the currently logged in user
      */
     private User _currentUser;
+    private RatReportLoader loader;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(activity_main);
+        new ReportDetailFragment();
 
         setupButtonsOnStartup();
+
     }
 
     /**
@@ -136,4 +142,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
