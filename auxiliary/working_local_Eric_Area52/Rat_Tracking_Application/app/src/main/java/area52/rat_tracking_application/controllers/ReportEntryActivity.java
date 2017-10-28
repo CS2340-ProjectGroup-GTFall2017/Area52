@@ -23,6 +23,7 @@ import area52.rat_tracking_application.model.Borough;
 import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.model.ReportLocation;
 
+import static android.icu.text.DateFormat.getDateTimeInstance;
 import static area52.rat_tracking_application.R.id.end;
 import static area52.rat_tracking_application.controllers.RatReportLoader.createReport;
 import static area52.rat_tracking_application.controllers.RatReportLoader.getNewLocation;
@@ -111,20 +112,11 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
         creationDate = (TextView) findViewById(R.id.creation_date);
 
 
-    /*
-      Set up the adapter to display the allowable indices in the spinner
-       {"Unique Key", "Created Date", "Location Type",
-            "Incident Zip", "Incident Address", "City", "Borough", "Latitude",
-            "Longitude"};
+    /**
+     * Set up the adapter to display the allowable indices in the spinner:
+     * {"Unique Key", "Created Date", "Location Type", "Incident Zip",
+     * "Incident Address", "City", "Borough", "Latitude", "Longitude"};
      */
-
-        /**
-         * Manhattan.
-         * Brooklyn.
-         * Queens.
-         * The Bronx.
-         * Staten Island
-         */
         ArrayAdapter<String> adapterBoroughs = new ArrayAdapter(
                 this,android.R.layout.simple_spinner_item, boroughsOfResidency);
         adapterBoroughs.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -180,9 +172,6 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
         } else {
             creating = false;
         }
-
-        adminGeneratedUniqueKey.setText("" + _report.getKey());
-
     }
 
     /**
@@ -193,7 +182,11 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
     protected void onAddPressed(View view) {
         Log.d("Add New Entry", "Add Report");
 
-        DateFormat newDateTime = new SimpleDateFormat().getDateTimeInstance();
+        DateFormat newDateTime = getDateTimeInstance();
+
+        adminGeneratedUniqueKey.setText("" + _report.getKey());
+
+        _report.setKey(reports.keySet().toArray().length + 1);
 
         reportLocation.setBorough((String) boroughSpinner.getSelectedItem());
         reportLocation.setCity((String) addressCitySpinner.getSelectedItem());
@@ -205,7 +198,7 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
         setNewLocation(reportLocation);
         Log.d("New Report Entry", "New report data: " + _report);
 
-        _report.setKey(reports.keySet().toArray().length + 1);
+
 
         createReport((Long) _report.getKey(), getNewLocation());
 

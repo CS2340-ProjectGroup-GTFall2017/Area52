@@ -18,6 +18,7 @@ import java.util.List;
 
 import area52.rat_tracking_application.R;
 
+import static area52.rat_tracking_application.R.layout.report_list;
 import static area52.rat_tracking_application.controllers.RatReportLoader.getReportKeysCreationDates;
 import static area52.rat_tracking_application.model.Model.model;
 
@@ -90,7 +91,7 @@ public class ReportListActivity extends AppCompatActivity {
      *
      * In this case, we are just mapping the toString of the Report object to a text field.
      */
-    public class SimpleReportRecyclerViewAdapter
+    class SimpleReportRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleReportRecyclerViewAdapter.ViewHolder> {
 
         /**
@@ -102,7 +103,7 @@ public class ReportListActivity extends AppCompatActivity {
          * set the items to be used by the adapter
          * @param items the list of items to be displayed in the recycler view
          */
-        public SimpleReportRecyclerViewAdapter(List<String> items) {
+        SimpleReportRecyclerViewAdapter(List<String> items) {
             mReports = items;
         }
 
@@ -115,7 +116,7 @@ public class ReportListActivity extends AppCompatActivity {
               If you look at the example file, you will see it currently just 2 TextView elements
              */
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.report_list, parent, false);
+                    .inflate(report_list, parent, false);
             return new ViewHolder(view);
         }
 
@@ -182,13 +183,13 @@ public class ReportListActivity extends AppCompatActivity {
          * the list view (in this case the two TextView)
          */
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
-            public final TextView mIdView;
-            public final TextView mContentView;
-            public String mReport;
+        class ViewHolder extends RecyclerView.ViewHolder {
+            final View mView;
+            final TextView mIdView;
+            final TextView mContentView;
+            String mReport;
 
-            public ViewHolder(View view) {
+            ViewHolder(View view) {
                 super(view);
                 mView = view;
                 mIdView = (TextView) view.findViewById(R.id.id);

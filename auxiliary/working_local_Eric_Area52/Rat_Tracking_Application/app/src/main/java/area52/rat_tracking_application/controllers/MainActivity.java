@@ -97,7 +97,8 @@ public class MainActivity extends Activity {
                                 Toast.LENGTH_LONG).show();
                         match = true;
                         Context reportDetailContext = view.getContext();
-                        Intent reportDetailIntent = new Intent(reportDetailContext, ReportDetailActivity.class);
+                        Intent reportDetailIntent = new Intent(
+                                reportDetailContext, ReportDetailActivity.class);
                         reportDetailContext.startActivity(reportDetailIntent);
                     }
                 } else {
