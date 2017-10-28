@@ -16,15 +16,15 @@ public class WelcomeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        goToLoginButton = (Button) findViewById(R.id.go_to_login_button);
+        goToLoginButton = (Button) findViewById(R.id.button);
 
         goToLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new RatReportLoader().launchLoader();
                 Context context = v.getContext();
                 Intent goToMainActIntent = new Intent(context, MainActivity.class);
                 context.startActivity(goToMainActIntent);
+                new RatReportLoader().launchLoader();
             }
         });
     }
