@@ -14,67 +14,82 @@
     tools:showIn="@layout/activity_report_entry">
 
     <TextView
-        android:text="Username"
+        android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Username"
         android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/user_name"
-        android:layout_alignParentLeft="true" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_toLeftOf="@+id/_location_"
+        android:layout_toStartOf="@+id/_location_" />
 
     <TextView
-        android:text="Creation Date"
+        android:id="@+id/creation_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Creation Date"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/creation_date"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:text="Location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
         android:id="@+id/_location_"
-        android:layout_alignParentLeft="true" />
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/add_button"
+        android:layout_toEndOf="@+id/add_button" />
 
     <TextView
-        android:text="Report ID"
+        android:id="@+id/unique_key_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Report ID"
+        android:layout_marginRight="26dp"
+        android:layout_marginEnd="26dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/admin_gen_unique_key"
-        android:layout_alignParentLeft="true" />
+        android:layout_toLeftOf="@+id/creation_date"
+        android:layout_toStartOf="@+id/creation_date" />
 
     <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/_location_"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="32dp"
         android:id="@+id/borough_spinner"
-        android:layout_alignParentLeft="true" />
-
-    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/borough_spinner"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/_location_"
         android:layout_marginTop="32dp"
+        android:dropDownSelector="@drawable/common_google_signin_btn_text_dark_focused"
+        android:text="Select Borough"
+        android:visibility="visible" />
+
+    <Spinner
         android:id="@+id/address_city_spinner"
-        android:layout_alignParentLeft="true" />
-
-    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/address_city_spinner"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="32dp"
+        android:layout_below="@+id/borough_spinner"
+        android:layout_marginTop="33dp"
+        android:text="Select City"
+        android:visibility="visible" />
+
+    <Spinner
         android:id="@+id/zip_code_spinner"
-        android:layout_alignParentLeft="true" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/address_city_spinner"
+        android:layout_marginTop="32dp"
+        android:text="Select Zip Code"
+        android:visibility="visible" />
 
     <Button
         android:text="Add"

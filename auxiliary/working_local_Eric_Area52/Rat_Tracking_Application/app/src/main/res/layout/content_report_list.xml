@@ -28,11 +28,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_weight=".82"
+        tools:targetApi="23"
         android:accessibilityTraversalAfter="@+id/id"
         android:accessibilityTraversalBefore="@+id/id"
         android:clickable="true"
         android:contentDescription="@string/appbar_scrolling_view_behavior"
         android:contextClickable="true"
-        android:cursorVisible="true"
         android:textAppearance="?attr/textAppearanceListItem" />
 </LinearLayout>

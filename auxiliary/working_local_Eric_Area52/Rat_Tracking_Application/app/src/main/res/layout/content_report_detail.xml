@@ -9,25 +9,23 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:visibility="visible"
     tools:context="area52.rat_tracking_application.controllers.ReportDetailActivity"
-    tools:showIn="@layout/activity_report_detail">
+    tools:showIn="@layout/activity_report_detail" >
 
 
     <TextView
         android:id="@+id/textView_rat_reports"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
         android:text="   Press below for list view of rat reports:   "
         android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
         tools:layout_editor_absoluteX="62dp"
-        tools:layout_editor_absoluteY="142dp" />
+        tools:layout_editor_absoluteY="142dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
-        android:id="@+id/expandable_list_adapter"
-        style="@style/Widget.AppCompat.Button"
+        android:id="@+id/report_list_container"
+        style="@style/Widget.AppCompat.ListView.DropDown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView_rat_reports"
