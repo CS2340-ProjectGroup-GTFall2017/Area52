@@ -14,24 +14,31 @@ public class ReportLocation {
     public static List<String> boroughsOfResidency = Arrays.asList(
             "QUEENS", "BRONX", "BROOKLYN", "MANHATTAN", "STATEN ISLAND", "NA");
     /**
-     * 5 possible boroughs of residency the user may select from using corresponding report
+     * 6 possible location types the user may select from using corresponding report
      * entry spinner
      */
     public static List<String> locationTypes = Arrays.asList(
             "SUBW", "RESI", "COMM", "PARK", "THTR", "REST", "NA");
 
+    /**
+     * 4 possible cities (preliminary number of cities) the user may select from using
+     * corresponding report entry spinner
+     */
     public static List<String> cityList = Arrays.asList(
             "NYC", "ALB", "BUF", "WES", "NA");
 
     /** the date the report was created */
     private static String _creationDate;
+
     private static double _latitude;
     private static double _longitude;
-    private static String _locationType; // alternative to class Enum -> List<String>locationTypes
+    private static String _locationType; // alternative to class Enum -> List<String> locationTypes
     // CHECK alternative -> //TODO: Convert to an enum if possible
     private static String _address;
-    private static String _city;
-    private static String _borough; //CHECK -> TODO: Convert to an enum if possible
+    private static String _city; // alternative to class Enum -> List<String> cityList
+    // CHECK alternative -> //TODO: Convert to an enum if possible
+    private static String _borough; // alternative to class Enum -> List<String> boroughsOfResidency
+    // CHECK alternative -> //TODO: Convert to an enum if possible
     private static Integer _zipCode;
     public static List<Integer> nycZipCodes;
 
