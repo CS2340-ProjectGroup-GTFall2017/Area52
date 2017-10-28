@@ -5,20 +5,16 @@ import area52.rat_tracking_application.model.User;
 
 import area52.rat_tracking_application.R;
 import static area52.rat_tracking_application.R.layout.activity_main;
-import static area52.rat_tracking_application.controllers.RatReportLoader.getReportKeysCreationDates;
 import static area52.rat_tracking_application.model.ReportLocation.setZipCodePositions;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 

@@ -21,11 +21,11 @@ public class WelcomeActivity extends Activity {
         goToLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new RatReportLoader().launchLoader();
                 Context context = v.getContext();
                 Intent goToMainActIntent = new Intent(context, MainActivity.class);
                 context.startActivity(goToMainActIntent);
             }
         });
-        new RatReportLoader().loadRatReports();
     }
 }

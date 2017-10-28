@@ -32,11 +32,12 @@ public class RatReportLoader extends Activity {
     private static ReportLocation location;
     private static List<ReportLocation> reportLocations = new ArrayList<>();
 
-    RatReportLoader() {
+    void launchLoader() {
         if (reports == null) {
             reports = new HashMap<>();
         }
         indexOfCSVColumn = new HashMap<>();
+        loadRatReports();
     }
 
     public void loadRatReports() {
