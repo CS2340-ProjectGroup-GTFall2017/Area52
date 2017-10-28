@@ -37,6 +37,16 @@
         tools:layout_editor_absoluteY="247dp" />
 
     <Button
+        android:id="@+id/go_to_report_entry_screen_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/logout_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="182dp"
+        android:text="@string/report_a_rat_sighting" />
+
+    <Button
         android:id="@+id/logout_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
