@@ -66,7 +66,7 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
     private String locationType;
 
     /* ***********************
-           Data for user being entered.
+           Data for report being entered.
          */
     private String report;
 
@@ -75,7 +75,7 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
     private static ReportLocation reportLocation;
 
     /* ***********************
-       flag for whether this is a new report being added or an existing report being edited;
+       flag for whether this is a new report being added (currently unused);
      */
     private boolean creating;
 
