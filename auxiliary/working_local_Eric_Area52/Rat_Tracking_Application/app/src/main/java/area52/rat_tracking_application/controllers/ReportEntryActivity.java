@@ -1,24 +1,20 @@
 package area52.rat_tracking_application.controllers;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.icu.text.DateFormat;
-import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,14 +25,10 @@ import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.model.ReportLocation;
 
 import static android.icu.text.DateFormat.getDateTimeInstance;
-import static area52.rat_tracking_application.R.id.end;
 import static area52.rat_tracking_application.controllers.RatReportLoader.createReport;
 import static area52.rat_tracking_application.controllers.RatReportLoader.getNewLocation;
-import static area52.rat_tracking_application.controllers.RatReportLoader.getReportDate;
 import static area52.rat_tracking_application.controllers.RatReportLoader.reports;
 import static area52.rat_tracking_application.controllers.RatReportLoader.setNewLocation;
-import static area52.rat_tracking_application.controllers.RatReportLoader.wantedCSVColumns;
-import static area52.rat_tracking_application.controllers.ReportDetailFragment.ARG_BOROUGH_ID;
 import static area52.rat_tracking_application.model.ReportLocation.boroughsOfResidency;
 import static area52.rat_tracking_application.model.ReportLocation.cityList;
 import static area52.rat_tracking_application.model.ReportLocation.locationTypes;
@@ -64,7 +56,6 @@ public class ReportEntryActivity extends Activity implements AdapterView.OnItemS
     private Spinner zipCodeSpinner;
     private Spinner addressCitySpinner;
     private Spinner locationTypeSpinner;
-    private TextView location;
     private TextView creationDate;
     private String reportBorough;
     private String reportZipCode;
@@ -129,13 +120,13 @@ public class ReportEntryActivity extends Activity implements AdapterView.OnItemS
          * {"Borough", "Incident Zip", "Location Type", "City"}
          */
         ArrayAdapter<String> adapterBoroughs = new ArrayAdapter(
-                this, android.R.layout.simple_spinner_dropdown_item, boroughsOfResidency);
+                this, android.R.layout.simple_spinner_item, boroughsOfResidency);
         adapterBoroughs.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         boroughSpinner.setAdapter(adapterBoroughs);
 
 
-        if (getIntent().hasExtra(ARG_BOROUGH_ID)) {
-            reportBorough = getIntent().getParcelableExtra(ARG_BOROUGH_ID);
+        if (getIntent().hasExtra(ReportDetailFragment.ARG_BOROUGH_ID)) {
+            reportBorough = getIntent().getParcelableExtra(ReportDetailFragment.ARG_BOROUGH_ID);
             boroughSpinner.setSelection(ReportLocation.findBoroughPosition(reportBorough));
             creating = true;
         } else {
@@ -143,7 +134,7 @@ public class ReportEntryActivity extends Activity implements AdapterView.OnItemS
         }
 
         ArrayAdapter<String> adapterZip = new ArrayAdapter(
-                this, android.R.layout.simple_spinner_dropdown_item, nycZipCodes);
+                this, android.R.layout.simple_spinner_item, nycZipCodes);
         adapterZip.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         zipCodeSpinner.setAdapter(adapterZip);
 
@@ -157,7 +148,7 @@ public class ReportEntryActivity extends Activity implements AdapterView.OnItemS
         }
 
         ArrayAdapter<String> adapterLocationType = new ArrayAdapter(
-                this, android.R.layout.simple_spinner_dropdown_item, locationTypes);
+                this, android.R.layout.simple_spinner_item, locationTypes);
         adapterLocationType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationTypeSpinner.setAdapter(adapterLocationType);
 
@@ -171,7 +162,7 @@ public class ReportEntryActivity extends Activity implements AdapterView.OnItemS
         }
 
         ArrayAdapter<String> adapterCity = new ArrayAdapter(
-                this, android.R.layout.simple_spinner_dropdown_item, cityList);
+                this, android.R.layout.simple_spinner_item, cityList);
         adapterCity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         addressCitySpinner.setAdapter(adapterCity);
 
@@ -183,11 +174,6 @@ public class ReportEntryActivity extends Activity implements AdapterView.OnItemS
         } else {
             creating = false;
         }
-
-        reportLocation.setBorough((String) boroughSpinner.getSelectedItem());
-        reportLocation.setZipCode((Integer) zipCodeSpinner.getSelectedItem());
-        reportLocation.setLocationType((String) locationTypeSpinner.getSelectedItem());
-        reportLocation.setCity((String) addressCitySpinner.getSelectedItem());
 
         Button addButton = (Button) findViewById(R.id.add_button);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -201,12 +187,15 @@ public class ReportEntryActivity extends Activity implements AdapterView.OnItemS
                 if (creating) {
                     Log.d("Add New Entry", "Add Report");
 
-                    adminGeneratedUniqueKey.setText("" + _report.getKey());
+                    reportLocation.setBorough((String) boroughSpinner.getSelectedItem());
+                    reportLocation.setZipCode((Integer) zipCodeSpinner.getSelectedItem());
+                    reportLocation.setLocationType((String) locationTypeSpinner.getSelectedItem());
+                    reportLocation.setCity((String) addressCitySpinner.getSelectedItem());
 
                     _report.setKey(reports.keySet().toArray().length + 1);
+                    adminGeneratedUniqueKey.setText("" + _report.getKey());
 
                     setNewLocation(reportLocation);
-                    location.setText(reportLocation.toString());
 
                     Log.d("New Report Entry", "New report data: " + _report);
 
@@ -246,11 +235,27 @@ public class ReportEntryActivity extends Activity implements AdapterView.OnItemS
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        report = parent.getItemAtPosition(position).toString();
+        switch (parent.getId()){
+            case R.id.borough_spinner:
+                reportBorough = parent.getItemAtPosition(position).toString();
+                break;
+            case R.id.zip_code_spinner:
+                reportZipCode = parent.getItemAtPosition(position).toString();
+                break;
+            case R.id.location_type_spinner:
+                reportLocationType = parent.getItemAtPosition(position).toString();
+                break;
+            case R.id.address_city_spinner:
+                reportCity = parent.getItemAtPosition(position).toString();
+                break;
+        }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        _report = null;
+        reportBorough = "NA";
+        reportZipCode = "NA";
+        reportLocationType = "NA";
+        reportCity = "NA";
     }
 }
