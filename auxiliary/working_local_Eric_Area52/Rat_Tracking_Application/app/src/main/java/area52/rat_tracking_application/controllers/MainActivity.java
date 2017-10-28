@@ -42,7 +42,7 @@ public class MainActivity extends Activity {
     /**
      * the currently logged in user
      */
-    private User _currentUser;
+    private static User _currentUser;
 
 
     @Override
@@ -50,7 +50,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(activity_main);
         setupButtonsOnStartup();
-        new ReportDetailFragment().getLoader();
     }
 
     /**
@@ -58,7 +57,7 @@ public class MainActivity extends Activity {
      *
      * @return the currently logged in user
      */
-    public User getCurrentUser() {
+    public static User getCurrentUser() {
         return _currentUser;
     }
 
@@ -67,7 +66,7 @@ public class MainActivity extends Activity {
      *
      * @param user the currently logged in user
      */
-    public void setCurrentUser(User user) {
+    public static void setCurrentUser(User user) {
         _currentUser = user;
     }
 

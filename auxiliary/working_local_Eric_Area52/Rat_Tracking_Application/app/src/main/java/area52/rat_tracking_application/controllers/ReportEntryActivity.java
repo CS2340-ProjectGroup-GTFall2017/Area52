@@ -111,14 +111,19 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
         adminGeneratedUniqueKey = (TextView) findViewById(R.id.unique_key_id);
         creationDate = (TextView) findViewById(R.id.creation_date);
 
+        DateFormat newDateTime = getDateTimeInstance();
+        reportLocation.setCreationDate(newDateTime.toString());
+        creationDate.setText(reportLocation.getCreationDate());
+        username.setText((CharSequence) MainActivity.getCurrentUser());
 
     /**
-     * Set up the adapter to display the allowable indices in the spinner:
-     * {"Unique Key", "Created Date", "Location Type", "Incident Zip",
-     * "Incident Address", "City", "Borough", "Latitude", "Longitude"};
+     * Set up each adapter to display the following column indices in four
+     * simple drop down spinners:
+     *
+     * {"Borough", "Incident Zip", "Location Type", "City"}
      */
         ArrayAdapter<String> adapterBoroughs = new ArrayAdapter(
-                this,android.R.layout.simple_spinner_item, boroughsOfResidency);
+                this,android.R.layout.simple_spinner_dropdown_item, boroughsOfResidency);
         adapterBoroughs.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         boroughSpinner.setAdapter(adapterBoroughs);
 
@@ -132,7 +137,7 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
         }
 
         ArrayAdapter<String> adapterZip = new ArrayAdapter(
-                this,android.R.layout.simple_spinner_item, nycZipCodes);
+                this, android.R.layout.simple_spinner_dropdown_item, nycZipCodes);
         adapterZip.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         zipCodeSpinner.setAdapter(adapterZip);
 
@@ -146,13 +151,13 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
         }
 
         ArrayAdapter<String> adapterLocationType = new ArrayAdapter(
-                this,android.R.layout.simple_spinner_item, locationTypes);
+                this, android.R.layout.simple_spinner_dropdown_item, locationTypes);
         adapterLocationType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationTypeSpinner.setAdapter(adapterLocationType);
 
 
         if (getIntent().hasExtra(ReportDetailFragment.ARG_LOCATION_TYPE_ID)) {
-            String locationType = getIntent().getParcelableExtra(ReportDetailFragment.ARG_LOCATION_TYPE_ID);
+            locationType = getIntent().getParcelableExtra(ReportDetailFragment.ARG_LOCATION_TYPE_ID);
             locationTypeSpinner.setSelection(ReportLocation.findLocationTypePosition(locationType));
             creating = true;
         } else {
@@ -160,7 +165,7 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
         }
 
         ArrayAdapter<String> adapterCity = new ArrayAdapter(
-                this,android.R.layout.simple_spinner_item, cityList);
+                this, android.R.layout.simple_spinner_dropdown_item, cityList);
         adapterCity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         addressCitySpinner.setAdapter(adapterCity);
 
@@ -172,6 +177,11 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
         } else {
             creating = false;
         }
+
+        reportLocation.setBorough((String) boroughSpinner.getSelectedItem());
+        reportLocation.setZipCode((Integer) zipCodeSpinner.getSelectedItem());
+        reportLocation.setLocationType((String) locationTypeSpinner.getSelectedItem());
+        reportLocation.setCity((String) addressCitySpinner.getSelectedItem());
     }
 
     /**
@@ -179,28 +189,21 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
      * @param view the button
      */
     @TargetApi(25)
-    protected void onAddPressed(View view) {
-        Log.d("Add New Entry", "Add Report");
+    public void onAddPressed(View view) {
+        if (creating) {
+            Log.d("Add New Entry", "Add Report");
 
-        DateFormat newDateTime = getDateTimeInstance();
+            adminGeneratedUniqueKey.setText("" + _report.getKey());
 
-        adminGeneratedUniqueKey.setText("" + _report.getKey());
+            _report.setKey(reports.keySet().toArray().length + 1);
 
-        _report.setKey(reports.keySet().toArray().length + 1);
+            setNewLocation(reportLocation);
+            location.setText(reportLocation.toString());
 
-        reportLocation.setBorough((String) boroughSpinner.getSelectedItem());
-        reportLocation.setCity((String) addressCitySpinner.getSelectedItem());
-        reportLocation.setZipCode((Integer) zipCodeSpinner.getSelectedItem());
-        reportLocation.setLocationType((String) locationTypeSpinner.getSelectedItem());
-        reportLocation.setCreationDate(newDateTime.toString());
+            Log.d("New Report Entry", "New report data: " + _report);
 
-        //report.setKey(Long ...);
-        setNewLocation(reportLocation);
-        Log.d("New Report Entry", "New report data: " + _report);
-
-
-
-        createReport((Long) _report.getKey(), getNewLocation());
+            createReport((Long) _report.getKey(), getNewLocation());
+        }
 
         finish();
     }
@@ -224,5 +227,4 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
     public void onNothingSelected(AdapterView<?> parent) {
         _report= null;
     }
-
 }

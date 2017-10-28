@@ -68,7 +68,7 @@ public class ReportDetailFragment extends Fragment {
      */
     private SimpleReportRecyclerViewAdapter adapter;
     private String ratReportKeyCreateDate;
-    private ReportLoaderExtender loaderExtender;
+    /***private ReportLoaderExtender loaderExtender;***/
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -99,7 +99,7 @@ public class ReportDetailFragment extends Fragment {
              */
             List<String> ratReportKeyCreateDate = getReportKeysCreationDates();
             Log.d("ReportDetailFragment", "Retrieving the report with the following report id and creation date: "
-                    + ratDataSingleReport.getKey().toString() + " " + ratDataSingleReport.getLocation().getCreationDate().toString());
+                    + ratDataSingleReport.getKey().toString() + " " + ratDataSingleReport.getLocation().getCreationDate());
             Log.d("ReportDetailFragment", "Got report: " + ratDataSingleReport.toString());
 
             Activity activity = this.getActivity();
@@ -132,14 +132,14 @@ public class ReportDetailFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    public ReportLoaderExtender getLoader() {
+    /***public ReportLoaderExtender getLoader() {
         loaderExtender = new ReportLoaderExtender();
         return loaderExtender;
-    }
+    }***/
 
 
 
-    protected class ReportLoaderExtender extends AsyncTask<Object, Object, Object> {
+    /***protected class ReportLoaderExtender extends AsyncTask<Object, Object, Object> {
         private static final String TAG = "Rat Reports Loading ";
 
 
@@ -149,7 +149,7 @@ public class ReportDetailFragment extends Fragment {
             /**
              * only key and creation date will appear in the scrolling adapter.
              */
-            adapter = new SimpleReportRecyclerViewAdapter((ListView) getReportKeysCreationDates());
+        /***adapter = new SimpleReportRecyclerViewAdapter((ListView) getReportKeysCreationDates());
             return adapter;
         }
 
@@ -161,7 +161,7 @@ public class ReportDetailFragment extends Fragment {
         protected void onCancelled() {
             return;
         }
-    }
+    }***/
 
     /**
      * Set up an adapter and hook it to the provided view

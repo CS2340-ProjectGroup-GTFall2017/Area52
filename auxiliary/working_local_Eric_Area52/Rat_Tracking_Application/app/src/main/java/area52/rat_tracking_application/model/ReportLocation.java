@@ -47,8 +47,10 @@ public class ReportLocation {
      * @param borough the borough of the reported rat sighting
      * @param zipCode the zip code of the reported rat sighting
      */
-    public ReportLocation(String creationDate, double latitude, double longitude, String locationType, String address, String city,
-                          String borough, Integer zipCode){
+    public ReportLocation(
+            String creationDate, double latitude, double longitude,
+            String locationType, String address, String city,
+            String borough, Integer zipCode){
         _creationDate = creationDate;
         _latitude = latitude;
         _longitude = longitude;
@@ -59,7 +61,7 @@ public class ReportLocation {
         _zipCode = zipCode;
     }
 
-    public static String getCreationDate() { return _creationDate; }
+    public String getCreationDate() { return _creationDate; }
     public double getLatitude() { return _latitude; }
     public double getLongitude() { return _longitude; }
     public String getLocationType() { return _locationType; }

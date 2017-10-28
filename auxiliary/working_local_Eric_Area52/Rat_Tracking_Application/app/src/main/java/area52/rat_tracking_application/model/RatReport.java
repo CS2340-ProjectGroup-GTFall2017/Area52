@@ -12,20 +12,20 @@ import area52.rat_tracking_application.controllers.RatReportLoader;
  * saved in the application's server
  */
 
-public class RatReport<K, V> extends HashMap{
+public class RatReport<Long, ReportLocation> extends HashMap{
     /** allow us to assign unique number to the report */
     private static int nextKey = 1;
     /** unique number as key */
-    private K _key;
+    private Long _key;
     /** the instance of report location*/
-    private V _location;
+    private ReportLocation _location;
 
     /**
      * Makes a new Report
      * @param key  the unique key auto-generated for the report
      * @param location the location of the rat sighting being reported
      */
-    public RatReport(K key, V location) {
+    public RatReport(Long key, ReportLocation location) {
         _key = key;
         _location = location;
     }
@@ -41,16 +41,11 @@ public class RatReport<K, V> extends HashMap{
      * All the property setters and getters
      * */
 
-    public K getKey() { return _key; }
+    public Long getKey() { return _key; }
 
-    public void setKey(K key) { _key = key; }
+    public void setKey(Long key) { _key = key; }
 
-    public V getLocation() { return _location; }
+    public ReportLocation getLocation() { return _location; }
 
-    public void setLocation(V newLocation) { _location = newLocation; }
-
-    @Override
-    public String toString() {
-        return "" + _key + "| " + ReportLocation.getCreationDate();
-    }
+    public void setLocation(ReportLocation newLocation) { _location = newLocation; }
 }
