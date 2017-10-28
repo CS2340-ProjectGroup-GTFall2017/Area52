@@ -20,8 +20,12 @@ import java.util.List;
 
 import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.R;
+import area52.rat_tracking_application.model.ReportLocation;
 
-import static java.lang.System.exit;
+import static area52.rat_tracking_application.controllers.RatReportLoader.getCSVHeaderIndices;
+import static area52.rat_tracking_application.controllers.RatReportLoader.getReportKeysCreationDates;
+import static area52.rat_tracking_application.controllers.RatReportLoader.reports;
+import static area52.rat_tracking_application.model.ReportLocation.setZipCodePositions;
 
 /**
 * Acknowledgements:
@@ -36,14 +40,15 @@ import static java.lang.System.exit;
 * This displays a report that are was selected from the expandable list view
 * on the Report detail activity screen.
 *
-* This fragment is either contained in a {@link ReportDetailActivity}
+* This fragment is either contained in a {@link ReportListActivity}
 * in two-pane mode (on tablets) or a {@link ReportDetailActivity}
 * on handsets.
 */
 public class ReportDetailFragment extends Fragment {
     /**
-     * The fragment arguments representing the ID's that this fragment
-     * represents.  Used to pass keys into other activities through Bundle/Intent
+     * Per Prof. Bob Waters:     *
+     * "The fragment arguments representing the ID's that this fragment
+     * represents. Used to pass keys into other activities through Bundle/Intent"
      */
     public static final String ARG_UNIQUE_KEY_ID = "unique_key_id";//1
     public static final String ARG_CREATED_DATE_ID = "created_date_id";//2
@@ -56,18 +61,14 @@ public class ReportDetailFragment extends Fragment {
     public static final String ARG_LONGITUDE_ID = "longitude_id";//9
 
 
-    /**
-     * The rat report that this detail view is for.
-     */
-    private RatReport ratDataSingleReport;
-    private String ratReportKeyCreateDate;
-    private RatReportLoader loader;
-    private ListView ratDataListView;
+
 
     /**
      * The adapter for the recycle view list of reports
      */
     private SimpleReportRecyclerViewAdapter adapter;
+    private String ratReportKeyCreateDate;
+    private ReportLoaderExtender loaderExtender;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -79,22 +80,33 @@ public class ReportDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new ReportLoaderExtender();
-        RatReport ratDataSingleReport;
 
         //Check if we got a valid report passed to us
-        if (getArguments().containsKey(ARG_UNIQUE_KEY_ID + ARG_CREATED_DATE_ID)) {
+        if (getArguments().containsKey(ARG_UNIQUE_KEY_ID)) {
             // Get the id from the intent arguments (bundle) and
-            //ask the RatReportLoader to give us the rat report object
-            ratDataSingleReport = loader.convertCSVRowToRatReport(loader.wantedCSVColumns);
-            ratDataListView = loader.getReports();
-            Log.d("ReportDetailFragment", "Retrieving the following report: " + ratDataSingleReport);
+            // ask the RatReportLoader to give us the rat report object
+            RatReport<Long, ReportLocation> ratDataSingleReport = reports.get(Long.valueOf(ARG_UNIQUE_KEY_ID));
+
+            /**
+             * scrolling adapter list view will only contain the key and creation date of each report
+             * this will change to a tree format with an expandable list view allowing the user to make a
+             * selection by setting report location instance parameter constraints using spinner widgets,
+             * but for now only the key/creation date combo will be visible
+             * and selectable.
+             *
+             * Upon making a selection, the user will be taken to a report details screen
+             * which currently only appears as a list of the relevant data for that single report
+             */
+            List<String> ratReportKeyCreateDate = getReportKeysCreationDates();
+            Log.d("ReportDetailFragment", "Retrieving the report with the following report id and creation date: "
+                    + ratDataSingleReport.getKey().toString() + " " + ratDataSingleReport.getLocation().getCreationDate().toString());
+            Log.d("ReportDetailFragment", "Got report: " + ratDataSingleReport.toString());
 
             Activity activity = this.getActivity();
-            RatReportLoader loader = new RatReportLoader();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+            CollapsingToolbarLayout appBarLayout = (
+                    CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
-                appBarLayout.setTitle(loader.getCSVHeaderIndices().toString());
+                appBarLayout.setTitle(getCSVHeaderIndices().toString());
             }
         }
 
@@ -103,10 +115,10 @@ public class ReportDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.report_detail, container, false);
+        View rootView = inflater.inflate(R.layout.content_report_detail, container, false);
 
         //Step 1.  Setup the recycler view by getting it from our layout in the main window
-        View recyclerView = rootView.findViewById(R.id.report_list);
+        View recyclerView = rootView.findViewById(R.id.report_list_container);
         assert recyclerView != null;
         //Step 2.  Hook up the adapter to the view
         setupRecyclerView((RecyclerView) recyclerView);
@@ -120,29 +132,35 @@ public class ReportDetailFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    protected class ReportLoaderExtender extends AsyncTask<Object, Object, SimpleReportRecyclerViewAdapter> {
-        private RatReportLoader reportLoader = new RatReportLoader();
+    public ReportLoaderExtender getLoader() {
+        loaderExtender = new ReportLoaderExtender();
+        return loaderExtender;
+    }
+
+
+
+    protected class ReportLoaderExtender extends AsyncTask<Object, Object, Object> {
         private static final String TAG = "Rat Reports Loading ";
 
-        protected SimpleReportRecyclerViewAdapter doInBackground(Object... urls) {
-            SimpleReportRecyclerViewAdapter adapter = new SimpleReportRecyclerViewAdapter(reportLoader.getReports());
 
+        protected Object doInBackground(Object... objects) {
+            new RatReportLoader().loadRatReports();
+            setZipCodePositions();
+            /**
+             * only key and creation date will appear in the scrolling adapter.
+             */
+            adapter = new SimpleReportRecyclerViewAdapter((ListView) getReportKeysCreationDates());
             return adapter;
         }
 
-
-
-
-        protected void onPostExecute(SimpleReportRecyclerViewAdapter adapter) {
+        protected void onPostExecute(Object adapter) {
             super.onPostExecute(adapter);
             Log.d(TAG, " ");
-    }
-
-        protected void onCancelled() {
-            exit(0);
         }
 
-
+        protected void onCancelled() {
+            return;
+        }
     }
 
     /**
@@ -151,11 +169,11 @@ public class ReportDetailFragment extends Fragment {
      * @param recyclerView the view that needs this adapter
      */
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        loader = new RatReportLoader();
-        ratDataSingleReport = loader.convertCSVRowToRatReport(loader.wantedCSVColumns);
-        ratReportKeyCreateDate = ratDataSingleReport.toString();
-        System.out.println();
-        adapter = new SimpleReportRecyclerViewAdapter(loader.getReports());
+        /**
+         * ratDataSingleReport -> represents a single rat report as a row within the report,
+         * returned as a String upon conversion, performed by an instance of RatReportLoader
+         */
+
         Log.d("Adapter", adapter.toString());
         recyclerView.setAdapter(adapter);
     }
@@ -197,7 +215,7 @@ public class ReportDetailFragment extends Fragment {
             to an element in the view (which is one of our two TextView widgets
              */
             //start by getting the element at the correct position
-            holder.reportView = ratDataListView.getChildAt(position);
+            holder.reportView = mValues.getChildAt(position);
             Log.d("Adapter", "rat report: " + holder.reportView);
             /*
               Now we bind the data to the widgets.  In this case, pretty simple, put the id in one

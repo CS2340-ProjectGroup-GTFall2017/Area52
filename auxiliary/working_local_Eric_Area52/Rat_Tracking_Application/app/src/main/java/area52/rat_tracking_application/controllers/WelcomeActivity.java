@@ -10,21 +10,21 @@ import android.widget.Button;
 import area52.rat_tracking_application.R;
 
 public class WelcomeActivity extends Activity {
-    Button button;
+    Button goToLoginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        button = (Button) findViewById(R.id.button);
+        goToLoginButton = (Button) findViewById(R.id.button);
 
 
-        button.setOnClickListener(new View.OnClickListener() {
+        goToLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
-                Intent intent = new Intent(context, MainActivity.class);
-                context.startActivity(intent);
+                Intent goToMainActIntent = new Intent(context, MainActivity.class);
+                context.startActivity(goToMainActIntent);
             }
         });
     }

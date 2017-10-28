@@ -5,18 +5,20 @@ import area52.rat_tracking_application.model.User;
 
 import area52.rat_tracking_application.R;
 import static area52.rat_tracking_application.R.layout.activity_main;
-import static java.lang.System.exit;
+import static area52.rat_tracking_application.controllers.RatReportLoader.getReportKeysCreationDates;
+import static area52.rat_tracking_application.model.ReportLocation.setZipCodePositions;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,12 +29,12 @@ import android.widget.Toast;
  * package
  */
 
-public class MainActivity extends AppCompatActivity {
-    Button buttonOne;
-    Button buttonTwo;
-    Button buttonThree;
-    EditText editOne;
-    EditText editTwo;
+public class MainActivity extends Activity {
+    Button loginButton;
+    Button cancelButton;
+    Button registrationButton;
+    EditText usernameEntry;
+    EditText passwordEntry;
     TextView textViewOne;
     private int securityCounter = 3;
     boolean match = false;
@@ -41,17 +43,14 @@ public class MainActivity extends AppCompatActivity {
      * the currently logged in user
      */
     private User _currentUser;
-    private RatReportLoader loader;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(activity_main);
-        new ReportDetailFragment();
-
         setupButtonsOnStartup();
-
+        new ReportDetailFragment().getLoader();
     }
 
     /**
@@ -73,25 +72,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setupButtonsOnStartup() {
-        buttonOne = (Button)findViewById(R.id.button);
-        buttonTwo = (Button)findViewById(R.id.button2);
-        buttonThree = (Button)findViewById(R.id.button3);
-        editOne = (EditText)findViewById(R.id.editText);
-        editTwo = (EditText)findViewById(R.id.editText2);
+        loginButton = (Button)findViewById(R.id.button);
+        cancelButton = (Button)findViewById(R.id.button2);
+        registrationButton = (Button)findViewById(R.id.button3);
+        usernameEntry = (EditText)findViewById(R.id.editText);
+        passwordEntry = (EditText)findViewById(R.id.editText2);
         textViewOne = (TextView)findViewById(R.id.textView3);
         textViewOne.setVisibility(View.GONE);
 
-        buttonOne.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 if (Model.getInstance().getUserMap().containsKey(
-                        editOne.getText().toString())) {
-                    if (editTwo.getText().toString().equals(
+                        usernameEntry.getText().toString())) {
+                    if (passwordEntry.getText().toString().equals(
                             Model.getInstance().getUserMap().get(
-                                    editOne.getText().toString()).getPWord())) {
+                                    usernameEntry.getText().toString()).getPWord())) {
                         setCurrentUser(Model.getInstance().getUserMap().get(
-                                editOne.getText().toString()));
+                                usernameEntry.getText().toString()));
                         Toast.makeText(getApplicationContext(),
                                 "Welcome to the NYC Rat Tracking System, "
                                         + getCurrentUser() + " !",
@@ -111,14 +110,14 @@ public class MainActivity extends AppCompatActivity {
                         securityCounter--;
                         textViewOne.setText(((Integer) securityCounter).toString());
                         if (securityCounter <= 0) {
-                            buttonOne.setEnabled(false);
+                            loginButton.setEnabled(false);
                         }
                     }
                 }
             }
         });
 
-        buttonTwo.setOnClickListener(new View.OnClickListener() {
+        cancelButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -128,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        buttonThree.setOnClickListener(new View.OnClickListener() {
+        registrationButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -141,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 registrationContext.startActivity(registrationIntent);
             }
         });
+
     }
 
 

@@ -1,24 +1,16 @@
 package area52.rat_tracking_application.controllers;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.ScrollingTabContainerView;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.ExpandableListView;
-import android.widget.ListView;
+import android.icu.text.SimpleDateFormat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,17 +20,18 @@ import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.model.ReportLocation;
 
-public class RatReportLoader extends AppCompatActivity {
-    private HashMap<Long, RatReport> reports;
-    protected HashMap<String, Integer> indexOfCSVColumn;
-    protected String[] wantedCSVColumns = {"Unique Key", "Created Date", "Location Type",
+public class RatReportLoader extends Activity {
+    private static RatReport<Long, ReportLocation> ratReport;
+    static HashMap<Long, RatReport> reports;
+    protected static HashMap<String, Integer> indexOfCSVColumn;
+    protected static String[] wantedCSVColumns = {"Unique Key", "Created Date", "Location Type",
             "Incident Zip", "Incident Address", "City", "Borough", "Latitude",
             "Longitude"};
-    private String keyCreationDate;
-    private List<String> keyCreationDateList;
-
-    //private static final String TAG = "ReportListActivity";
-    //private Runnable url1;
+    private static String keyCreationDate;
+    private static List<String> keyCreationDateList;
+    private static ReportLocation location;
+    private ReportLocation newLocation;
+    private static List<ReportLocation> reportLocations = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +39,6 @@ public class RatReportLoader extends AppCompatActivity {
         setContentView(R.layout.activity_report_list);
 
     }
-
-
 
     /***RecyclerView.SmoothScroller.ScrollVectorProvider scrollingTab = (ScrollingTabContainerView) findViewById(R.id.tab_scrolling);
     scrollingTab.setOnClickListener(new View.OnClickListener() {
@@ -65,33 +56,71 @@ public class RatReportLoader extends AppCompatActivity {
             reports = new HashMap<>();
         }
         indexOfCSVColumn = new HashMap<>();
+        loadRatReports();
     }
-    protected void loadRatReports() {
+    public void loadRatReports() {
         InputStream csvReportFile = getResources().openRawResource(R.raw.rat_sightings);
         loadRatReportsFromCSV(csvReportFile);
     }
 
     /***
-     * What appears in Expandable scrolling list view of rat reports
+     * What appears in scrolling list view of rat reports
      *
      * @return keyCreationDateList from instance of rat report
      * and its overridden toString() method
      */
-    protected ListView getReports() {
+    protected static List<String> getReportKeysCreationDates() {
         keyCreationDate = wantedCSVColumns[0] + wantedCSVColumns[1];
         keyCreationDateList = new ArrayList<>();
         for (RatReport report : reports.values()) {
             if (keyCreationDate != null) {
-                if (report.toString() == keyCreationDate) {
+                if (report.toString().equals(keyCreationDate)) {
                     keyCreationDateList.add(keyCreationDate);
                 }
             }
         }
-        return (ListView) keyCreationDateList;
+        return keyCreationDateList;
     }
 
-    protected void addReport(Long key, RatReport report) {
-        reports.put(key, report);
+    protected static List<ReportLocation> getLocations() {
+        return reportLocations;
+    }
+
+    protected static void setNewLocation(ReportLocation loc) {
+         ReportLocation newLocation = loc;
+         location = newLocation;
+    }
+
+    protected static ReportLocation getNewLocation() {
+        return location;
+    }
+
+    public static boolean addSingleReport(Long key, ReportLocation location) {
+
+        //go through each report looking for duplicate incident   O(n^2)
+        for (Long k : reports.keySet()) {
+            for (RatReport v : reports.values()) {
+                if (k.equals(key) || v.getLocation().equals(location)) {
+                    //found duplicate key, or a duplicate <key, value> mapping
+                    // don't add and return failure signal
+                    return false;
+                }
+            }
+        }
+        //never found the key or <key, value> mapping, so safe to add it.
+
+        //return the success signal
+        return true;
+    }
+
+    protected static RatReport createReport(Long key, ReportLocation location) {
+        RatReport<Long, ReportLocation> report = new RatReport(null, null);
+        if (addSingleReport(key, location)) {
+            report.put(key, location);
+            reports.put(key, report);
+            return ratReport;
+        }
+        return null;
     }
 
     /*
@@ -105,21 +134,21 @@ public class RatReportLoader extends AppCompatActivity {
 
         try
         {
+            int count = 0;
             String csvHeaderLine = csvReader.readLine();
 
             String[] headerRow = csvHeaderLine.split(",");
             setIndicesOfWantedCSVColumns(headerRow);
 
             String currentLine = "";
-            int count = 0;
-            for (int i = 0; (currentLine = csvHeaderLine) != null; i++) {
+
+            for (currentLine = csvHeaderLine; currentLine != null; currentLine = csvReader.readLine()) {
                 try
                 {
                     //publishProgress((int) ((i / (float) count) * 100));
 
                     String[] row = currentLine.split(",");
-                    RatReport reportFromFile = convertCSVRowToRatReport(row);
-                    reports.put(reportFromFile.getKey(), reportFromFile);
+                    convertCSVRowToRatReport(row);
                 }
                 catch (Exception e)
                 {
@@ -149,7 +178,7 @@ public class RatReportLoader extends AppCompatActivity {
     }
 
     /**
-     * HashMap<Long, RatReport> reports Key
+     * HashMap<K, V> reports K
      *
      * Extracts unique key from instance of rat report, with each reports unique key
      * corresponding with a row in the provided csv file, always at column index 0.
@@ -159,7 +188,7 @@ public class RatReportLoader extends AppCompatActivity {
      * @param csvRow
      * @return
      */
-    protected long getReportKey(String[] csvRow) {
+    protected static long getReportKey(String[] csvRow) {
         String keyString = getCSVStringForColumn(wantedCSVColumns[0], csvRow);
         return (isNum(keyString)) ? Long.valueOf(keyString) : 0;
     }
@@ -172,25 +201,35 @@ public class RatReportLoader extends AppCompatActivity {
      * @param csvRow
      * @return report instance of RatReport
      */
-    protected RatReport convertCSVRowToRatReport(String[] csvRow) {
-        long key = getReportKey(csvRow);
-        Date creationDate = getReportDate(csvRow);
-        String locationType = getCSVStringForColumn(wantedCSVColumns[2], csvRow);
-        int zip = getReportZip(csvRow);
-        String address = getCSVStringForColumn(wantedCSVColumns[4], csvRow);
-        String city = getCSVStringForColumn(wantedCSVColumns[5], csvRow);
-        String borough = getCSVStringForColumn(wantedCSVColumns[6], csvRow);
-        double lat = getReportLatitude(csvRow);
-        double lng = getReportLongitude(csvRow);
+    protected static ReportLocation convertCSVRowToRatReport(String[] csvRow) {
+        /**
+         * String uniqueKey = getCSVStringForColumn(wantedCSVColumns[0], csvRow);
+         * String creationDate = getCSVStringForColumn(wantedCSVColumns[1], csvRow);
+         * String locationType = getCSVStringForColumn(wantedCSVColumns[2], csvRow);
+         * String zipCode = getCSVStringForColumn(wantedCSVColumns[3], csvRow);
+         * String address = getCSVStringForColumn(wantedCSVColumns[4], csvRow);
+         * String city = getCSVStringForColumn(wantedCSVColumns[5], csvRow);
+         * String borough = getCSVStringForColumn(wantedCSVColumns[6], csvRow);
+         * String latitude = getCSVStringForColumn(wantedCSVColumns[7], csvRow);
+         * String longitude = getCSVStringForColumn(wantedCSVColumns[8], csvRow);
+         */
 
-        ReportLocation location = new ReportLocation(lat, lng, locationType, address,
-                city, borough, zip);
-        RatReport report = new RatReport(key, creationDate, location);
+        location = new ReportLocation(getReportDate(csvRow), getReportLatitude(
+                csvRow), getReportLongitude(csvRow), getReportLocationType(
+                csvRow), getReportAddress(csvRow), getReportCity(csvRow),
+                getReportBorough(csvRow), getReportZip(csvRow));
 
-        return report;
+        createReport(getReportKey(csvRow), location);
+        return location;
     }
 
-    protected boolean isNum(String toBeChecked) {
+    protected static String getCSVStringForColumn(String wantedColumn, String[] csvRow) {
+        int columnIndex = indexOfCSVColumn.get(wantedColumn);
+        boolean columnIndexIsValid = columnIndex > -1 && columnIndex < csvRow.length;
+        return (columnIndexIsValid) ? csvRow[columnIndex] : "";
+    }
+
+    protected static boolean isNum(String toBeChecked) {
         try {
             double d = Double.parseDouble(toBeChecked);
         } catch (NumberFormatException e) {
@@ -198,7 +237,9 @@ public class RatReportLoader extends AppCompatActivity {
         }
         return true;
     }
-    private Date getReportDate(String[] csvRow) {
+
+    @TargetApi(25)
+    protected static String getReportDate(String[] csvRow) {
         String dateString = getCSVStringForColumn(wantedCSVColumns[1], csvRow);
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
         Date date = new Date();
@@ -207,28 +248,43 @@ public class RatReportLoader extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return date;
+        return date.toString();
     }
-    private int getReportZip(String[] csvRow) {
+
+    protected static String getReportLocationType(String[] csvRow) {
+        String locationTypeString = getCSVStringForColumn(wantedCSVColumns[2], csvRow);
+        return (!isNum(locationTypeString)) ? String.valueOf(locationTypeString) : "";
+    }
+
+    protected static int getReportZip(String[] csvRow) {
         String zipString = getCSVStringForColumn(wantedCSVColumns[3], csvRow);
         return (isNum(zipString)) ? Integer.valueOf(zipString) : 0;
     }
-    private double getReportLatitude(String[] csvRow) {
+
+    protected static String getReportAddress(String[] csvRow) {
+        String addressString = getCSVStringForColumn(wantedCSVColumns[4], csvRow);
+        return (!isNum(addressString)) ? String.valueOf(addressString) : "";
+    }
+
+    protected static String getReportCity(String[] csvRow) {
+        String cityString = getCSVStringForColumn(wantedCSVColumns[5], csvRow);
+        return (!isNum(cityString)) ? String.valueOf(cityString) : "";
+    }
+    protected static String getReportBorough(String[] csvRow) {
+        String boroughString = getCSVStringForColumn(wantedCSVColumns[6], csvRow);
+        return (!isNum(boroughString)) ? String.valueOf(boroughString) : "";
+    }
+
+    protected static double getReportLatitude(String[] csvRow) {
         String latitudeString = getCSVStringForColumn(wantedCSVColumns[7], csvRow);
         return (isNum(latitudeString)) ? Double.valueOf(latitudeString) : 0;
     }
-    private double getReportLongitude(String[] csvRow) {
+    protected static double getReportLongitude(String[] csvRow) {
         String longitudeString = getCSVStringForColumn(wantedCSVColumns[8], csvRow);
         return (isNum(longitudeString)) ? Double.valueOf(longitudeString) : 0;
     }
 
-    private String getCSVStringForColumn(String wantedColumn, String[] csvRow) {
-        int columnIndex = indexOfCSVColumn.get(wantedColumn);
-        boolean columnIndexIsValid = columnIndex > -1 && columnIndex < csvRow.length;
-        return (columnIndexIsValid) ? csvRow[columnIndex] : "";
-    }
-
-    protected HashMap<String, Integer> getCSVHeaderIndices() {
+    protected static HashMap<String, Integer> getCSVHeaderIndices() {
         return indexOfCSVColumn;
     }
 }

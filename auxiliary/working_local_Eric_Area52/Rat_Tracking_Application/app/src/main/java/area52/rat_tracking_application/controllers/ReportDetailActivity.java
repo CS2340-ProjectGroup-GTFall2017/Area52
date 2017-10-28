@@ -17,9 +17,24 @@ import android.widget.Button;
 import area52.rat_tracking_application.R;
 
 /**
+ * Acknowledgements:
+ *
+ * Prof. Bob Waters ([Template provided by Prof. Waters] for Android
+ * project guidance [GaTech - Fall 2017 - cs2340 - Objects & Design]).
+ * Classes, methods, method params, instance and local variables named
+ * to reflect our [class final project] --> [Rat Tracking App]:
+ *
+ * "An activity representing a single Report detail screen. This
+ * activity is only used in narrow width devices. On tablet-size devices,
+ * item details are presented side-by-side with a list of items
+ * in a {@link ReportListActivity}.
+ *
+ * Here we need to display a list of students.  Our view will be pretty similar
+ * since we are displaying a list of students in the course.  We are going to use a
+ * recycler view again."
+ *
  * Created by Eric on 10/23/2017.
  */
-
 public class ReportDetailActivity extends AppCompatActivity {
 
     @Override
@@ -82,7 +97,6 @@ public class ReportDetailActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -96,7 +110,7 @@ public class ReportDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, ReportListActivity.class));
+            navigateUpTo(new Intent(this, ReportDetailFragment.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
