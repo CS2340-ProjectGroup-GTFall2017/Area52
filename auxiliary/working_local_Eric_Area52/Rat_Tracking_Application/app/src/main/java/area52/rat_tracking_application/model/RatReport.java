@@ -1,30 +1,56 @@
 package area52.rat_tracking_application.model;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 
-public class RatReport {
-    private Long key;
-    private Date creationDate;
-    private ReportLocation location;
+import area52.rat_tracking_application.controllers.RatReportLoader;
 
-    public RatReport(Long key, Date creation, ReportLocation location) {
-        this.key = key;
-        this.creationDate = creation;
-        this.location = location;
+/**
+ * INFORMATION HOLDER Represents a single report in the model
+ *
+ *
+ * Information Holder and Structurer -> Manages the report information selected by the user and
+ * saved in the application's server
+ */
+
+public class RatReport<K, V> extends HashMap{
+    /** allow us to assign unique number to the report */
+    private static int nextKey = 1;
+    /** unique number as key */
+    private K _key;
+    /** the instance of report location*/
+    private V _location;
+
+    /**
+     * Makes a new Report
+     * @param key  the unique key auto-generated for the report
+     * @param location the location of the rat sighting being reported
+     */
+    public RatReport(K key, V location) {
+        _key = key;
+        _location = location;
     }
 
-    public long getKey() { return key; }
-    public Date getCreationDate() { return creationDate; }
-    public ReportLocation getLocation() { return location; }
+    @Override
+    public boolean equals(Object o) {
+        RatReport r = (RatReport) o;
+        return (r.get(_key).equals(_location) && r.getKey().equals(_key)
+                && r.getLocation().equals(_location));
+    }
 
-    public void setCreationDate(Date newDate) { creationDate = newDate; }
-    public void setLocation(ReportLocation newLocation) { location = newLocation; }
+    /* *****************************************
+     * All the property setters and getters
+     * */
+
+    public K getKey() { return _key; }
+
+    public void setKey(K key) { _key = key; }
+
+    public V getLocation() { return _location; }
+
+    public void setLocation(V newLocation) { _location = newLocation; }
 
     @Override
     public String toString() {
-        return "" + key + "| " + creationDate;
+        return "" + _key + "| " + ReportLocation.getCreationDate();
     }
-
 }

@@ -33,16 +33,6 @@ public class User {
     }
 
 
-
-
-        /** 5 possible boroughs of residency the user may select from using corresponding report
-         * entry spinner
-         * */
-        public static List<String> boroughsOfResidency = Arrays.asList("QUEENS", "BRONX", "BROOKLYN", "HARLEM", "MANHATTAN", "STATEN ISLAND");
-
-        /** allow us to assign unique id numbers to each user */
-        private static int Next_Id = 0;
-
         /** this user id number, which is used in place of username by admin*/
         private int _id;
 
@@ -58,55 +48,6 @@ public class User {
         /* **********************
          * Getters and setters
          */
-        public String getName() { return _name; }
-        public void setName(String name) { _name = name; }
-
-        //Will be a read only field
-        public int getId() { return _id; }
-
-        public void setBorough(String _borough) {
-            this._borough = _borough;
-        }
-
-        public String getBorough() {return _borough; }
-
-        /**
-         * Lookup a borough based on its code.  Returns the position of that
-         * borough in the array
-         *
-         * @param code the borough to find
-         *
-         * @return the index of the array that corresponds to the submitted borough
-         */
-        public static int findPosition(String code) {
-            int i = 0;
-            while (i < boroughsOfResidency.size()) {
-                if (code.equals(boroughsOfResidency.get(i))) return i;
-                ++i;
-            }
-            return 0;
-        }
-
-
-        /**
-         * Make a new student
-         * @param name      the student's name
-         * @param major     the student's major
-         */
-        public User(String name, String major) {
-            _name = name;
-            _borough = major;
-            _id = User.Next_Id++;
-        }
-
-        /**
-         *
-         * @return the display string representation
-         */
-        @Override
-        public String toString() {
-            return uName + " " + _borough;
-        }
 
     /**
      *
@@ -174,5 +115,20 @@ public class User {
      */
     public String getPWord() {
         return pWord;
+    }
+
+    /**
+     * @return true of user is a resident of NYC
+     */
+    public boolean getNYCResidencyStatus() {
+        return nycResidentStatus;
+    }
+
+    /**
+     * @param
+     */
+    public void setNYCResidencyStatus(boolean nycResidencyStatus) {
+        this.nycResidentStatus = nycResidencyStatus;
+
     }
 }
