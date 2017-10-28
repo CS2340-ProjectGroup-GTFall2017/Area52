@@ -97,14 +97,15 @@ public class ReportLocation {
     }
 
     /**
-     * Set a zip code based on position of that
-     * zip code in the array
+     * Set up zip codes so that they are selectable in numerical order in the zip code spinner
+     * (see ReportEntryActivity class). Index 0 corresponds with zip code 10001, and the
+     * index equal to the resulting size of the nycZipCodes list will correspond with 14925.
+     * These numbers represent the zip codes constraining the range of existing zip codes in NYC.
      *
-     * @return the index of the array that corresponds to the submitted location type
      */
     public static void setZipCodePositions() {
         nycZipCodes = new ArrayList<>();
-        for (int i = 10001; i < 14925; i++) {
+        for (int i = 10001; i <= 14925; i++) {
             nycZipCodes.add(i);
         }
     }
@@ -121,12 +122,12 @@ public class ReportLocation {
     }
 
     /**
-     * Lookup a borough based on its enum.  Returns the position of that
-     * borough in the array
+     * Lookup a borough based on its code String.  Returns the position of that
+     * borough in the corresponding list of boroughs.
      *
-     * @param code the borough to find
+     * @param code the borough to find.
      *
-     * @return the index of the array that corresponds to the submitted borough
+     * @return the index of the list that corresponds with the submitted borough.
      */
     public static int findBoroughPosition(String code) {
         int i = 0;
@@ -140,15 +141,21 @@ public class ReportLocation {
     }
 
     /**
-     * Lookup a borough based on its enum.  Returns the position of that
-     * borough in the array
+     * Lookup a city based on its code String.  Returns the position of that
+     * city in the corresponding list of cities.
      *
-     * @param code the borough to find
+     * @param code the city to find.
      *
-     * @return the index of the array that corresponds to the submitted borough
+     * @return the index of the list that corresponds with the submitted city.
      */
     public static int findCityPosition(String code) {
-
+        int i = 0;
+        while (i < cityList.size()) {
+            if (code.equals(cityList.get(i))) {
+                return i;
+            }
+            ++i;
+        }
         return 0;
     }
 
