@@ -22,9 +22,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_toLeftOf="@+id/_location_"
-        android:layout_toStartOf="@+id/_location_" />
+        android:layout_marginStart="10dp" />
 
     <TextView
         android:id="@+id/creation_date"
@@ -36,26 +34,12 @@
         android:layout_alignParentEnd="true" />
 
     <TextView
-        android:text="Location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/_location_"
-        android:layout_marginLeft="13dp"
-        android:layout_marginStart="13dp"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/add_button"
-        android:layout_toEndOf="@+id/add_button" />
-
-    <TextView
         android:id="@+id/unique_key_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Report ID"
-        android:layout_marginRight="26dp"
-        android:layout_marginEnd="26dp"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/creation_date"
-        android:layout_toStartOf="@+id/creation_date" />
+        android:layout_centerHorizontal="true" />
 
     <Spinner
         android:id="@+id/borough_spinner"
@@ -63,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/_location_"
+        android:layout_below="@+id/unique_key_id"
         android:layout_marginTop="32dp"
         android:text="Select Borough"
         android:visibility="visible" />
@@ -90,14 +74,37 @@
         android:text="Select Zip Code"
         android:visibility="visible" />
 
+    <Spinner
+        android:id="@+id/location_type_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/zip_code_spinner"
+        android:layout_marginTop="32dp"
+        android:text="Select Location Type"
+        android:visibility="visible" />
+
     <Button
-        android:text="Add"
+        android:text="Add Report"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/add_button"
-        android:onClick="onAddPressed"
-        android:layout_below="@+id/zip_code_spinner"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/location_type_spinner"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancel_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="52dp"
-        android:layout_alignParentLeft="true" />
+        android:layout_marginBottom="14dp"
+        android:layout_alignRight="@+id/add_button"
+        android:layout_alignEnd="@+id/add_button" />
+
 </RelativeLayout>
