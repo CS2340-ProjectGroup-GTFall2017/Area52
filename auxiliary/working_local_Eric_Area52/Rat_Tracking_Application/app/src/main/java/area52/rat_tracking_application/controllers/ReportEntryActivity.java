@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import area52.rat_tracking_application.R;
-import area52.rat_tracking_application.model.Borough;
 import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.model.ReportLocation;
 
@@ -67,9 +66,9 @@ public class ReportEntryActivity extends Activity implements AdapterView.OnItemS
          */
     private String report;
 
-    private static RatReport _report;
+    private RatReport _report;
 
-    private static ReportLocation reportLocation;
+    private ReportLocation reportLocation;
 
     /* ***********************
        flag for whether this is a new report being added (currently unused);
@@ -92,7 +91,7 @@ public class ReportEntryActivity extends Activity implements AdapterView.OnItemS
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "TBD", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Report a Rat Sighting", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });

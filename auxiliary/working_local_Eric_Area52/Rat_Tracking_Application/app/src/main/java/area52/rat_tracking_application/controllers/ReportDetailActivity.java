@@ -48,7 +48,7 @@ public class ReportDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Creating a new Report", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Select a report to view from drop down list", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 Intent reportEntryIntent = new Intent(getBaseContext(), ReportEntryActivity.class);
                 startActivity(reportEntryIntent);
@@ -94,6 +94,17 @@ public class ReportDetailActivity extends AppCompatActivity {
                 Context logoutContext = view.getContext();
                 Intent logoutIntent = new Intent(logoutContext, WelcomeActivity.class);
                 logoutContext.startActivity(logoutIntent);
+            }
+        });
+
+        Button goToReportEntryScreen;
+        goToReportEntryScreen = (Button) findViewById(R.id.go_to_report_entry_screen_button);
+        goToReportEntryScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context reportEntryContext = view.getContext();
+                Intent reportEntryIntent = new Intent(reportEntryContext, ReportEntryActivity.class);
+                reportEntryContext.startActivity(reportEntryIntent);
             }
         });
 
