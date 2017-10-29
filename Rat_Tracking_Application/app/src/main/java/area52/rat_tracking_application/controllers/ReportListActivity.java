@@ -19,7 +19,7 @@ import java.util.List;
 import area52.rat_tracking_application.R;
 
 import static area52.rat_tracking_application.R.layout.report_list;
-import static area52.rat_tracking_application.controllers.MainActivity.RatReportLoader.getReportKeysCreationDates;
+import static area52.rat_tracking_application.controllers.RatReportLoader.getReportKeysCreationDates;
 import static area52.rat_tracking_application.model.Model.model;
 
 /**
@@ -153,9 +153,9 @@ public class ReportListActivity extends AppCompatActivity {
                                 .replace(R.id.report_detail_container, fragment)
                                 .commit();
                     } else {
-                        //on a phone, we need to change windows to the detail view
+
                         Context context = v.getContext();
-                        //create our new intent with the new screen (activity)
+                        //create new intent with the new screen (activity)
                         Intent intent = new Intent(context, ReportEntryActivity.class);
                         /*
                             pass along the id of the report so we can retrieve the correct data in
@@ -165,7 +165,7 @@ public class ReportListActivity extends AppCompatActivity {
 
                         model.setCurrentReport(holder.mReport);
 
-                        //now just display the new window
+                        //display the new window
                         context.startActivity(intent);
                     }
                 }

@@ -21,9 +21,9 @@ import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.model.ReportLocation;
 
-import static area52.rat_tracking_application.controllers.MainActivity.RatReportLoader.getCSVHeaderIndices;
-import static area52.rat_tracking_application.controllers.MainActivity.RatReportLoader.getReportKeysCreationDates;
-import static area52.rat_tracking_application.controllers.MainActivity.RatReportLoader.reports;
+import static area52.rat_tracking_application.controllers.RatReportLoader.getCSVHeaderIndices;
+import static area52.rat_tracking_application.controllers.RatReportLoader.getReportKeysCreationDates;
+import static area52.rat_tracking_application.controllers.RatReportLoader.reports;
 
 /**
 * Acknowledgements:
@@ -97,7 +97,7 @@ public class ReportDetailFragment extends Fragment {
              */
             List<String> ratReportKeyCreateDate = getReportKeysCreationDates();
             Log.d("ReportDetailFragment", "Retrieving the report with the following report id and creation date: "
-                    + ratDataSingleReport.getKey().toString() + " " + ratDataSingleReport.getLocation().getCreationDate());
+                    + ratReportKeyCreateDate);
             Log.d("ReportDetailFragment", "Got report: " + ratDataSingleReport.toString());
 
             Activity activity = this.getActivity();
@@ -129,37 +129,6 @@ public class ReportDetailFragment extends Fragment {
         super.onResume();
         adapter.notifyDataSetChanged();
     }
-
-    /***public ReportLoaderExtender getLoader() {
-        loaderExtender = new ReportLoaderExtender();
-        return loaderExtender;
-    }***/
-
-
-
-    /***protected class ReportLoaderExtender extends AsyncTask<Object, Object, Object> {
-        private static final String TAG = "Rat Reports Loading ";
-
-
-        protected Object doInBackground(Object... objects) {
-            new RatReportLoader().loadRatReports();
-            setZipCodePositions();
-            /**
-             * only key and creation date will appear in the scrolling adapter.
-             */
-        /***adapter = new SimpleReportRecyclerViewAdapter((ListView) getReportKeysCreationDates());
-            return adapter;
-        }
-
-        protected void onPostExecute(Object adapter) {
-            super.onPostExecute(adapter);
-            Log.d(TAG, " ");
-        }
-
-        protected void onCancelled() {
-            return;
-        }
-    }***/
 
     /**
      * Set up an adapter and hook it to the provided view

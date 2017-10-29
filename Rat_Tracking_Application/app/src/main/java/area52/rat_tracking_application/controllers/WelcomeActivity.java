@@ -9,8 +9,6 @@ import android.widget.Button;
 
 import area52.rat_tracking_application.R;
 
-import static area52.rat_tracking_application.controllers.MainActivity.RatReportLoader.launchLoader;
-
 public class WelcomeActivity extends Activity {
     Button goToMainButton;
 
@@ -26,9 +24,7 @@ public class WelcomeActivity extends Activity {
                 Context contextMain = vMain.getContext();
                 Intent goToMainIntent = new Intent(contextMain, MainActivity.class);
                 contextMain.startActivity(goToMainIntent);
-                launchLoader();
             }
         });
-
     }
 }

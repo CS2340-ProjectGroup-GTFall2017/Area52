@@ -16,7 +16,7 @@ public class Model {
 
     /**
      * return static singleton instance of model for app data retrieval
-     * @return
+     * @return model instance of model
      */
     public static Model getInstance() {
         loadTestData();

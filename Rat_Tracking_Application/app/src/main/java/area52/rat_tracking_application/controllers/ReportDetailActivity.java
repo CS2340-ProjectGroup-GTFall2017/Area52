@@ -94,7 +94,6 @@ public class ReportDetailActivity extends AppCompatActivity {
                 reportEntryContext.startActivity(reportEntryIntent);
             }
         });
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)

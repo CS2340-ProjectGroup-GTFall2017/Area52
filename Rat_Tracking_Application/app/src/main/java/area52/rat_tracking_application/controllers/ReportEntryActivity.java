@@ -24,10 +24,10 @@ import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.model.ReportLocation;
 
 import static android.icu.text.DateFormat.getDateTimeInstance;
-import static area52.rat_tracking_application.controllers.MainActivity.RatReportLoader.createReport;
-import static area52.rat_tracking_application.controllers.MainActivity.RatReportLoader.getNewLocation;
-import static area52.rat_tracking_application.controllers.MainActivity.RatReportLoader.reports;
-import static area52.rat_tracking_application.controllers.MainActivity.RatReportLoader.setNewLocation;
+import static area52.rat_tracking_application.controllers.RatReportLoader.createReport;
+import static area52.rat_tracking_application.controllers.RatReportLoader.getNewLocation;
+import static area52.rat_tracking_application.controllers.RatReportLoader.reports;
+import static area52.rat_tracking_application.controllers.RatReportLoader.setNewLocation;
 import static area52.rat_tracking_application.model.ReportLocation.boroughsOfResidency;
 import static area52.rat_tracking_application.model.ReportLocation.cityList;
 import static area52.rat_tracking_application.model.ReportLocation.locationTypes;
