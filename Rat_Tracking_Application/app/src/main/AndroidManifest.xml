@@ -11,8 +11,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".controllers.WelcomeActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_welcome"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,30 +21,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".controllers.MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:theme="@style/FullscreenTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="area52.rat_tracking_application.controllers.MainActivity" />
-        </activity>
-        <activity
             android:name=".controllers.RegistrationActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_registration"
             android:theme="@style/FullscreenTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="area52.rat_tracking_application.controllers.MainActivity" />
         </activity>
         <activity
-            android:name=".controllers.LogoutActivity"
-            android:label="@string/title_activity_logout"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="area52.rat_tracking_application.controllers.MainActivity" />
+            android:name=".controllers.ReportDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_report_detail"
+            android:theme="@style/FullscreenTheme">
+        </activity>
+        <activity
+            android:name=".controllers.ReportEntryActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_report_entry"
+            android:theme="@style/FullscreenTheme">
+        </activity>
+        <activity
+            android:name=".controllers.ReportListActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_report_list"
+            android:theme="@style/FullscreenTheme">
+        </activity>
+        <activity
+            android:name=".controllers.RatReportLoader"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_rat_report_loader"
+            android:theme="@style/FullscreenTheme">
         </activity>
     </application>
 
