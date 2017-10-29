@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Rat_Tracking_Application</string>
+    <string name="app_name" translatable="false">NYC Rat Tracker</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email (required)</string>
@@ -29,4 +29,28 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="action_settings">Settings</string>
+    <string name="nyc_rat_tracker">NYC Rat Tracker</string>
+    <string name="report_a_rat_sighting">Report a Rat Sighting</string>
+    <string name="go_to_login_screen">Go To Login Screen</string>
+    <string name="login">Login</string>
+    <string name="nyc_rat_tracking_app">NYC Rat Tracking App</string>
+    <string name="username">Username:</string>
+    <string name="password">Password:</string>
+    <string name="login_attempts_remaining">Login Attempts Remaining:</string>
+    <string name="hash">###</string>
+    <string name="login_login">login</string>
+    <string name="cancel_cancel">Cancel</string>
+    <string name="register_button_on_login_screen">register</string>
+    <string name="title_activity_rat_report_loader">Loading Rat Reports</string>
+    <string name="title_activity_report_list">Rat Report List</string>
+    <string name="title_activity_report_entry">Rat Report Entry Screen</string>
+    <string name="title_activity_report_detail">Rat Sighting Reports</string>
+    <string name="press_below_for_list_view_of_rat_reports">Press below for list view of rat reports:</string>
+    <string name="rat_report_list_view">Rat Report List View</string>
+    <string name="logout_report_detail">Logout</string>
+    <string name="username_content_report_entry">Username</string>
+    <string name="creation_date">Creation Date</string>
+    <string name="report_id">Report ID</string>
+    <string name="select_zip_code">Select Zip Code</string>
+    <string name="select_borough">Select Borough</string>
 </resources>

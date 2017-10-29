@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:context="area52.rat_tracking_application.controllers.ReportListActivity"
+    android:weightSum="1"
+    tools:showIn="@layout/activity_report_list">
+
+    <TextView
+        android:id="@+id/keyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textAppearance="?attr/textAppearanceListItem" />
+
+    <TextView
+        android:id="@+id/contentView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_weight=".82"
+        tools:targetApi="23"
+        android:accessibilityTraversalAfter="@+id/id"
+        android:accessibilityTraversalBefore="@+id/id"
+        android:clickable="true"
+        android:contentDescription="@string/appbar_scrolling_view_behavior"
+        android:contextClickable="true"
+        android:textAppearance="?attr/textAppearanceListItem"
+        tools:ignore="InefficientWeight" />
+</LinearLayout>
