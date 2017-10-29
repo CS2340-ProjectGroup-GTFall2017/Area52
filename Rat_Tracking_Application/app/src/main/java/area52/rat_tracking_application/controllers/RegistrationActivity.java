@@ -1,5 +1,7 @@
 package area52.rat_tracking_application.controllers;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,7 +17,7 @@ import area52.rat_tracking_application.model.Admin;
 import area52.rat_tracking_application.model.Model;
 import area52.rat_tracking_application.model.User;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends Activity {
     EditText usernameText;
     EditText emailText;
     EditText passwordText;
@@ -42,7 +44,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
         registerButton = (Button) findViewById(R.id.button_register);
         cancelButton = (Button) findViewById(R.id.button_cancel);
-
     }
 
     public void registerUser(View view) {
@@ -63,6 +64,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 HashMap<String, User> userMap = Model.model.getUserMap();//.put(getUsername(), newUser);
                 if (!userMap.containsKey(getUsername())){
                     Model.model.getUserMap().put(getUsername(), newUser);
+                    Context reportDetailContext = view.getContext();
+                    Intent reportDetailIntent = new Intent(reportDetailContext, ReportDetailActivity.class);
+                    reportDetailContext.startActivity(reportDetailIntent);
+                } else {
                     goBackToLoginScreen(view);
                 }
 
@@ -74,8 +79,13 @@ public class RegistrationActivity extends AppCompatActivity {
                 HashMap<String, User> userMap = Model.model.getUserMap();//.put(getUsername(), newUser);
                 if (!userMap.containsKey(getUsername())){
                     Model.model.getUserMap().put(getUsername(), newUser);
+                    Context mainContext = view.getContext();
+                    Intent mainIntent = new Intent(mainContext, MainActivity.class);
+                    mainContext.startActivity(mainIntent);
+                } else {
                     goBackToLoginScreen(view);
                 }
+
             }
         }
     }

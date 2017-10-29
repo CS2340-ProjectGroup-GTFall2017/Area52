@@ -1,39 +1,34 @@
 package area52.rat_tracking_application.controllers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
 
-import java.io.InputStream;
-
 import area52.rat_tracking_application.R;
-import area52.rat_tracking_application.model.RatReportLoader;
+
+import static area52.rat_tracking_application.controllers.MainActivity.RatReportLoader.launchLoader;
 
 public class WelcomeActivity extends Activity {
-    Button button;
+    Button goToMainButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+
+        goToMainButton = (Button) findViewById(R.id.main_button);
+        goToMainButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Context context = v.getContext();
-                Intent intent = new Intent(context, MainActivity.class);
-                context.startActivity(intent);
+            public void onClick(View vMain) {
+                Context contextMain = vMain.getContext();
+                Intent goToMainIntent = new Intent(contextMain, MainActivity.class);
+                contextMain.startActivity(goToMainIntent);
+                launchLoader();
             }
         });
-        loadRatReports();
-    }
 
-    public void loadRatReports() {
-        InputStream csvReportFile = getResources().openRawResource(R.raw.rat_sightings);
-        RatReportLoader loader = new RatReportLoader();
-        loader.loadRatReportsFromCSV(csvReportFile);
     }
 }

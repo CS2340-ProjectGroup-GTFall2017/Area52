@@ -1,11 +1,23 @@
 package area52.rat_tracking_application.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.Arrays;
+import java.util.List;
+
 import area52.rat_tracking_application.controllers.RegistrationActivity;
 
 /**
- * Created by Eric on 9/24/2017.
+ * Template:
+ * Created by robertwaters on 1/5/17.
+ *
+ * Information Holder - represents a single student in model
+ *
+ * We are passing this object in a bundle between intents, so we implement
+ * the Parcelable interface.
+ *
  */
-
 public class User {
     private String email;
     private String pWord;
@@ -19,6 +31,23 @@ public class User {
     public User() {
         regAct = new RegistrationActivity();
     }
+
+
+        /** this user id number, which is used in place of username by admin*/
+        private int _id;
+
+        /** this user's name */
+        private String _name;
+
+        private String _borough;
+
+        /** this */
+        private boolean nycResidentStatus;
+
+
+        /* **********************
+         * Getters and setters
+         */
 
     /**
      *
@@ -86,5 +115,20 @@ public class User {
      */
     public String getPWord() {
         return pWord;
+    }
+
+    /**
+     * @return true of user is a resident of NYC
+     */
+    public boolean getNYCResidencyStatus() {
+        return nycResidentStatus;
+    }
+
+    /**
+     * @param
+     */
+    public void setNYCResidencyStatus(boolean nycResidencyStatus) {
+        this.nycResidentStatus = nycResidencyStatus;
+
     }
 }
