@@ -20,6 +20,18 @@ public class RatReport {
     public void setCreationDate(Date newDate) { creationDate = newDate; }
     public void setLocation(ReportLocation newLocation) { location = newLocation; }
 
+    public String detailedReportString() {
+        String reportDetails = "ID: " + key + "\n";
+        reportDetails += "Date: " + creationDate + "\n";
+        reportDetails += "City: " + location.getCity() + "\n";
+        reportDetails += "Zip Code: " + location.getZipCode() + "\n";
+        reportDetails += "Borough: " + location.getBorough() + "\n";
+        reportDetails += "Address: " + location.getAddress() + "\n";
+        reportDetails += "Location: " + location.getLocationType() + "\n";
+        reportDetails += "Lat: " + location.getLatitude() + "\n";
+        reportDetails += "Lng: " + location.getLongitude() + "\n";
+        return reportDetails;
+    }
     @Override
     public String toString() {
         return "" + key + "| " + creationDate;
