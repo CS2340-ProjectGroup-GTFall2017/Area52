@@ -16,6 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import area52.rat_tracking_application.R;
@@ -65,6 +68,22 @@ class RatReportAdapter extends RecyclerView.Adapter<RatReportAdapter.ViewHolder>
     RatReportAdapter(Context context) {
         this.context = context;
         ratReports  = new ArrayList<>(RatReportLoader.reports.values());
+        sortRatReportsByDate();
+    }
+
+    /**
+     * Sorts the ratReports list by date in descending order (most recent first)
+     */
+    private void sortRatReportsByDate() {
+        Collections.sort(ratReports, new Comparator<RatReport>() {
+            @Override
+            public int compare(RatReport o1, RatReport o2) {
+                Date reportDate1 = o1.getCreationDate();
+                Date reportDate2 = o2.getCreationDate();
+
+                return reportDate2.compareTo(reportDate1);
+            }
+        });
     }
 
     @Override
