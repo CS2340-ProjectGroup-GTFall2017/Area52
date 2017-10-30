@@ -7,9 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.InputStream;
+
 import area52.rat_tracking_application.R;
 
-import static area52.rat_tracking_application.controllers.RatReportLoader.launchLoader;
+import static area52.rat_tracking_application.controllers.RatReportCSVReader.readInFile;
 
 /**
  * Created by Eric on 10/29/2017.
@@ -27,11 +29,20 @@ public class ReportLoaderActivity extends AppCompatActivity {
         launchReportsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Context welcomeContext = view.getContext();
-                Intent welcomeIntent = new Intent(welcomeContext, WelcomeActivity.class);
-                welcomeContext.startActivity(welcomeIntent);
-                launchLoader();
+                Context context = view.getContext();
+                Intent intent = new Intent(context, ReportListActivity.class);
+                context.startActivity(intent);
+                loadRatReports();
             }
         });
+    }
+    public void loadRatReports() {
+        InputStream csvReportFile = getResources().openRawResource(R.raw.rat_sightings);
+        try {
+            readInFile(csvReportFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        new RatReportLoader().launchLoader();
     }
 }

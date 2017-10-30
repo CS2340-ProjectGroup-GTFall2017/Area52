@@ -5,10 +5,6 @@ import android.app.Activity;
 import android.icu.text.SimpleDateFormat;
 import android.support.annotation.Nullable;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +14,8 @@ import java.util.List;
 
 import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.model.ReportLocation;
+
+import static area52.rat_tracking_application.controllers.RatReportCSVReader.getParsedFile;
 
 /**
  * Created by Eric on 10/29/2017.
@@ -34,13 +32,14 @@ class RatReportLoader extends Activity {
     private static List<String> keyCreationDateList = new ArrayList<>();
     private static ReportLocation location;
     private static List<ReportLocation> reportLocations = new ArrayList<>();
+    private static String currentDate;
 
-    static void launchLoader() {
+    void launchLoader() {
         if (reports == null) {
             reports = new HashMap<>();
         }
         indexOfCSVColumn = new HashMap<>();
-        loadRatReportsFromCSV();
+        loadRatReportsFromParsedFile();
     }
 
     /**
@@ -123,61 +122,28 @@ class RatReportLoader extends Activity {
         return null;
     }
 
-    private static List<String> reportList = new ArrayList<>();
+    private List<String> reportList = new ArrayList<>();
 
     /**
      * From the given CSV InputStream, adds all rat reports in the stream to memory,
      * with each row of the streamed in CSV being partitioned into string arrays.         *
      *
      */
-    static void loadRatReportsFromCSV() {
-        try {
-            setUpToPartitionCSV();
-            reportList = getToPartitionCSV();
-            String csvHeaderLine = reportList.get(0);
-            String[] headerRow = csvHeaderLine.split(",");
-            setIndicesOfWantedCSVColumns(headerRow);
-            reportList.remove(0);
-            for (String row : reportList) {
-                String[] stringPartitionedRow = row.split(",");
-                setIndicesOfWantedCSVColumns(stringPartitionedRow);
-                convertCSVRowToRatReport(stringPartitionedRow);
-                System.out.println(stringPartitionedRow);//for debugging only
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    void loadRatReportsFromParsedFile() {
+        reportList = getParsedFile();
+        String csvHeaderLine = reportList.get(0);
+        String[] headerRow = csvHeaderLine.split(",");
+        setIndicesOfWantedCSVColumns(headerRow);
+        reportList.remove(0);
+        for (String row : reportList) {
+            String[] stringPartitionedRow = row.split(",");
+            setIndicesOfWantedCSVColumns(stringPartitionedRow);
+            convertCSVRowToRatReport(stringPartitionedRow);
+            System.out.println(stringPartitionedRow);//for debugging only
         }
     }
 
-    private static List<String> result;
-
-    static void setUpToPartitionCSV() throws java.io.IOException {
-        URL ratSightingsGitSourcedCSV = new URL("https://media.githubusercontent.com/media/" +
-                "CS2340-ProjectGroup-GTFall2017/Area52/working/Rat_Tracking_Application/app/" +
-                "src/main/res/raw/rat_sightings.csv");
-        BufferedReader csvReader = new BufferedReader(
-                new InputStreamReader(ratSightingsGitSourcedCSV.openStream()));
-
-        List<String> csvStringList = new ArrayList<>();
-
-        int i = 0;
-        String csvLine;
-        while ((csvLine = csvReader.readLine()) != null) {
-            if (i < 100) {
-                csvStringList.add(csvLine);
-            }
-            i++;
-        }
-        csvReader.close();
-        System.out.println(csvStringList);
-        result = csvStringList;
-    }
-
-    private static List<String> getToPartitionCSV() {
-        return result;
-    }
-
-    private static void setIndicesOfWantedCSVColumns(String[] csvHeader) {
+    private void setIndicesOfWantedCSVColumns(String[] csvHeader) {
         for (int i = 0; i < csvHeader.length; i++) {
             if (contains(wantedCSVColumns, csvHeader[i])) {
                 indexOfCSVColumn.put(csvHeader[i], i);
@@ -185,7 +151,7 @@ class RatReportLoader extends Activity {
         }
     }
 
-    private static boolean contains(List<String> columns, String element) {
+    private boolean contains(List<String> columns, String element) {
         for (int i = 0; i < columns.size(); i++) {
             if (columns.get(i).equals(element)) { return true; }
         }
@@ -203,7 +169,7 @@ class RatReportLoader extends Activity {
      * @param csvRow a parsed row from the rat report csv, consisting of an array of Strings
      * @return unique key or 0
      */
-    protected static long getReportKey(String[] csvRow) {
+    protected long getReportKey(String[] csvRow) {
         String keyString = getCSVStringForColumn(wantedCSVColumns.get(0), csvRow);
         return (isNum(keyString)) ? Long.valueOf(keyString) : 0;
     }
@@ -216,9 +182,10 @@ class RatReportLoader extends Activity {
      * @param csvRow
      * @return reportLocation instance of RatReport
      */
-    protected static void convertCSVRowToRatReport(String[] csvRow) {
+    protected void convertCSVRowToRatReport(String[] csvRow) {
+        setReportDate(csvRow);
 
-        location = new ReportLocation(getReportDate(csvRow), getReportLatitude(
+        location = new ReportLocation(getReportDate(), getReportLatitude(
                 csvRow), getReportLongitude(csvRow), getReportLocationType(
                 csvRow), getReportAddress(csvRow), getReportCity(csvRow),
                 getReportBorough(csvRow), getReportZip(csvRow));
@@ -226,13 +193,13 @@ class RatReportLoader extends Activity {
         createReport(getReportKey(csvRow), location);
     }
 
-    protected static String getCSVStringForColumn(String wantedColumn, String[] csvRow) {
+    protected String getCSVStringForColumn(String wantedColumn, String[] csvRow) {
         int columnIndex = indexOfCSVColumn.get(wantedColumn);
         boolean columnIndexIsValid = columnIndex > -1 && columnIndex < csvRow.length;
         return (columnIndexIsValid) ? csvRow[columnIndex] : "";
     }
 
-    protected static boolean isNum(String toBeChecked) {
+    protected boolean isNum(String toBeChecked) {
         try {
             double d = Double.parseDouble(toBeChecked);
         } catch (NumberFormatException e) {
@@ -242,7 +209,7 @@ class RatReportLoader extends Activity {
     }
 
     @TargetApi(25)
-    protected static String getReportDate(String[] csvRow) {
+    protected void setReportDate(String[] csvRow) {
         String dateString = getCSVStringForColumn(wantedCSVColumns.get(1), csvRow);
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
         Date date = new Date();
@@ -251,43 +218,47 @@ class RatReportLoader extends Activity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return date.toString();
+        currentDate = date.toString();
     }
 
-    protected static String getReportLocationType(String[] csvRow) {
+    protected String getReportDate() {
+        return currentDate;
+    }
+
+    protected String getReportLocationType(String[] csvRow) {
         String locationTypeString = getCSVStringForColumn(wantedCSVColumns.get(2), csvRow);
         return (!isNum(locationTypeString)) ? String.valueOf(locationTypeString) : "";
     }
 
-    protected static int getReportZip(String[] csvRow) {
+    protected int getReportZip(String[] csvRow) {
         String zipString = getCSVStringForColumn(wantedCSVColumns.get(3), csvRow);
         return (isNum(zipString)) ? Integer.valueOf(zipString) : 0;
     }
 
-    protected static String getReportAddress(String[] csvRow) {
+    protected String getReportAddress(String[] csvRow) {
         String addressString = getCSVStringForColumn(wantedCSVColumns.get(4), csvRow);
         return (!isNum(addressString)) ? String.valueOf(addressString) : "";
     }
 
-    protected static String getReportCity(String[] csvRow) {
+    protected String getReportCity(String[] csvRow) {
         String cityString = getCSVStringForColumn(wantedCSVColumns.get(5), csvRow);
         return (!isNum(cityString)) ? String.valueOf(cityString) : "";
     }
-    protected static String getReportBorough(String[] csvRow) {
+    protected String getReportBorough(String[] csvRow) {
         String boroughString = getCSVStringForColumn(wantedCSVColumns.get(6), csvRow);
         return (!isNum(boroughString)) ? String.valueOf(boroughString) : "";
     }
 
-    protected static double getReportLatitude(String[] csvRow) {
+    protected double getReportLatitude(String[] csvRow) {
         String latitudeString = getCSVStringForColumn(wantedCSVColumns.get(7), csvRow);
         return (isNum(latitudeString)) ? Double.valueOf(latitudeString) : 0;
     }
-    protected static double getReportLongitude(String[] csvRow) {
+    protected double getReportLongitude(String[] csvRow) {
         String longitudeString = getCSVStringForColumn(wantedCSVColumns.get(8), csvRow);
         return (isNum(longitudeString)) ? Double.valueOf(longitudeString) : 0;
     }
 
-    protected static HashMap<String, Integer> getCSVHeaderIndices() {
+    protected HashMap<String, Integer> getCSVHeaderIndices() {
         return indexOfCSVColumn;
     }
 }

@@ -21,7 +21,6 @@ import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.model.ReportLocation;
 
-import static area52.rat_tracking_application.controllers.RatReportLoader.getCSVHeaderIndices;
 import static area52.rat_tracking_application.controllers.RatReportLoader.getReportKeysCreationDates;
 import static area52.rat_tracking_application.controllers.RatReportLoader.reports;
 
@@ -104,7 +103,7 @@ public class ReportDetailFragment extends Fragment {
             CollapsingToolbarLayout appBarLayout = (
                     CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
-                appBarLayout.setTitle(getCSVHeaderIndices().toString());
+                appBarLayout.setTitle(new RatReportLoader().getCSVHeaderIndices().toString());
             }
         }
 
