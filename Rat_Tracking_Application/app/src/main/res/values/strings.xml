@@ -29,4 +29,23 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="action_settings">Settings</string>
+
+    <string-array name="rat_report_locations">
+        <item>1-2 Family Dwelling</item>
+        <item>3+ Family Apt. Building</item>
+        <item>3+ Family Mixed Use Building</item>
+        <item>Commercial Building</item>
+        <item>Vacant Lot</item>
+        <item>Construction Site</item>
+        <item>Hospital</item>
+        <item>Catch Basin/Sewer</item>
+    </string-array>
+
+    <string-array name="rat_report_boroughs">
+        <item>MANHATTAN</item>
+        <item>STATEN ISLAND</item>
+        <item>QUEENS</item>
+        <item>BROOKLYN</item>
+        <item>DA BRONX</item>
+    </string-array>
 </resources>
