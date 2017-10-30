@@ -6,4 +6,27 @@
     android:layout_height="match_parent"
     tools:context="area52.rat_tracking_application.controllers.ReportListActivity">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/reportListRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="454dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/button_addReport"
+        android:layout_width="348dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Add New Report"
+        app:layout_constraintBottom_toTopOf="@+id/reportListRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
