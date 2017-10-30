@@ -9,20 +9,6 @@
     tools:context="area52.rat_tracking_application.controllers.LogoutActivity"
     tools:showIn="@layout/activity_logout">
 
-    <TextView
-        android:id="@+id/textView_welcome"
-        android:layout_width="286dp"
-        android:layout_height="64dp"
-        android:text="   You made it! Now test the Logout button below:    "
-        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        android:textColor="@android:color/holo_red_dark"
-        android:textSize="25sp"
-        tools:layout_editor_absoluteX="62dp"
-        tools:layout_editor_absoluteY="142dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="237dp" />
-
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
@@ -33,5 +19,32 @@
         tools:layout_editor_absoluteY="247dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        android:text="Report List" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp"
+        android:text="Report Map (Coming Soon!)" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/button5"
+        android:layout_alignRight="@+id/button5"
+        android:layout_centerVertical="true"
+        android:text="Report Graph (Coming Soon!)" />
 
 </RelativeLayout>
