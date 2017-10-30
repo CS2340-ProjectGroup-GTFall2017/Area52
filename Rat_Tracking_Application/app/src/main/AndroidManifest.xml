@@ -45,6 +45,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="area52.rat_tracking_application.controllers.MainActivity" />
         </activity>
+        <activity android:name=".controllers.ReportListActivity"></activity>
     </application>
 
 </manifest>

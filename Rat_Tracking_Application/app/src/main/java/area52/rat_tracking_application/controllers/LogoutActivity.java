@@ -14,6 +14,7 @@ import area52.rat_tracking_application.R;
  */
 public class LogoutActivity extends Activity {
     Button button;
+    Button reportListButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,16 @@ public class LogoutActivity extends Activity {
             public void onClick(View view) {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, WelcomeActivity.class);
+                context.startActivity(intent);
+            }
+        });
+
+        reportListButton = (Button) findViewById(R.id.button_reportList);
+        reportListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = view.getContext();
+                Intent intent = new Intent(context, ReportListActivity.class);
                 context.startActivity(intent);
             }
         });
