@@ -17,6 +17,7 @@ import java.util.Random;
 import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.model.RatReportLoader;
+import area52.rat_tracking_application.model.RatReportManager;
 import area52.rat_tracking_application.model.ReportLocation;
 
 public class CreateRatReportActivity extends AppCompatActivity {
@@ -87,13 +88,13 @@ public class CreateRatReportActivity extends AppCompatActivity {
 
         Random rand = new Random();
         long key = rand.nextLong();
-        while (RatReportLoader.reports.containsKey(key)) { //TODO: Come up with a safer, better way to get a unique key
+        while (RatReportManager.getReportsHashMap().containsKey(key)) { //TODO: Come up with a safer, better way to get a unique key
             key = rand.nextLong();
         }
 
         ReportLocation reportLoc = new ReportLocation(lat, lon, locType, addr, cit, bor, zip);
         RatReport newReport = new RatReport(key, new Date(), reportLoc); //TODO: Relies on Date constructor defaulting to current time
-        RatReportLoader.reports.put(key, newReport);
+        RatReportManager.getReportsHashMap().put(key, newReport);
 
         returnToRatReportList(view);
     }

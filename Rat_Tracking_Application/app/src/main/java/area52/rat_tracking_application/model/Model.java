@@ -1,6 +1,9 @@
 package area52.rat_tracking_application.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Singleton created to function as interface between controllers and model
@@ -8,9 +11,10 @@ import java.util.HashMap;
  * Created by Eric on 10/11/2017.
  */
 
-public class Model {
+public class Model implements Serializable {
     public static final Model model = new Model();
 
+    private List<User> users = new ArrayList<>();
     private static HashMap<String, User> _users = new HashMap<>();
 
     /**
@@ -22,14 +26,16 @@ public class Model {
         return model;
     }
     /**
-     * populate model with data to test app.
+     * populate model with data to test app if no users are found.
      */
     private static void loadTestData() {
-        _users.put("eric", new User("eric", "eric", "numbers@1"));
-        _users.put("jake", new User("jake", "jake", "numbers@2"));
-        _users.put("heejoo", new User("heejoo", "heejoo", "numbers@3"));
-        _users.put("grace", new User("grace", "grace", "numbers@4"));
-        _users.put("randy", new User("randy", "randy", "numbers@5"));
+        if (_users.keySet().size() == 0) {
+            _users.put("eric", new User("eric", "eric", "numbers@1"));
+            _users.put("jake", new User("jake", "jake", "numbers@2"));
+            _users.put("heejoo", new User("heejoo", "heejoo", "numbers@3"));
+            _users.put("grace", new User("grace", "grace", "numbers@4"));
+            _users.put("randy", new User("randy", "randy", "numbers@5"));
+        }
     }
 
     /**

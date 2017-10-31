@@ -10,29 +10,35 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class RatReportLoader {
-    public static HashMap<Long, RatReport> reports;
+    /**
+     * Singleton pattern, the most original, clever, not-at-all-lazy piece of design appropriate for
+     * this situation
+     */
+    private static RatReportLoader instance = new RatReportLoader();
+
     private HashMap<String, Integer> indexOfCSVColumn;
     private String[] wantedCSVColumns = {"Unique Key", "Created Date", "Location Type",
             "Incident Zip", "Incident Address", "City", "Borough", "Latitude",
             "Longitude"};
 
     public RatReportLoader() {
-        if (reports == null) {
-            reports = new HashMap<>();
-        }
         indexOfCSVColumn = new HashMap<>();
     }
+
+    public static RatReportLoader getInstance() { return instance; }
 
     /*
      * From the given CSV InputStream, adds all rat reports in the stream to memory
      */
-    public void loadRatReportsFromCSV(InputStream csvInput) {
-        if (!reports.isEmpty()) { return; }
+    public List<RatReport> getRatReportsFromCSV(InputStream csvInput) {
+        ArrayList<RatReport> csvRatReports = new ArrayList<>();
         BufferedReader csvReader = new BufferedReader(new InputStreamReader(csvInput));
 
         try {
@@ -44,11 +50,14 @@ public class RatReportLoader {
             while ((currentLine = csvReader.readLine()) != null) {
                 String[] row = currentLine.split(",");
                 RatReport reportFromFile = convertCSVRowToRatReport(row);
-                reports.put(reportFromFile.getKey(), reportFromFile);
+
+                csvRatReports.add(reportFromFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return csvRatReports;
     }
 
     private void getIndicesOfWantedCSVColumns(String[] csvHeader) {

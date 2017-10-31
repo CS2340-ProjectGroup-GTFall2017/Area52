@@ -24,6 +24,7 @@ import java.util.List;
 import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.model.RatReportLoader;
+import area52.rat_tracking_application.model.RatReportManager;
 
 public class ReportListActivity extends AppCompatActivity {
 
@@ -57,7 +58,7 @@ public class ReportListActivity extends AppCompatActivity {
         reportAdapter = new RatReportAdapter(this);
         ratReportRecyclerView.setAdapter(reportAdapter);
 
-        Log.d("Debug", "# rat reports: " + RatReportLoader.reports.keySet().size());
+        Log.d("Debug", "# rat reports: " + RatReportManager.getReportsHashMap().keySet().size());
     }
 }
 
@@ -67,7 +68,7 @@ class RatReportAdapter extends RecyclerView.Adapter<RatReportAdapter.ViewHolder>
 
     RatReportAdapter(Context context) {
         this.context = context;
-        ratReports  = new ArrayList<>(RatReportLoader.reports.values());
+        ratReports  = new ArrayList<>(RatReportManager.getReportsHashMap().values());
         sortRatReportsByDate();
     }
 

@@ -1,8 +1,9 @@
 package area52.rat_tracking_application.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RatReport {
+public class RatReport implements Serializable {
     private long key;
     private Date creationDate;
     private ReportLocation location;

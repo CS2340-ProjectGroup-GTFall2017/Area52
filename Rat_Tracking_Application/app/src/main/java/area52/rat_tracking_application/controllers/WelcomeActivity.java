@@ -11,6 +11,7 @@ import java.io.InputStream;
 
 import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.RatReportLoader;
+import area52.rat_tracking_application.model.RatReportManager;
 
 public class WelcomeActivity extends Activity {
     Button button;
@@ -33,7 +34,6 @@ public class WelcomeActivity extends Activity {
 
     public void loadRatReports() {
         InputStream csvReportFile = getResources().openRawResource(R.raw.rat_sightings);
-        RatReportLoader loader = new RatReportLoader();
-        loader.loadRatReportsFromCSV(csvReportFile);
+        RatReportManager.getInstance().loadRatReports(csvReportFile);
     }
 }
