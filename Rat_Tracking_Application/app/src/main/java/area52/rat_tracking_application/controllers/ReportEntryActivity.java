@@ -2,7 +2,6 @@ package area52.rat_tracking_application.controllers;
 
 import android.content.Context;
 import android.content.Intent;
-import android.icu.text.DateFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -23,14 +22,17 @@ import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.model.ReportLocation;
 
-import static android.icu.text.DateFormat.getDateTimeInstance;
-import static area52.rat_tracking_application.controllers.RatReportLoader.createReport;
-import static area52.rat_tracking_application.controllers.RatReportLoader.getNewLocation;
-import static area52.rat_tracking_application.controllers.RatReportLoader.reports;
-import static area52.rat_tracking_application.controllers.RatReportLoader.setNewLocation;
-import static area52.rat_tracking_application.model.ReportLocation.boroughsOfResidency;
+import static area52.rat_tracking_application.controllers.RatReportCSVReader.ARG_BOROUGH_ID;
+import static area52.rat_tracking_application.controllers.RatReportCSVReader.ARG_CITY_ID;
+import static area52.rat_tracking_application.controllers.RatReportCSVReader.ARG_INCIDENT_ZIP_ID;
+import static area52.rat_tracking_application.controllers.RatReportCSVReader.ARG_LOCATION_TYPE_ID;
+import static area52.rat_tracking_application.controllers.RatReportCSVReader.ARG_UNIQUE_KEY_ID;
+import static area52.rat_tracking_application.controllers.RatReportCSVReader.parsedLineAsList;
+import static area52.rat_tracking_application.controllers.RatReportCSVReader.wantedCSVColumnIndices;
+import static area52.rat_tracking_application.model.RatReportMap.reports;
 import static area52.rat_tracking_application.model.ReportLocation.cityList;
 import static area52.rat_tracking_application.model.ReportLocation.locationTypes;
+import static area52.rat_tracking_application.model.ReportLocation.nycBoroughs;
 import static area52.rat_tracking_application.model.ReportLocation.nycZipCodes;
 
 /**
@@ -50,17 +52,11 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
 
 
     private TextView adminGeneratedUniqueKey;
-    private TextView username;
-    private Spinner boroughSpinner;
-    private Spinner zipCodeSpinner;
-    private Spinner addressCitySpinner;
-    private Spinner locationTypeSpinner;
-    private TextView creationDate;
     private String reportBorough;
     private String reportZipCode;
     private String reportCity;
     private String reportLocationType;
-
+    private Long key;
     /* ***********************
            Data for report being entered.
          */
@@ -99,17 +95,13 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
         /**
          * Grab the dialog widgets so we can get info for later
          */
-        username = (TextView) findViewById(R.id.user_name);
-        boroughSpinner = (Spinner) findViewById(R.id.borough_spinner);
-        zipCodeSpinner = (Spinner) findViewById(R.id.zip_code_spinner);
-        locationTypeSpinner = (Spinner) findViewById(R.id.location_type_spinner);
-        addressCitySpinner = (Spinner) findViewById(R.id.address_city_spinner);
+        TextView username = (TextView) findViewById(R.id.user_name);
+        Spinner boroughSpinner = (Spinner) findViewById(R.id.borough_spinner);
+        Spinner zipCodeSpinner = (Spinner) findViewById(R.id.zip_code_spinner);
+        Spinner locationTypeSpinner = (Spinner) findViewById(R.id.location_type_spinner);
+        Spinner addressCitySpinner = (Spinner) findViewById(R.id.address_city_spinner);
         adminGeneratedUniqueKey = (TextView) findViewById(R.id.unique_key_id);
-        creationDate = (TextView) findViewById(R.id.creation_date);
-
-        DateFormat newDateTime = getDateTimeInstance();
-        reportLocation.setCreationDate(newDateTime.toString());
-        creationDate.setText(reportLocation.getCreationDate());
+        TextView creationDate = (TextView) findViewById(R.id.creation_date);
         username.setText((CharSequence) MainActivity.getCurrentUser());
 
         /**
@@ -119,13 +111,13 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
          * {"Borough", "Incident Zip", "Location Type", "City"}
          */
         ArrayAdapter<String> adapterBoroughs = new ArrayAdapter(
-                this, android.R.layout.simple_spinner_item, boroughsOfResidency);
+                this, android.R.layout.simple_spinner_item, nycBoroughs);
         adapterBoroughs.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         boroughSpinner.setAdapter(adapterBoroughs);
 
 
-        if (getIntent().hasExtra(ReportDetailFragment.ARG_BOROUGH_ID)) {
-            reportBorough = getIntent().getParcelableExtra(ReportDetailFragment.ARG_BOROUGH_ID);
+        if (getIntent().hasExtra(ARG_UNIQUE_KEY_ID)) {
+            reportBorough = getIntent().getParcelableExtra(ARG_BOROUGH_ID);
             boroughSpinner.setSelection(ReportLocation.findBoroughPosition(reportBorough));
             creating = true;
         } else {
@@ -138,8 +130,8 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
         zipCodeSpinner.setAdapter(adapterZip);
 
 
-        if (getIntent().hasExtra(ReportDetailFragment.ARG_INCIDENT_ZIP_ID)) {
-            reportZipCode = getIntent().getParcelableExtra(ReportDetailFragment.ARG_INCIDENT_ZIP_ID);
+        if (getIntent().hasExtra(ARG_UNIQUE_KEY_ID)) {
+            reportZipCode = getIntent().getParcelableExtra(ARG_INCIDENT_ZIP_ID);
             zipCodeSpinner.setSelection(ReportLocation.findZipCodePosition(reportZipCode));
             creating = true;
         } else {
@@ -152,8 +144,8 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
         locationTypeSpinner.setAdapter(adapterLocationType);
 
 
-        if (getIntent().hasExtra(ReportDetailFragment.ARG_LOCATION_TYPE_ID)) {
-            reportLocationType = getIntent().getParcelableExtra(ReportDetailFragment.ARG_LOCATION_TYPE_ID);
+        if (getIntent().hasExtra(ARG_UNIQUE_KEY_ID)) {
+            reportLocationType = getIntent().getParcelableExtra(ARG_LOCATION_TYPE_ID);
             locationTypeSpinner.setSelection(ReportLocation.findLocationTypePosition(reportLocationType));
             creating = true;
         } else {
@@ -166,8 +158,8 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
         addressCitySpinner.setAdapter(adapterCity);
 
 
-        if (getIntent().hasExtra(ReportDetailFragment.ARG_CITY_ID)) {
-            reportCity = getIntent().getParcelableExtra(ReportDetailFragment.ARG_CITY_ID);
+        if (getIntent().hasExtra(ARG_UNIQUE_KEY_ID)) {
+            reportCity = getIntent().getParcelableExtra(ARG_CITY_ID);
             addressCitySpinner.setSelection(ReportLocation.findCityPosition(reportCity));
             creating = true;
         } else {
@@ -181,38 +173,43 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
              *
              * @param view the button
              */
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 if (creating) {
                     Log.d("Add New Entry", "Add Report");
 
-                    reportLocation.setBorough((String) boroughSpinner.getSelectedItem());
-                    reportLocation.setZipCode((Integer) zipCodeSpinner.getSelectedItem());
-                    reportLocation.setLocationType((String) locationTypeSpinner.getSelectedItem());
-                    reportLocation.setCity((String) addressCitySpinner.getSelectedItem());
+                    reportLocation.setBorough(reportBorough);
+                    reportLocation.setZipCode(reportZipCode);
+                    reportLocation.setLocationType(reportLocationType);
+                    reportLocation.setCity(reportCity);
 
-                    _report.setKey(reports.keySet().toArray().length + 1);
-                    adminGeneratedUniqueKey.setText("" + _report.getKey());
+                    _report.setNewReportKey();
+                    _report.setNewReportDate();
+                    _report.setNewReportLocation(reportLocation);
 
-                    setNewLocation(reportLocation);
 
                     Log.d("New Report Entry", "New report data: " + _report);
 
-                    createReport((Long) _report.getKey(), getNewLocation());
+                    reports.put(_report.getReportKey() , _report);
+
+                    adminGeneratedUniqueKey.setText("" + parsedLineAsList.get(wantedCSVColumnIndices.get(0)));
 
                     Toast.makeText(
                             getApplicationContext(),
                             "Report has been added",
                             Toast.LENGTH_LONG).show();
-                    Context reportDetailFragmentContext = view.getContext();
-                    Intent reportDetailFragmentIntent = new Intent(
-                            reportDetailFragmentContext, ReportDetailFragment.class);
-                    reportDetailFragmentContext.startActivity(reportDetailFragmentIntent);
+                    Context reportListActivity_Context = view.getContext();
+                    Intent reportListActivity_Intent = new Intent(
+                            reportListActivity_Context, ReportListActivity.class);
+                    reportListActivity_Context.startActivity(reportListActivity_Intent);
                 } else {
                     finish();
                 }
             }
         });
+
+
 
         Button cancelButton = (Button) findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -224,10 +221,10 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
             @Override
             public void onClick(View view) {
                 Log.d("Cancel Entry", "Cancel Report Entry");
-                Context reportDetailActivityContext = view.getContext();
-                Intent reportDetailActivityIntent = new Intent(
-                        reportDetailActivityContext, ReportDetailActivity.class);
-                reportDetailActivityContext.startActivity(reportDetailActivityIntent);
+                Context reportDetailActivity_Context = view.getContext();
+                Intent reportDetailActivity_Intent = new Intent(
+                        reportDetailActivity_Context, ReportDetailActivity.class);
+                reportDetailActivity_Context.startActivity(reportDetailActivity_Intent);
             }
         });
     }
@@ -252,9 +249,19 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        reportBorough = "NA";
-        reportZipCode = "NA";
-        reportLocationType = "NA";
-        reportCity = "NA";
+        switch (parent.getId()){
+            case R.id.borough_spinner:
+                reportBorough = "NA";
+                break;
+            case R.id.zip_code_spinner:
+                reportZipCode = "NA";
+                break;
+            case R.id.location_type_spinner:
+                reportLocationType = "NA";
+                break;
+            case R.id.address_city_spinner:
+                reportCity = "NA";
+                break;
+        }
     }
 }

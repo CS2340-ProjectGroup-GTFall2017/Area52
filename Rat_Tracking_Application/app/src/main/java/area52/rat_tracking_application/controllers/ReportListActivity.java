@@ -19,8 +19,9 @@ import java.util.List;
 import area52.rat_tracking_application.R;
 
 import static area52.rat_tracking_application.R.layout.report_list;
-import static area52.rat_tracking_application.controllers.RatReportLoader.getReportKeysCreationDates;
+import static area52.rat_tracking_application.controllers.RatReportCSVReader.ARG_UNIQUE_KEY_ID;
 import static area52.rat_tracking_application.model.Model.model;
+import static area52.rat_tracking_application.model.RatReportMap.getReportKeysCreationDates;
 
 /**
  * THIS IS OUR TOP_LEVEL WINDOW THAT THE USER FIRST SEES IN THE APPLICATION!
@@ -141,18 +142,6 @@ public class ReportListActivity extends AppCompatActivity {
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mTwoPane) {
-                        //if a two pane window, we change the contents on the main screen
-                        Bundle arguments = new Bundle();
-                        arguments.putInt(ReportDetailFragment.ARG_UNIQUE_KEY_ID, 0);
-
-                        ReportDetailFragment fragment = new ReportDetailFragment();
-                        fragment.setArguments(arguments);
-
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.report_detail_container, fragment)
-                                .commit();
-                    } else {
 
                         Context context = v.getContext();
                         //create new intent with the new screen (activity)
@@ -161,13 +150,12 @@ public class ReportListActivity extends AppCompatActivity {
                             pass along the id of the report so we can retrieve the correct data in
                             the next window
                          */
-                        intent.putExtra(ReportDetailFragment.ARG_UNIQUE_KEY_ID, holder.mReport);
+                        intent.putExtra(ARG_UNIQUE_KEY_ID, holder.mReport);
 
                         model.setCurrentReport(holder.mReport);
 
                         //display the new window
                         context.startActivity(intent);
-                    }
                 }
             });
         }

@@ -23,7 +23,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/report_list_container"
         style="@style/Widget.AppCompat.ListView.DropDown"
         android:layout_width="match_parent"

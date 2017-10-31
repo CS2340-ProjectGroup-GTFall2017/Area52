@@ -8,5 +8,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="area52.rat_tracking_application.controllers.ReportDetailFragment"
+    tools:context="area52.rat_tracking_application.controllers.ReportDetailActivity"
     tools:listitem="@layout/content_report_list" />

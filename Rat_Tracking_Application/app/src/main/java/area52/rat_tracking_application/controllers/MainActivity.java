@@ -11,11 +11,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.InputStream;
+
 import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.Model;
 import area52.rat_tracking_application.model.User;
 
 import static area52.rat_tracking_application.R.layout.activity_main;
+import static area52.rat_tracking_application.controllers.RatReportCSVReader.readInFile;
+import static area52.rat_tracking_application.model.RatReportMap.launchMaps;
 import static area52.rat_tracking_application.model.ReportLocation.setZipCodePositions;
 
 /**
@@ -136,5 +140,30 @@ public class MainActivity extends Activity {
                 registrationContext.startActivity(registrationIntent);
             }
         });
+
+        Button launchReportsButton;
+        launchReportsButton = (Button) findViewById(R.id.launch_loader);
+        launchReportsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = view.getContext();
+                Intent intent = new Intent(context, ReportListActivity.class);
+                context.startActivity(intent);
+                loadRatReports();
+            }
+        });
+    }
+
+    static RatReportCSVReader reader;
+
+    public void loadRatReports() {
+        reader = new RatReportCSVReader();
+        InputStream ratReportFile = getResources().openRawResource(R.raw.rat_sightings);
+        try {
+            readInFile(ratReportFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        launchMaps();
     }
 }

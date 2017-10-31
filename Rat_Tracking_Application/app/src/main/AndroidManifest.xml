@@ -10,9 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".controllers.ReportLoaderActivity"
+            android:name=".controllers.WelcomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_welcome"
+            android:label="@string/title_activity_rat_report_loader"
             android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,6 +28,12 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="controllers.MainActivity" />
+        </activity>
+        <activity
+            android:name=".controllers.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label= "@string/login_go_to_register"
+            android:theme="@style/FullscreenTheme">
         </activity>
         <activity
             android:name=".controllers.ReportDetailActivity"
@@ -49,18 +55,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_report_list"
             android:theme="@style/FullscreenTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="controllers.ReportLoaderActivity" />
-        </activity>
-        <activity
-            android:name=".controllers.WelcomeActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_rat_report_loader"
-            android:theme="@style/FullscreenTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="controllers.MainActivity" />
         </activity>
     </application>
 

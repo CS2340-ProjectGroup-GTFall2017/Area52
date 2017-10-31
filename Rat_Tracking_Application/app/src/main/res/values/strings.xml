@@ -54,4 +54,5 @@
     <string name="select_zip_code">Select Zip Code</string>
     <string name="select_borough">Select Borough</string>
     <string name="load_reports">Load Reports</string>
+    <string name="login_go_to_register">Login or Register</string>
 </resources>
