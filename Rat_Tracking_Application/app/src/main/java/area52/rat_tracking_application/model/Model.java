@@ -29,6 +29,12 @@ public class Model implements Serializable {
     public static Model getInstance() {
         return model;
     }
+
+    public void addNewUser(User newUser) {
+        users.add(newUser);
+        syncUsersListAndHashMap();
+    }
+
     /**
      * populate model with data to test app if no users are found.
      */

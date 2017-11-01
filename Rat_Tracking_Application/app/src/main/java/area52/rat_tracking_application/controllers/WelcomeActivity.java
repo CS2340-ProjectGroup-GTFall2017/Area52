@@ -34,6 +34,7 @@ public class WelcomeActivity extends Activity {
             }
         });
         loadRatReports();
+        loadUsers();
     }
 
     public void loadRatReports() {
