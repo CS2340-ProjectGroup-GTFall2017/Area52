@@ -56,10 +56,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         if (username != null && email != null && password != null) {
             if (isAdmin) {
-                newUser = new Admin();
-                newUser.setUName(getUsername());
-                newUser.setEmail(getEmail());
-                newUser.setPWord(getPassword());
+                newUser = new Admin(getUsername(), getEmail(), getPassword());
                 HashMap<String, User> userMap = Model.model.getUserMap();//.put(getUsername(), newUser);
                 if (!userMap.containsKey(getUsername())){
                     Model.model.getUserMap().put(getUsername(), newUser);
@@ -67,10 +64,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 }
 
             } else {
-                newUser = new User();
-                newUser.setUName(getUsername());
-                newUser.setEmail(getEmail());
-                newUser.setPWord(getPassword());
+                newUser = new User(getUsername(), getEmail(), getPassword());
                 HashMap<String, User> userMap = Model.model.getUserMap();//.put(getUsername(), newUser);
                 if (!userMap.containsKey(getUsername())){
                     Model.model.getUserMap().put(getUsername(), newUser);

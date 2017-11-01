@@ -10,10 +10,13 @@ import area52.rat_tracking_application.controllers.RegistrationActivity;
 public class Admin extends User {
 
     /**
-     * no argument constructor creates instance of
-     * Admin class.
+     * Creates a new Admin object
+     * @param uName username of admin
+     * @param email email of Admin
+     * @param pWord password of Admin
      */
-    public Admin() {
+    public Admin(String uName, String email, String pWord) {
+        super(uName, email, pWord);
     }
 
 

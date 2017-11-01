@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.InputStream;
 
 import area52.rat_tracking_application.R;
+import area52.rat_tracking_application.model.Model;
 import area52.rat_tracking_application.model.PersistenceManager;
 import area52.rat_tracking_application.model.RatReportLoader;
 import area52.rat_tracking_application.model.RatReportManager;
@@ -46,5 +47,11 @@ public class WelcomeActivity extends Activity {
             PersistenceManager.getInstance()
                     .saveBinary(ratReportsFile, RatReportManager.getInstance());
         }
+    }
+
+    public void loadUsers() {
+        File usersFile = new File(this.getFilesDir(),
+                PersistenceManager.USERS_DATA_FILENAME);
+        Model.getInstance().loadUsers(usersFile);
     }
 }
