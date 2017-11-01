@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /**
  * Created by 2016d on 10/31/2017.
@@ -32,7 +33,7 @@ public class PersistenceManager {
      * @param objToBeSaved The object to be saved; must implement Serializable
      * @return true/false of if the file was saved successfully
      */
-    public boolean saveBinary(File file, Object objToBeSaved) {
+    public boolean saveBinary(File file, Serializable objToBeSaved) {
         boolean success = true;
         try {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
@@ -49,10 +50,12 @@ public class PersistenceManager {
     }
 
     public Object loadBinary(File file) {
+        Log.d("LoadingB", "Beginning to load binary");
         Object objFromFile = null;
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
             objFromFile = in.readObject();
+            Log.d("LoadingB", "Object from file: " + objFromFile);
             in.close();
         } catch (IOException e) {
             Log.e("PersistenceManager", "Error reading an entry from binary file",e);
