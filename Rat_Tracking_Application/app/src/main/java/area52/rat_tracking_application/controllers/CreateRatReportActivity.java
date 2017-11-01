@@ -11,10 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.io.File;
 import java.util.Date;
 import java.util.Random;
 
 import area52.rat_tracking_application.R;
+import area52.rat_tracking_application.model.PersistenceManager;
 import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.model.RatReportLoader;
 import area52.rat_tracking_application.model.RatReportManager;
@@ -64,7 +66,7 @@ public class CreateRatReportActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createNewRatReport(view);
+                addRatReportToList(view);
             }
         });
     }
@@ -75,7 +77,16 @@ public class CreateRatReportActivity extends AppCompatActivity {
         context.startActivity(intent);
     }
 
-    private void createNewRatReport(View view) { //TODO: Refactor this mess
+    private void addRatReportToList(View view) {
+        RatReport newRatReport = createNewRatReport();
+
+        RatReportManager.getInstance().addRatReport(newRatReport);
+        saveRatReports();
+
+        returnToRatReportList(view);
+    }
+
+    private RatReport createNewRatReport() { //TODO: Refactor this mess
         String locType = locationType.getSelectedItem().toString();
         String bor = borough.getSelectedItem().toString();
 
@@ -94,8 +105,15 @@ public class CreateRatReportActivity extends AppCompatActivity {
 
         ReportLocation reportLoc = new ReportLocation(lat, lon, locType, addr, cit, bor, zip);
         RatReport newReport = new RatReport(key, new Date(), reportLoc); //TODO: Relies on Date constructor defaulting to current time
-        RatReportManager.getReportsHashMap().put(key, newReport);
 
-        returnToRatReportList(view);
+        return newReport;
+    }
+
+    /**
+     * Save rat reports as a binary file
+     */
+    private void saveRatReports() {
+        File ratReportsFile = new File(this.getFilesDir(), PersistenceManager.RAT_REPORT_DATA_FILENAME);
+        PersistenceManager.getInstance().saveBinary(ratReportsFile, RatReportManager.getInstance());
     }
 }

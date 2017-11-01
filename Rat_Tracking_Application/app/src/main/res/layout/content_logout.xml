@@ -36,7 +36,7 @@
         android:layout_below="@+id/button_reportList"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="42dp"
-        android:text="Report Map (Coming Soon!)" />
+        android:text="Report Map" />
 
     <Button
         android:id="@+id/button_reportGraph"

@@ -8,11 +8,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import java.io.File;
 import java.util.HashMap;
 
 import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.Admin;
 import area52.rat_tracking_application.model.Model;
+import area52.rat_tracking_application.model.PersistenceManager;
 import area52.rat_tracking_application.model.User;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -55,29 +57,20 @@ public class RegistrationActivity extends AppCompatActivity {
         isAdmin = adminCheckbox.isChecked();
 
         if (username != null && email != null && password != null) {
-            if (isAdmin) {
-                newUser = new Admin();
-                newUser.setUName(getUsername());
-                newUser.setEmail(getEmail());
-                newUser.setPWord(getPassword());
-                HashMap<String, User> userMap = Model.model.getUserMap();//.put(getUsername(), newUser);
-                if (!userMap.containsKey(getUsername())){
-                    Model.model.getUserMap().put(getUsername(), newUser);
-                    goBackToLoginScreen(view);
-                }
-
-            } else {
-                newUser = new User();
-                newUser.setUName(getUsername());
-                newUser.setEmail(getEmail());
-                newUser.setPWord(getPassword());
-                HashMap<String, User> userMap = Model.model.getUserMap();//.put(getUsername(), newUser);
-                if (!userMap.containsKey(getUsername())){
-                    Model.model.getUserMap().put(getUsername(), newUser);
-                    goBackToLoginScreen(view);
-                }
+            newUser = (isAdmin) ? new Admin(getUsername(), getEmail(), getPassword())
+                                : new User(getUsername(), getEmail(), getPassword());
+            HashMap<String, User> userMap = Model.model.getUserMap();
+            if (!userMap.containsKey(getUsername())){
+                Model.model.addNewUser(newUser);
+                saveUsers();
+                goBackToLoginScreen(view);
             }
         }
+    }
+
+    private void saveUsers() {
+        File ratReportsFile = new File(this.getFilesDir(), PersistenceManager.USERS_DATA_FILENAME);
+        PersistenceManager.getInstance().saveBinary(ratReportsFile, Model.getInstance());
     }
 
     public void setUsername(String username){
