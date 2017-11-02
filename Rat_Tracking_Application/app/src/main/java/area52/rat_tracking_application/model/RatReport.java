@@ -22,13 +22,13 @@ import static area52.rat_tracking_application.model.RatReportMap.reports;
 
 public class RatReport {
 
-    private String _key;
+    private static String _key;
     /** the instance of report location*/
-    private ReportLocation _location;
+    private static ReportLocation _location;
 
-    private SimpleDateFormat currentDate;
+    private static SimpleDateFormat currentDate;
 
-    private String _date;
+    private static String _date;
 
     private Long key;
 
@@ -39,7 +39,7 @@ public class RatReport {
             "Incident Zip", "Incident Address", "City", "Borough", "Latitude",
             "Longitude");
 
-    private List<String> singleReportLocation;
+    private static List<String> singleReportLocation;
 
     /**
      * Makes a new Report
@@ -63,11 +63,11 @@ public class RatReport {
      *
      * @return unique key or 0
      */
-    public void setReportKey() {
+    public static void setReportKey() {
         _key = parsedLineAsList.get(wantedCSVColumnIndices.get(0));
     }
 
-    public String getReportKey() {
+    public static String getReportKey() {
         return _key;
     }
 
@@ -76,13 +76,17 @@ public class RatReport {
         _key = key.toString();
     }
 
+    public String getNewReportKey() {
+        return _key;
+    }
+
     @TargetApi(25)
-    protected void setReportDate() {
+    static void setReportDate() {
         currentDate = new SimpleDateFormat(
                     parsedLineAsList.get(wantedCSVColumnIndices.get(1)));
     }
 
-    protected String getReportDate() {
+    public static String getReportDate() {
         _date = currentDate.toString();
         return _date;
     }
@@ -93,6 +97,10 @@ public class RatReport {
         currentDate = new SimpleDateFormat(date.toString());
     }
 
+    public String getNewReportDate() {
+        return currentDate.toString();
+    }
+
     /**
      * HashMap<Long, RatReport> reports Value, representing a row in the
      * csv file, created by indexing the columns of each of the input streamed csv file's
@@ -100,7 +108,7 @@ public class RatReport {
      *
      * @return reportLocation instance of RatReport
      */
-    void setLocation() {
+    static void setLocation() {
         String[] parsedAsArray = null;
         for (Integer i : wantedCSVColumnIndices) {
             parsedAsArray[i] = parsedLineAsList.get(wantedCSVColumnIndices.get(i));
@@ -109,11 +117,15 @@ public class RatReport {
         _location = (ReportLocation) singleReportLocation;
     }
 
+    static ReportLocation getReportLocation() {
+        return _location;
+    }
+
     public void setNewReportLocation(ReportLocation location) {
         _location = location;
     }
 
-    public ReportLocation getReportLocation() {
+    public ReportLocation getNewReportLocation() {
         return _location;
     }
 }

@@ -9,6 +9,8 @@ import android.widget.Button;
 
 import area52.rat_tracking_application.R;
 
+import static area52.rat_tracking_application.model.ReportLocation.setZipCodePositions;
+
 /**
  * Acknowledgements:
  *
@@ -17,14 +19,8 @@ import area52.rat_tracking_application.R;
  * Classes, methods, method params, instance and local variables named
  * to reflect our [class final project] --> [Rat Tracking App]:
  *
- * "An activity representing a single Report detail screen. This
- * activity is only used in narrow width devices. On tablet-size devices,
- * item details are presented side-by-side with a list of items
- * in a {@link ReportListActivity}.
- *
- * Here we need to display a list of students.  Our view will be pretty similar
- * since we are displaying a list of students in the course.  We are going to use a
- * recycler view again."
+ * Displays the details of a single report, selected on the ReportListActivity
+ * class instance's corresponding screen.
  *
  * Created by Eric on 10/23/2017.
  */
@@ -60,6 +56,15 @@ public class ReportDetailActivity extends AppCompatActivity {
             }
         });
 
-        // RatReportCSVReader.getReportDetailActivity()
+        Button goBackToReportListScreen;
+        goBackToReportListScreen = (Button) findViewById(R.id.go_to_report_list_screen_button);
+        goBackToReportListScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context reportListContext = view.getContext();
+                Intent reportListIntent = new Intent(reportListContext, ReportListActivity.class);
+                reportListContext.startActivity(reportListIntent);
+            }
+        });
     }
 }

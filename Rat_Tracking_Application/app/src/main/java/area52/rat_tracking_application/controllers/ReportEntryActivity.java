@@ -30,6 +30,7 @@ import static area52.rat_tracking_application.controllers.RatReportCSVReader.ARG
 import static area52.rat_tracking_application.controllers.RatReportCSVReader.parsedLineAsList;
 import static area52.rat_tracking_application.controllers.RatReportCSVReader.wantedCSVColumnIndices;
 import static area52.rat_tracking_application.model.RatReportMap.reports;
+import static area52.rat_tracking_application.model.RatReportMap.setNewReportKeyCreationDate;
 import static area52.rat_tracking_application.model.ReportLocation.cityList;
 import static area52.rat_tracking_application.model.ReportLocation.locationTypes;
 import static area52.rat_tracking_application.model.ReportLocation.nycBoroughs;
@@ -179,10 +180,13 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
                 if (creating) {
                     Log.d("Add New Entry", "Add Report");
 
+                    reportLocation.setLatitude("");
+                    reportLocation.setLongitude("");
+                    reportLocation.setLocationType(reportLocationType);
+                    reportLocation.setAddress(reportBorough + reportCity + reportZipCode);
+                    reportLocation.setCity(reportCity);
                     reportLocation.setBorough(reportBorough);
                     reportLocation.setZipCode(reportZipCode);
-                    reportLocation.setLocationType(reportLocationType);
-                    reportLocation.setCity(reportCity);
 
                     _report.setNewReportKey();
                     _report.setNewReportDate();
@@ -191,9 +195,11 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
 
                     Log.d("New Report Entry", "New report data: " + _report);
 
-                    reports.put(_report.getReportKey() , _report);
+                    reports.put(_report.getNewReportKey() , _report);
 
                     adminGeneratedUniqueKey.setText("" + parsedLineAsList.get(wantedCSVColumnIndices.get(0)));
+
+                    setNewReportKeyCreationDate(_report.getNewReportKey(), _report.getNewReportDate());
 
                     Toast.makeText(
                             getApplicationContext(),

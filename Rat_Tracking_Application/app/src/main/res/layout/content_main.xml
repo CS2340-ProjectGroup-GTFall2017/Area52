@@ -16,7 +16,7 @@
         android:id="@+id/textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/editText2"
+        android:layout_above="@+id/enter_password"
         android:layout_alignLeft="@+id/textView_email"
         android:layout_alignStart="@+id/textView_email"
         android:layout_marginBottom="46dp"
@@ -43,10 +43,10 @@
         android:text="@string/username"
         android:textColor="#0cf0ea"
         android:textSize="20sp"
-        android:layout_alignBaseline="@+id/editText"
-        android:layout_alignBottom="@+id/editText"
-        android:layout_toLeftOf="@+id/editText"
-        android:layout_toStartOf="@+id/editText" />
+        android:layout_alignBaseline="@+id/enter_username"
+        android:layout_alignBottom="@+id/enter_username"
+        android:layout_toLeftOf="@+id/enter_username"
+        android:layout_toStartOf="@+id/enter_username" />
 
     <TextView
         android:id="@+id/textView5"
@@ -55,13 +55,13 @@
         android:text="@string/password"
         android:textColor="#0cf0ea"
         android:textSize="20sp"
-        android:layout_alignBaseline="@+id/editText2"
-        android:layout_alignBottom="@+id/editText2"
-        android:layout_toLeftOf="@+id/editText2"
-        android:layout_toStartOf="@+id/editText2" />
+        android:layout_alignBaseline="@+id/enter_password"
+        android:layout_alignBottom="@+id/enter_password"
+        android:layout_toLeftOf="@+id/enter_password"
+        android:layout_toStartOf="@+id/enter_password" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/enter_username"
         style="@style/Widget.AppCompat.EditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -81,15 +81,15 @@
         android:visibility="visible" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/enter_password"
         style="@style/Widget.AppCompat.EditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/editText"
-        android:layout_alignLeft="@+id/editText"
-        android:layout_alignRight="@+id/editText"
-        android:layout_alignStart="@+id/editText"
-        android:layout_below="@+id/editText"
+        android:layout_alignEnd="@+id/enter_username"
+        android:layout_alignLeft="@+id/enter_username"
+        android:layout_alignRight="@+id/enter_username"
+        android:layout_alignStart="@+id/enter_username"
+        android:layout_below="@+id/enter_username"
         android:contentDescription="@string/prompt_password"
         android:selectAllOnFocus="true"
         android:inputType="textPassword"
@@ -106,7 +106,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:visibility="visible"
         android:layout_marginTop="25dp"
-        android:layout_below="@+id/button"
+        android:layout_below="@+id/login_button"
         android:layout_toRightOf="@+id/textview"
         android:layout_toEndOf="@+id/textview" />
 
@@ -119,11 +119,11 @@
         android:layout_marginStart="11dp"
         android:layout_alignBaseline="@+id/textView2"
         android:layout_alignBottom="@+id/textView2"
-        android:layout_alignLeft="@+id/button2"
-        android:layout_alignStart="@+id/button2" />
+        android:layout_alignLeft="@+id/cancel_button"
+        android:layout_alignStart="@+id/cancel_button" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="false"
@@ -135,7 +135,7 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/cancel_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cancel_cancel"
@@ -146,7 +146,7 @@
         android:layout_alignParentEnd="true" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/registration_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/register_button_on_login_screen"

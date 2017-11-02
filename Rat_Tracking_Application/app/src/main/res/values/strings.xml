@@ -46,7 +46,7 @@
     <string name="title_activity_report_entry">Rat Report Entry Screen</string>
     <string name="title_activity_report_detail">Rat Sighting Reports</string>
     <string name="press_below_for_list_view_of_rat_reports">Press below for list view of rat reports:</string>
-    <string name="rat_report_list_view">Rat Report List View</string>
+    <string name="rat_report_list_view" translatable="false">Rat Report Details</string>
     <string name="logout_report_detail">Logout</string>
     <string name="username_content_report_entry">Username</string>
     <string name="creation_date">Creation Date</string>
@@ -55,4 +55,5 @@
     <string name="select_borough">Select Borough</string>
     <string name="load_reports">Load Reports</string>
     <string name="login_go_to_register">Login or Register</string>
+    <string name="rat_report_content_view">Rat Report Content</string>
 </resources>

@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_main"
     android:layout_width="match_parent"
@@ -8,43 +9,40 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:visibility="visible"
-    tools:context="area52.rat_tracking_application.controllers.ReportDetailActivity"
+    tools:context="area52.rat_tracking_application.controllers.ReportListActivity"
     tools:showIn="@layout/activity_report_detail" >
 
-
-    <TextView
-        android:id="@+id/textView_rat_reports"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/press_below_for_list_view_of_rat_reports"
-        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
-        tools:layout_editor_absoluteX="62dp"
-        tools:layout_editor_absoluteY="142dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/report_list_container"
-        style="@style/Widget.AppCompat.ListView.DropDown"
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/content_view"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView_rat_reports"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="23dp"
-        android:text="@string/rat_report_list_view"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display4"
         android:visibility="visible"
         tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="247dp" />
+        tools:layout_editor_absoluteY="247dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/go_to_report_list_screen_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back to Report List Screen"
+        android:layout_above="@+id/go_to_report_entry_screen_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="35dp" />
 
     <Button
         android:id="@+id/go_to_report_entry_screen_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/report_a_rat_sighting"
+        android:visibility="visible"
         android:layout_above="@+id/logout_button"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="182dp"
-        android:text="@string/report_a_rat_sighting" />
+        android:layout_marginBottom="81dp" />
 
     <Button
         android:id="@+id/logout_button"

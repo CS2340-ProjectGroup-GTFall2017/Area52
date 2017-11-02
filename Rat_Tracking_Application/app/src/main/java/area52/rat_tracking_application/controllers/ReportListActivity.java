@@ -4,24 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
 
 import area52.rat_tracking_application.R;
+import area52.rat_tracking_application.model.RatReport;
 
 import static area52.rat_tracking_application.R.layout.report_list;
 import static area52.rat_tracking_application.controllers.RatReportCSVReader.ARG_UNIQUE_KEY_ID;
-import static area52.rat_tracking_application.model.Model.model;
 import static area52.rat_tracking_application.model.RatReportMap.getReportKeysCreationDates;
+import static area52.rat_tracking_application.model.RatReportMap.reports;
+import static area52.rat_tracking_application.model.ReportLocation.setZipCodePositions;
 
 /**
  * THIS IS OUR TOP_LEVEL WINDOW THAT THE USER FIRST SEES IN THE APPLICATION!
@@ -38,48 +38,45 @@ import static area52.rat_tracking_application.model.RatReportMap.getReportKeysCr
  */
 public class ReportListActivity extends AppCompatActivity {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.  For 2340, this is optional, since multi-display support is extra credit.
-     */
-    private boolean mTwoPane;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
+        View recyclerView = findViewById(R.id.report_list);
+        assert recyclerView != null;
+        setupRecyclerView((RecyclerView) recyclerView);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        setupButtonsOnStartup();
+    }
+
+    protected void setupButtonsOnStartup() {
+        Button logoutButton;
+        logoutButton = (Button) findViewById(R.id.logout_button);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Context logoutContext = view.getContext();
+                Intent logoutIntent = new Intent(logoutContext, WelcomeActivity.class);
+                logoutContext.startActivity(logoutIntent);
             }
         });
 
-        //Step 1.  Setup the recycler view by getting it from our layout in the main window
-        View recyclerView = findViewById(R.id.report_list);
-        assert recyclerView != null;
-        //Step 2.  Hook up the adapter to the view
-        setupRecyclerView((RecyclerView) recyclerView);
-
-        //this is only needed if you are doing an optional support for multiple display sizes
-        if (findViewById(R.id.report_list_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-        }
+        Button goToReportEntryScreen;
+        goToReportEntryScreen = (Button) findViewById(R.id.go_to_report_entry_screen_button);
+        goToReportEntryScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setZipCodePositions();
+                Context reportEntryContext = view.getContext();
+                Intent reportEntryIntent = new Intent(reportEntryContext, ReportEntryActivity.class);
+                reportEntryContext.startActivity(reportEntryIntent);
+            }
+        });
     }
 
     /**
-     * Set up an adapter and hook it to the provided view
+     *
      * @param recyclerView  the view that needs this adapter
      */
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -95,66 +92,45 @@ public class ReportListActivity extends AppCompatActivity {
     class SimpleReportRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleReportRecyclerViewAdapter.ViewHolder> {
 
-        /**
+
+            /**
          * Collection of the items to be shown in this list.
          */
-        private final List<String> mReports;
+        private final List<String[]> mReports;
 
         /**
          * set the items to be used by the adapter
          * @param items the list of items to be displayed in the recycler view
          */
-        SimpleReportRecyclerViewAdapter(List<String> items) {
+        SimpleReportRecyclerViewAdapter(List<String[]> items) {
             mReports = items;
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            /*
 
-              This sets up the view for each individual item in the recycler display
-              To edit the actual layout, we would look at: res/layout/content_report_list.xml
-              If you look at the example file, you will see it currently just 2 TextView elements
-             */
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(report_list, parent, false);
             return new ViewHolder(view);
         }
 
+
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            /*
-            This is where we have to bind each data element in the list (given by position parameter)
-            to an element in the view (which is one of our two TextView widgets
-             */
-            //start by getting the element at the correct position
-            holder.mReport = mReports.get(position);
-            /*
-              Now we bind the data to the widgets.  In this case, pretty simple, put the id in one
-              textview and the string rep of a course in the other.
-             */
-            holder.mIdView.setText("" + mReports.get(position));
-            holder.mContentView.setText(mReports.get(position));
+            String[] reportKeyCreationDate = mReports.get(position);
+            holder.keyV = reportKeyCreationDate[0];
+            holder.keyView.setText(holder.keyV);
+            holder.mFullReport = reports.get(reportKeyCreationDate[0]);
+            holder.mContentView.setText(holder.mFullReport.toString());
 
-            /*
-             * set up a listener to handle if the user clicks on this list item, what should happen?
-             */
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
 
-                        Context context = v.getContext();
-                        //create new intent with the new screen (activity)
-                        Intent intent = new Intent(context, ReportEntryActivity.class);
-                        /*
-                            pass along the id of the report so we can retrieve the correct data in
-                            the next window
-                         */
-                        intent.putExtra(ARG_UNIQUE_KEY_ID, holder.mReport);
+                        Context context = view.getContext();
+                        Intent intent = new Intent(context, ReportDetailActivity.class);
+                        intent.putExtra(ARG_UNIQUE_KEY_ID, holder.mContentView.toString());
 
-                        model.setCurrentReport(holder.mReport);
-
-                        //display the new window
                         context.startActivity(intent);
                 }
             });
@@ -173,15 +149,16 @@ public class ReportListActivity extends AppCompatActivity {
 
         class ViewHolder extends RecyclerView.ViewHolder {
             final View mView;
-            final TextView mIdView;
+            final TextView keyView;
             final TextView mContentView;
-            String mReport;
+            String keyV;
+            RatReport mFullReport;
 
             ViewHolder(View view) {
                 super(view);
                 mView = view;
-                mIdView = (TextView) view.findViewById(R.id.id);
-                mContentView = (TextView) view.findViewById(R.id.contentView);
+                keyView = (TextView) mView.findViewById(R.id.key_view);
+                mContentView = (TextView) mView.findViewById(R.id.content_view);
             }
 
             @Override

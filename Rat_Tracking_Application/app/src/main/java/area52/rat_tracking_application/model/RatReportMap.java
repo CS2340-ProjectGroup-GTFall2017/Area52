@@ -1,26 +1,34 @@
 package area52.rat_tracking_application.model;
 
-import android.support.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import static area52.rat_tracking_application.controllers.RatReportCSVReader.parsedLineAsList;
 import static area52.rat_tracking_application.controllers.RatReportCSVReader.wantedCSVColumnIndices;
+import static area52.rat_tracking_application.model.RatReport.getReportDate;
+import static area52.rat_tracking_application.model.RatReport.getReportKey;
+import static area52.rat_tracking_application.model.RatReport.getReportLocation;
+import static area52.rat_tracking_application.model.RatReport.setLocation;
+import static area52.rat_tracking_application.model.RatReport.setReportDate;
+import static area52.rat_tracking_application.model.RatReport.setReportKey;
 
 /**
+ * RatReportMap class saved loaded rat reports from csv file, and also
+ * accepts new puts to its static 'reports' hash map.
+ *
  * Created by Eric on 10/29/2017.
  */
 
 public class RatReportMap extends HashMap {
-    private static RatReport ratReport;
+
+    public static RatReport ratReport;
+
     public static HashMap<String, RatReport> reports;
 
-    private static List<String> keyCreationDateList = new ArrayList<>();
-    private static ReportLocation location;
+    private static String[] keyCreationDate = new String[2];
 
-    private static String key;
+    private static List<String[]> keyCreationDateList = new ArrayList<>();
 
     public static void launchMaps() {
         if (reports == null) {
@@ -33,10 +41,17 @@ public class RatReportMap extends HashMap {
      * keyCreationDateList
      *
      */
-    protected static void setReportKeysCreationDates() {
+    public static void setReportKeyCreationDate() {
         String key = parsedLineAsList.get(wantedCSVColumnIndices.get(0));
         String date = parsedLineAsList.get(wantedCSVColumnIndices.get(1));
-        String keyCreationDate = key + date;
+        keyCreationDate[0] = key;
+        keyCreationDate[1] = date;
+        keyCreationDateList.add(keyCreationDate);
+    }
+
+    public static void setNewReportKeyCreationDate(String key, String date) {
+        keyCreationDate[0] = key;
+        keyCreationDate[1] = date;
         keyCreationDateList.add(keyCreationDate);
     }
 
@@ -47,26 +62,8 @@ public class RatReportMap extends HashMap {
      * for viewing of individual rat report details. New entries will also have their unique keys
      * and creation dates added to this list.
      */
-    public static List<String> getReportKeysCreationDates() {
+    public static List<String[]> getReportKeysCreationDates() {
         return keyCreationDateList;
-    }
-
-    /**
-     * sets a new rat report location during a new report entry activity
-     *
-     * @param newLocation a new rat report instance's location. Accessed during a
-     * report entry activity
-     */
-    protected static void setNewLocation(ReportLocation newLocation) {
-        location = newLocation;
-    }
-
-    /**
-     *
-     * @return location the newly entered rat report instance's location.
-     */
-    protected static ReportLocation getNewLocation() {
-        return location;
     }
 
     /**
@@ -84,49 +81,19 @@ public class RatReportMap extends HashMap {
      * or <key, value> mappings), and otherwise return false.
      */
     public static void addSingleReport() {
-        ratReport.setReportKey();
-        ratReport.setLocation();
-        ratReport.setReportDate();
-        key = ratReport.getReportKey();
-        location = ratReport.getReportLocation();
+        setReportKey();
+        setLocation();
+        setReportDate();
+        ratReport = new RatReport(getReportKey(), getReportLocation(), getReportDate());
         if (reports.size() > 0) {
             for (String k : reports.keySet()) {
                 for (RatReport v : reports.values()) {
-                    if (k.equals(key) || (k.equals(key) && v.getReportLocation().equals(location))) {
+                    if (k.equals(getReportKey()) || v.equals(ratReport)) {
                         return;
                     }
                 }
             }
-
-            reports.put(key, ratReport);
+            reports.put(getReportKey(), ratReport);
         }
-    }
-
-    public boolean addNewSingleReport(String key, ReportLocation location) {
-        key = ratReport.getReportKey();
-        location = ratReport.getReportLocation();
-        if (reports.size() > 0) {
-            for (String k : reports.keySet()) {
-                for (RatReport v : reports.values()) {
-                    if (k.equals(key) || (k.equals(key) && v.getReportLocation().equals(location))) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    @Nullable
-    RatReport createNewReport(String key, ReportLocation location) {
-        RatReport report = null;
-        if (addNewSingleReport(key, location)) {
-            report.setReportKey();
-            report.setReportDate();
-            report.setLocation();
-            reports.put(key, report);
-            return ratReport;
-        }
-        return null;
     }
 }

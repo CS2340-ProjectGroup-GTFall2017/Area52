@@ -8,13 +8,6 @@
     tools:context="area52.rat_tracking_application.controllers.ReportDetailActivity"
     tools:ignore="MergeRootFrame">
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/report_detail_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    </android.support.v4.widget.NestedScrollView>
-
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"

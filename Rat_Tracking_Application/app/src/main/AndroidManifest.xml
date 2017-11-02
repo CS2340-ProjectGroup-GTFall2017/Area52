@@ -27,7 +27,7 @@
             android:theme="@style/FullscreenTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="controllers.MainActivity" />
+                android:value=".controllers.MainActivity" />
         </activity>
         <activity
             android:name=".controllers.MainActivity"
@@ -42,19 +42,33 @@
             android:theme="@style/FullscreenTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="controllers.ReportListActivity" />
+                android:value=".controllers.ReportListActivity" />
         </activity>
         <activity
             android:name=".controllers.ReportEntryActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_report_entry"
             android:theme="@style/FullscreenTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".controllers.ReportDetailActivity" />
+        </activity>
+        <activity
+            android:name=".controllers.RatReportCSVReader"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/FullscreenTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".controllers.MainActivity" />
         </activity>
         <activity
             android:name=".controllers.ReportListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_report_list"
             android:theme="@style/FullscreenTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".controllers.RatReportCSVReader" />
         </activity>
     </application>
 
