@@ -1,10 +1,9 @@
 package area52.rat_tracking_application.controllers;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -17,7 +16,7 @@ import area52.rat_tracking_application.model.Admin;
 import area52.rat_tracking_application.model.Model;
 import area52.rat_tracking_application.model.User;
 
-public class RegistrationActivity extends Activity {
+public class RegistrationActivity extends AppCompatActivity {
     EditText usernameText;
     EditText emailText;
     EditText passwordText;
@@ -29,8 +28,6 @@ public class RegistrationActivity extends Activity {
     private String username;
     private String email;
     private String password;
-    private User newUser;
-    private boolean isAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +50,10 @@ public class RegistrationActivity extends Activity {
         setEmail(email);
         password = passwordText.getText().toString();
         setPassword(password);
-        isAdmin = adminCheckbox.isChecked();
+        boolean isAdmin = adminCheckbox.isChecked();
 
         if (username != null && email != null && password != null) {
+            User newUser;
             if (isAdmin) {
                 newUser = new Admin();
                 newUser.setUName(getUsername());
@@ -76,7 +74,7 @@ public class RegistrationActivity extends Activity {
                 newUser.setUName(getUsername());
                 newUser.setEmail(getEmail());
                 newUser.setPWord(getPassword());
-                HashMap<String, User> userMap = Model.model.getUserMap();//.put(getUsername(), newUser);
+                HashMap<String, User> userMap = Model.model.getUserMap();
                 if (!userMap.containsKey(getUsername())){
                     Model.model.getUserMap().put(getUsername(), newUser);
                     Context mainContext = view.getContext();

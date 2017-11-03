@@ -9,16 +9,7 @@ import android.widget.Button;
 
 import area52.rat_tracking_application.R;
 
-import static area52.rat_tracking_application.model.ReportLocation.setZipCodePositions;
-
 /**
- * Acknowledgements:
- *
- * Prof. Bob Waters ([Template provided by Prof. Waters] for Android
- * project guidance [GaTech - Fall 2017 - cs2340 - Objects & Design]).
- * Classes, methods, method params, instance and local variables named
- * to reflect our [class final project] --> [Rat Tracking App]:
- *
  * Displays the details of a single report, selected on the ReportListActivity
  * class instance's corresponding screen.
  *

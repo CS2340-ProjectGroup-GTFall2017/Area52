@@ -9,9 +9,7 @@ import static area52.rat_tracking_application.controllers.RatReportCSVReader.wan
 import static area52.rat_tracking_application.model.RatReport.getReportDate;
 import static area52.rat_tracking_application.model.RatReport.getReportKey;
 import static area52.rat_tracking_application.model.RatReport.getReportLocation;
-import static area52.rat_tracking_application.model.RatReport.setLocation;
-import static area52.rat_tracking_application.model.RatReport.setReportDate;
-import static area52.rat_tracking_application.model.RatReport.setReportKey;
+import static area52.rat_tracking_application.model.ReportLocation.setZipCodePositions;
 
 /**
  * RatReportMap class saved loaded rat reports from csv file, and also
@@ -33,6 +31,7 @@ public class RatReportMap extends HashMap {
     public static void launchMaps() {
         if (reports == null) {
             reports = new HashMap<>();
+            setZipCodePositions();
         }
     }
 
@@ -81,9 +80,6 @@ public class RatReportMap extends HashMap {
      * or <key, value> mappings), and otherwise return false.
      */
     public static void addSingleReport() {
-        setReportKey();
-        setLocation();
-        setReportDate();
         ratReport = new RatReport(getReportKey(), getReportLocation(), getReportDate());
         if (reports.size() > 0) {
             for (String k : reports.keySet()) {

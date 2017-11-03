@@ -11,20 +11,20 @@ public class ReportLocation {
      * entry spinner
      */
     public static List<String> nycBoroughs = Arrays.asList(
-            "QUEENS", "BRONX", "BROOKLYN", "MANHATTAN", "STATEN ISLAND", "NA");
+            "QUEENS", "THE BRONX", "BROOKLYN", "MANHATTAN", "STATEN ISLAND", "NA");
     /**
      * 6 possible location types the user may select from using corresponding report
      * entry spinner
      */
     public static List<String> locationTypes = Arrays.asList(
-            "SUBW", "RESI", "COMM", "PARK", "THTR", "REST", "NA");
+            "SUBWAY", "RESIDENCE", "COMMERCIAL", "PARK", "THEATER", "RESTAURANT", "NA");
 
     /**
-     * 4 possible cities (preliminary number of cities) the user may select from using
+     * (Currently) 5 possible cities (preliminary number of cities) the user may select from using
      * corresponding report entry spinner
      */
     public static List<String> cityList = Arrays.asList(
-            "NYC", "ALB", "BUF", "WES", "NA");
+            "NYC", "ALBANY", "BUFFALO", "LONG ISLAND", "SYRACUSE", "NA");
 
     /** the date the report was created */
     private static String _creationDate;
@@ -53,8 +53,8 @@ public class ReportLocation {
      * @param zipCode the zip code of the reported rat sighting
      */
     public ReportLocation(String latitude, String longitude,
-            String locationType, String address, String city,
-            String borough, String zipCode){
+                          String locationType, String address, String city,
+                          String borough, String zipCode){
         _latitude = latitude;
         _longitude = longitude;
         _locationType = locationType;
@@ -62,6 +62,10 @@ public class ReportLocation {
         _city = city;
         _borough = borough;
         _zipCode = zipCode;
+    }
+
+    public ReportLocation(){
+        this("", "", "", "", "", "", "");
     }
 
     public String getLatitude() { return _latitude; }
@@ -109,9 +113,6 @@ public class ReportLocation {
         for (int i = 10001; i <= 14925; i++) {
             zipCodes.add(i);
         }
-        for (Integer i : zipCodes) {
-            nycZipCodes.add(i.toString());
-        }
     }
 
     public static int findZipCodePosition(String code) {
@@ -143,7 +144,6 @@ public class ReportLocation {
         }
         return 0;
     }
-
     /**
      * Lookup a city based on its code String.  Returns the position of that
      * city in the corresponding list of cities.

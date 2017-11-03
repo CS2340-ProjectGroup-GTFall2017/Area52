@@ -18,23 +18,18 @@ import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.RatReport;
 
 import static area52.rat_tracking_application.R.layout.report_list;
-import static area52.rat_tracking_application.controllers.RatReportCSVReader.ARG_UNIQUE_KEY_ID;
 import static area52.rat_tracking_application.model.RatReportMap.getReportKeysCreationDates;
 import static area52.rat_tracking_application.model.RatReportMap.reports;
 import static area52.rat_tracking_application.model.ReportLocation.setZipCodePositions;
 
 /**
- * THIS IS OUR TOP_LEVEL WINDOW THAT THE USER FIRST SEES IN THE APPLICATION!
- *
- * An activity representing a list of Courses. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
+ * An activity representing a list of RatReport instances.
+ * The activity presents a list of items, which when touched,
  * lead to a {@link ReportDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
+ * report item details.
  *
- * This is using a RecyclerView, which is the preferred standard for displaying
- * lists of things like our courses.
+ * This activity implements use of a RecyclerView, defined within
+ * an inner class in ReportListActivity
  */
 public class ReportListActivity extends AppCompatActivity {
 
@@ -77,29 +72,23 @@ public class ReportListActivity extends AppCompatActivity {
 
     /**
      *
-     * @param recyclerView  the view that needs this adapter
+     * @param recyclerView  the view that requires this adapter
      */
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleReportRecyclerViewAdapter(getReportKeysCreationDates()));
     }
 
     /**
-     * This inner class is our custom adapter.  It takes our basic model information and
-     * converts it to the correct layout for this view.
-     *
-     * In this case, we are just mapping the toString of the Report object to a text field.
+     * Inner class that represents our custom adapter.
      */
     class SimpleReportRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleReportRecyclerViewAdapter.ViewHolder> {
 
-
-            /**
-         * Collection of the items to be shown in this list.
-         */
         private final List<String[]> mReports;
 
         /**
-         * set the items to be used by the adapter
+         * set items to be used by the adapter
+         *
          * @param items the list of items to be displayed in the recycler view
          */
         SimpleReportRecyclerViewAdapter(List<String[]> items) {
@@ -117,20 +106,21 @@ public class ReportListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
+
             String[] reportKeyCreationDate = mReports.get(position);
+
             holder.keyV = reportKeyCreationDate[0];
             holder.keyView.setText(holder.keyV);
             holder.mFullReport = reports.get(reportKeyCreationDate[0]);
             holder.mContentView.setText(holder.mFullReport.toString());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View view) {
 
-                        Context context = view.getContext();
+                        Context context = holder.mContentView.getContext();
                         Intent intent = new Intent(context, ReportDetailActivity.class);
-                        intent.putExtra(ARG_UNIQUE_KEY_ID, holder.mContentView.toString());
-
                         context.startActivity(intent);
                 }
             });
@@ -140,12 +130,6 @@ public class ReportListActivity extends AppCompatActivity {
         public int getItemCount() {
             return mReports.size();
         }
-
-        /**
-         * This inner class represents a ViewHolder which provides us a way to cache information
-         * about the binding between the model element (in this case a Course) and the widgets in
-         * the list view (in this case the two TextView)
-         */
 
         class ViewHolder extends RecyclerView.ViewHolder {
             final View mView;

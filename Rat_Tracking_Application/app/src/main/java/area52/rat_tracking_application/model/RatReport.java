@@ -30,16 +30,12 @@ public class RatReport {
 
     private static String _date;
 
-    private Long key;
-
     private static List<Integer> wantedCSVColumnIndices = Arrays.asList(
             0, 1, 7, 8, 9, 16, 23, 49, 50);
     private static List<java.lang.String> wantedCSVColumns = Arrays.asList(
             "Unique Key", "Created Date", "Location Type",
             "Incident Zip", "Incident Address", "City", "Borough", "Latitude",
             "Longitude");
-
-    private static List<String> singleReportLocation;
 
     /**
      * Makes a new Report
@@ -52,27 +48,28 @@ public class RatReport {
         _date = date;
     }
 
-    /**
-     * HashMap<K, V> reports K
-     *
-     * Extracts unique key from instance of rat report, with each reports unique key
-     * corresponding with a row in the provided csv file, always at column index 0.
-     * Returns unique key of primitive type long if isNum(keyString) returns true,
-     * & otherwise returns 0 if isNum(keyString) returns false.
-     *
-     *
-     * @return unique key or 0
-     */
+    public RatReport() {
+        this("", null, "");
+    }
+
     public static void setReportKey() {
         _key = parsedLineAsList.get(wantedCSVColumnIndices.get(0));
     }
 
-    public static String getReportKey() {
+    /**
+     * A RatReport instance's unique key
+     *
+     * Extracts unique key from instance of rat report, with each reports unique key
+     * corresponding with a row in the provided csv file, always at column index 0.     *
+     *
+     * @return unique key or 0
+     */
+    static String getReportKey() {
         return _key;
     }
 
     public void setNewReportKey() {
-        key = Long.valueOf(reports.keySet().toArray().length + 1);
+        Long key = Long.valueOf(reports.keySet().toArray().length + 1);
         _key = key.toString();
     }
 
@@ -81,12 +78,12 @@ public class RatReport {
     }
 
     @TargetApi(25)
-    static void setReportDate() {
+    public static void setReportDate() {
         currentDate = new SimpleDateFormat(
                     parsedLineAsList.get(wantedCSVColumnIndices.get(1)));
     }
 
-    public static String getReportDate() {
+    static String getReportDate() {
         _date = currentDate.toString();
         return _date;
     }
@@ -101,22 +98,14 @@ public class RatReport {
         return currentDate.toString();
     }
 
-    /**
-     * HashMap<Long, RatReport> reports Value, representing a row in the
-     * csv file, created by indexing the columns of each of the input streamed csv file's
-     * rows, and consisting of a reports key, creation date, and reported location info.
-     *
-     * @return reportLocation instance of RatReport
-     */
-    static void setLocation() {
-        String[] parsedAsArray = null;
-        for (Integer i : wantedCSVColumnIndices) {
-            parsedAsArray[i] = parsedLineAsList.get(wantedCSVColumnIndices.get(i));
-        }
-        singleReportLocation = Arrays.asList(parsedAsArray);
-        _location = (ReportLocation) singleReportLocation;
+    public static void setReportLocation(ReportLocation singleReportLocation) {
+        _location = singleReportLocation;
     }
 
+    /**
+     *
+     * @return ReportLocation for instance of RatReport
+     */
     static ReportLocation getReportLocation() {
         return _location;
     }
@@ -125,6 +114,11 @@ public class RatReport {
         _location = location;
     }
 
+    /**
+     *
+     * @return ReportLocation for instance of new entry instance of RatReport,
+     * input via the ReportEntryActivity class in the controllers package.
+     */
     public ReportLocation getNewReportLocation() {
         return _location;
     }
