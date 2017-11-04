@@ -64,7 +64,7 @@ public class RatReport {
      *
      * @return unique key or 0
      */
-    static String getReportKey() {
+    public static String getReportKey() {
         return _key;
     }
 
@@ -83,7 +83,7 @@ public class RatReport {
                     parsedLineAsList.get(wantedCSVColumnIndices.get(1)));
     }
 
-    static String getReportDate() {
+    public static String getReportDate() {
         _date = currentDate.toString();
         return _date;
     }

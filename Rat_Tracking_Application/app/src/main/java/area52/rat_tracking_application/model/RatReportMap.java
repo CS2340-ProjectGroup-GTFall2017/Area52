@@ -1,6 +1,7 @@
 package area52.rat_tracking_application.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,7 +10,6 @@ import static area52.rat_tracking_application.controllers.RatReportCSVReader.wan
 import static area52.rat_tracking_application.model.RatReport.getReportDate;
 import static area52.rat_tracking_application.model.RatReport.getReportKey;
 import static area52.rat_tracking_application.model.RatReport.getReportLocation;
-import static area52.rat_tracking_application.model.ReportLocation.setZipCodePositions;
 
 /**
  * RatReportMap class saved loaded rat reports from csv file, and also
@@ -27,6 +27,28 @@ public class RatReportMap extends HashMap {
     private static String[] keyCreationDate = new String[2];
 
     private static List<String[]> keyCreationDateList = new ArrayList<>();
+
+    public static List<Integer> nycZipCodes;
+
+    /**
+     * 5 possible boroughs of residency the user may select from using corresponding report
+     * entry spinner
+     */
+    public static List<String> nycBoroughs = Arrays.asList(
+            "QUEENS", "THE BRONX", "BROOKLYN", "MANHATTAN", "STATEN ISLAND", "NA");
+    /**
+     * 6 possible location types the user may select from using corresponding report
+     * entry spinner
+     */
+    public static List<String> locationTypes = Arrays.asList(
+            "SUBWAY", "RESIDENCE", "COMMERCIAL", "PARK", "THEATER", "RESTAURANT", "NA");
+
+    /**
+     * (Currently) 5 possible cities (preliminary number of cities) the user may select from using
+     * corresponding report entry spinner
+     */
+    public static List<String> cityList = Arrays.asList(
+            "NYC", "ALBANY", "BUFFALO", "LONG ISLAND", "SYRACUSE", "NA");
 
     public static void launchMaps() {
         if (reports == null) {
@@ -92,4 +114,93 @@ public class RatReportMap extends HashMap {
             reports.put(getReportKey(), ratReport);
         }
     }
+
+    /**
+     * Set up zip codes so that upon their return when the getter is called,
+     * they are selectable in numerical order in the zip code spinner
+     * (see ReportEntryActivity class). Index 0 corresponds with zip code 10001, and the
+     * index equal to the resulting size of the nycZipCodes list will correspond with 14925.
+     * These numbers represent the zip codes constraining the range of existing zip codes in NYC.
+     */
+    public static void setZipCodePositions() {
+        nycZipCodes = new ArrayList<>();
+        for (int i = 10001; i <= 14925; i++) {
+            nycZipCodes.add(i);
+        }
+    }
+
+    public static List<Integer> getZipCodePositions() {
+        return nycZipCodes;
+    }
+
+    /**
+     *
+     * @return zip code user's zip code selection within the corresponding spinner item.
+     */
+
+    public static int findZipCodePosition(Integer code) {
+        int j = 0;
+        while (j < nycZipCodes.size()) {
+            if (code.equals(nycZipCodes.get(j))) {
+                return j;
+            }
+            ++j;
+        }
+        return 0;
+    }
+
+    /**
+     * Lookup a location based on its code.  Returns the position of that
+     * location in the array
+     *
+     * @param locationCode the location type to find
+     *
+     * @return the index of the array that corresponds to the submitted location type
+     */
+    public static int findLocationTypePosition(String locationCode) {
+        int i = 0;
+        while (i < locationTypes.size()) {
+            if (locationCode.equals(locationTypes.get(i))) return i;
+            ++i;
+        }
+        return 0;
+    }
+
+    /**
+     * Lookup a borough based on its code String.  Returns the position of that
+     * borough in the corresponding list of boroughs.
+     *
+     * @param code the borough to find.
+     *
+     * @return the index of the list that corresponds with the submitted borough.
+     */
+    public static int findBoroughPosition(String code) {
+        int i = 0;
+        while (i < nycBoroughs.size()) {
+            if (code.equals(nycBoroughs.get(i))) {
+                return i;
+            }
+            ++i;
+        }
+        return 0;
+    }
+    /**
+     * Lookup a city based on its code String.  Returns the position of that
+     * city in the corresponding list of cities.
+     *
+     * @param code the city to find.
+     *
+     * @return the index of the list that corresponds with the submitted city.
+     */
+    public static int findCityPosition(String code) {
+        int i = 0;
+        while (i < cityList.size()) {
+            if (code.equals(cityList.get(i))) {
+                return i;
+            }
+            ++i;
+        }
+        return 0;
+    }
+
 }

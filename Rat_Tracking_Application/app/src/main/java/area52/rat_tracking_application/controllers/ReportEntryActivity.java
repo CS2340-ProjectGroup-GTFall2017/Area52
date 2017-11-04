@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.RatReport;
+import area52.rat_tracking_application.model.RatReportMap;
 import area52.rat_tracking_application.model.ReportLocation;
 
 import static area52.rat_tracking_application.R.id.add_button;
@@ -29,12 +30,12 @@ import static area52.rat_tracking_application.R.id.user_name;
 import static area52.rat_tracking_application.R.id.zip_code_spinner;
 import static area52.rat_tracking_application.controllers.RatReportCSVReader.parsedLineAsList;
 import static area52.rat_tracking_application.controllers.RatReportCSVReader.wantedCSVColumnIndices;
+import static area52.rat_tracking_application.model.RatReportMap.cityList;
+import static area52.rat_tracking_application.model.RatReportMap.locationTypes;
+import static area52.rat_tracking_application.model.RatReportMap.nycBoroughs;
+import static area52.rat_tracking_application.model.RatReportMap.nycZipCodes;
 import static area52.rat_tracking_application.model.RatReportMap.reports;
 import static area52.rat_tracking_application.model.RatReportMap.setNewReportKeyCreationDate;
-import static area52.rat_tracking_application.model.ReportLocation.cityList;
-import static area52.rat_tracking_application.model.ReportLocation.locationTypes;
-import static area52.rat_tracking_application.model.ReportLocation.nycBoroughs;
-import static area52.rat_tracking_application.model.ReportLocation.nycZipCodes;
 
 /** *
  * An activity representing a single Rat Report Entry detail screen.
@@ -48,7 +49,7 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
     private TextView adminGeneratedUniqueKey;
     private TextView username;
     private String reportBorough;
-    private String reportZipCode;
+    private Integer reportZipCode;
     private String reportCity;
     private String reportLocationType;
 
@@ -66,8 +67,11 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_entry);
-
         setAllAdapters();
+        setButtonsOnStartUp();
+    }
+
+    void setButtonsOnStartUp() {
 
         Button addButton = (Button) findViewById(add_button);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -141,13 +145,13 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
     void setAdapterSelections() {
 
         boroughSpinner.setSelection(
-                ReportLocation.findBoroughPosition(reportBorough));
+                RatReportMap.findBoroughPosition(reportBorough));
         zipCodeSpinner.setSelection(
-                ReportLocation.findZipCodePosition(reportZipCode));
+                RatReportMap.findZipCodePosition(reportZipCode));
         locationTypeSpinner.setSelection(
-                ReportLocation.findLocationTypePosition(reportLocationType));
+                RatReportMap.findLocationTypePosition(reportLocationType));
         addressCitySpinner.setSelection(
-                ReportLocation.findCityPosition(reportCity));
+                RatReportMap.findCityPosition(reportCity));
 
     }
 
@@ -186,7 +190,7 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
                 reportBorough = parent.getItemAtPosition(position).toString();
                 break;
             case zip_code_spinner:
-                reportZipCode = parent.getItemAtPosition(position).toString();
+                reportZipCode = (Integer) parent.getItemAtPosition(position);
                 break;
             case location_type_spinner:
                 reportLocationType = parent.getItemAtPosition(position).toString();
@@ -204,7 +208,7 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
                 reportBorough = "NA";
                 break;
             case zip_code_spinner:
-                reportZipCode = "NA";
+                reportZipCode = 0;
                 break;
             case location_type_spinner:
                 reportLocationType = "NA";

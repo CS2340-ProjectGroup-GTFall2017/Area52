@@ -1,30 +1,6 @@
 package area52.rat_tracking_application.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class ReportLocation {
-
-    /**
-     * 5 possible boroughs of residency the user may select from using corresponding report
-     * entry spinner
-     */
-    public static List<String> nycBoroughs = Arrays.asList(
-            "QUEENS", "THE BRONX", "BROOKLYN", "MANHATTAN", "STATEN ISLAND", "NA");
-    /**
-     * 6 possible location types the user may select from using corresponding report
-     * entry spinner
-     */
-    public static List<String> locationTypes = Arrays.asList(
-            "SUBWAY", "RESIDENCE", "COMMERCIAL", "PARK", "THEATER", "RESTAURANT", "NA");
-
-    /**
-     * (Currently) 5 possible cities (preliminary number of cities) the user may select from using
-     * corresponding report entry spinner
-     */
-    public static List<String> cityList = Arrays.asList(
-            "NYC", "ALBANY", "BUFFALO", "LONG ISLAND", "SYRACUSE", "NA");
 
     /** the date the report was created */
     private static String _creationDate;
@@ -38,8 +14,7 @@ public class ReportLocation {
     // CHECK alternative -> //TODO: Convert to an enum if possible
     private static String _borough; // alternative to class Enum -> List<String> nycBoroughs
     // CHECK alternative -> //TODO: Convert to an enum if possible
-    private static String _zipCode;
-    public static List<String> nycZipCodes;
+    private static Integer _zipCode;
 
     /**
      * Creates a new ReportLocation with the given data
@@ -54,7 +29,7 @@ public class ReportLocation {
      */
     public ReportLocation(String latitude, String longitude,
                           String locationType, String address, String city,
-                          String borough, String zipCode){
+                          String borough, Integer zipCode){
         _latitude = latitude;
         _longitude = longitude;
         _locationType = locationType;
@@ -65,7 +40,7 @@ public class ReportLocation {
     }
 
     public ReportLocation(){
-        this("", "", "", "", "", "", "");
+        this("", "", "", "", "", "", 0);
     }
 
     public String getLatitude() { return _latitude; }
@@ -74,7 +49,7 @@ public class ReportLocation {
     public String getAddress() { return _address; }
     public String getCity() { return _city; }
     public String getBorough() { return _borough; }
-    public String getZipCode() { return _zipCode; }
+    public Integer getZipCode() { return _zipCode; }
 
     public void setLatitude(String latitude) { _latitude = latitude; }
     public void setLongitude(String longitude) { _longitude = longitude; }
@@ -82,85 +57,6 @@ public class ReportLocation {
     public void setAddress(String address) { _address = address; }
     public void setCity(String city) { _city = city; }
     public void setBorough(String borough) { _borough = borough; }
-    public void setZipCode(String zipCode) { _zipCode = zipCode; }
-
-    /**
-     * Lookup a location based on its code.  Returns the position of that
-     * location in the array
-     *
-     * @param locationCode the location type to find
-     *
-     * @return the index of the array that corresponds to the submitted location type
-     */
-    public static int findLocationTypePosition(String locationCode) {
-        int i = 0;
-        while (i < locationTypes.size()) {
-            if (locationCode.equals(locationTypes.get(i))) return i;
-            ++i;
-        }
-        return 0;
-    }
-
-    /**
-     * Set up zip codes so that they are selectable in numerical order in the zip code spinner
-     * (see ReportEntryActivity class). Index 0 corresponds with zip code 10001, and the
-     * index equal to the resulting size of the nycZipCodes list will correspond with 14925.
-     * These numbers represent the zip codes constraining the range of existing zip codes in NYC.
-     *
-     */
-    public static void setZipCodePositions() {
-        List<Integer> zipCodes = new ArrayList<>();
-        for (int i = 10001; i <= 14925; i++) {
-            zipCodes.add(i);
-        }
-    }
-
-    public static int findZipCodePosition(String code) {
-        int j = 0;
-        while (j < nycZipCodes.size()) {
-            if (code.equals(nycZipCodes.get(j))) {
-                return j;
-            }
-            ++j;
-        }
-        return 0;
-    }
-
-    /**
-     * Lookup a borough based on its code String.  Returns the position of that
-     * borough in the corresponding list of boroughs.
-     *
-     * @param code the borough to find.
-     *
-     * @return the index of the list that corresponds with the submitted borough.
-     */
-    public static int findBoroughPosition(String code) {
-        int i = 0;
-        while (i < nycBoroughs.size()) {
-            if (code.equals(nycBoroughs.get(i))) {
-                return i;
-            }
-            ++i;
-        }
-        return 0;
-    }
-    /**
-     * Lookup a city based on its code String.  Returns the position of that
-     * city in the corresponding list of cities.
-     *
-     * @param code the city to find.
-     *
-     * @return the index of the list that corresponds with the submitted city.
-     */
-    public static int findCityPosition(String code) {
-        int i = 0;
-        while (i < cityList.size()) {
-            if (code.equals(cityList.get(i))) {
-                return i;
-            }
-            ++i;
-        }
-        return 0;
-    }
+    public void setZipCode(Integer zipCode) { _zipCode = zipCode; }
 
 }

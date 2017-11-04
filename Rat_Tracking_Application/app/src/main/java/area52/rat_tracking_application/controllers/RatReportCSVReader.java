@@ -25,7 +25,6 @@ import static area52.rat_tracking_application.model.RatReport.setReportLocation;
 import static area52.rat_tracking_application.model.RatReportMap.launchMaps;
 import static area52.rat_tracking_application.model.RatReportMap.reports;
 import static area52.rat_tracking_application.model.RatReportMap.setReportKeyCreationDate;
-
 /**
  * RatReportCSVReader class reads in and parses csv file of rat reports
  * using the imported BufferedReader class.
@@ -102,7 +101,7 @@ public class RatReportCSVReader extends AppCompatActivity {
                          parsedLineAsList.get(wantedCSVColumnIndices.get(4)),// address
                          parsedLineAsList.get(wantedCSVColumnIndices.get(5)),// city
                          parsedLineAsList.get(wantedCSVColumnIndices.get(6)),// borough
-                         parsedLineAsList.get(wantedCSVColumnIndices.get(3))));// zip code
+                         Integer.valueOf(parsedLineAsList.get(wantedCSVColumnIndices.get(3)))));// zip code
 
                  setReportDate();
 
@@ -117,6 +116,7 @@ public class RatReportCSVReader extends AppCompatActivity {
              e.printStackTrace();
 
          }
+         RatReportMap.setZipCodePositions();
     }
 
     Button launchReportsButton;

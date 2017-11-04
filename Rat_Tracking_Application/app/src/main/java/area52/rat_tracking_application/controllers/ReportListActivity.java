@@ -10,17 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.RatReport;
 
-import static area52.rat_tracking_application.R.layout.report_list;
+import static area52.rat_tracking_application.R.id.report_list;
+import static area52.rat_tracking_application.R.layout.activity_report_list;
+import static area52.rat_tracking_application.R.layout.content_report_list;
+import static area52.rat_tracking_application.model.Model.setCurrentReport;
 import static area52.rat_tracking_application.model.RatReportMap.getReportKeysCreationDates;
 import static area52.rat_tracking_application.model.RatReportMap.reports;
-import static area52.rat_tracking_application.model.ReportLocation.setZipCodePositions;
 
 /**
  * An activity representing a list of RatReport instances.
@@ -36,19 +39,18 @@ public class ReportListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_report_list);
-
-        View recyclerView = findViewById(R.id.report_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        setContentView(activity_report_list);
 
         setupButtonsOnStartup();
+
+        View recyclerView = findViewById(report_list);
+        assert recyclerView != null;
+        setupRecyclerView((RecyclerView) recyclerView);
     }
 
     protected void setupButtonsOnStartup() {
-        Button logoutButton;
-        logoutButton = (Button) findViewById(R.id.logout_button);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
+        Button logout_Button = (Button) findViewById(R.id.log_out_button);
+        logout_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Context logoutContext = view.getContext();
@@ -57,12 +59,10 @@ public class ReportListActivity extends AppCompatActivity {
             }
         });
 
-        Button goToReportEntryScreen;
-        goToReportEntryScreen = (Button) findViewById(R.id.go_to_report_entry_screen_button);
+        Button goToReportEntryScreen = (Button) findViewById(R.id.go_to_report_entry_screen_button);
         goToReportEntryScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setZipCodePositions();
                 Context reportEntryContext = view.getContext();
                 Intent reportEntryIntent = new Intent(reportEntryContext, ReportEntryActivity.class);
                 reportEntryContext.startActivity(reportEntryIntent);
@@ -84,7 +84,9 @@ public class ReportListActivity extends AppCompatActivity {
     class SimpleReportRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleReportRecyclerViewAdapter.ViewHolder> {
 
-        private final List<String[]> mReports;
+        HashMap<String, RatReport> mapReports = reports;
+
+        List<String[]> mReports = new ArrayList<>();
 
         /**
          * set items to be used by the adapter
@@ -96,31 +98,37 @@ public class ReportListActivity extends AppCompatActivity {
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(report_list, parent, false);
-            return new ViewHolder(view);
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {/////
+            View view = LayoutInflater.from(parent.getContext())///////////
+                    .inflate(content_report_list, parent, false);////
+            return new ViewHolder(view);////
         }
 
-
+         /**
+          * As per Prof. Bob Waters - Georgia Tech - [CS-2340] Objects & Design - Fall 2017
+          *
+          * "This is where we have to bind each data element in the list (given by position parameter)
+          * to an element in the view (which is one of our two TextView widgets).
+          * Start by getting the element at the correct position."
+          *
+          * @param holder view container
+          * @param position index in list view
+          */
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
 
-            String[] reportKeyCreationDate = mReports.get(position);
+            holder.reportKeyCreationDate = mReports.get(position);
 
-            holder.keyV = reportKeyCreationDate[0];
-            holder.keyView.setText(holder.keyV);
-            holder.mFullReport = reports.get(reportKeyCreationDate[0]);
-            holder.mContentView.setText(holder.mFullReport.toString());
+            holder.ratExpandedReport = mapReports.get(holder.reportKeyCreationDate[0]);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
 
-                        Context context = holder.mContentView.getContext();
+                        Context context = view.getContext();
                         Intent intent = new Intent(context, ReportDetailActivity.class);
+                        setCurrentReport(holder.ratExpandedReport);
                         context.startActivity(intent);
                 }
             });
@@ -133,21 +141,19 @@ public class ReportListActivity extends AppCompatActivity {
 
         class ViewHolder extends RecyclerView.ViewHolder {
             final View mView;
-            final TextView keyView;
-            final TextView mContentView;
-            String keyV;
-            RatReport mFullReport;
+            String[] reportKeyCreationDate;
+            RatReport ratExpandedReport;
+            String keyCreationDate;
 
             ViewHolder(View view) {
                 super(view);
                 mView = view;
-                keyView = (TextView) mView.findViewById(R.id.key_view);
-                mContentView = (TextView) mView.findViewById(R.id.content_view);
+                keyCreationDate = String.valueOf(view.findViewById(R.id.key_view));
             }
 
             @Override
             public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
+                return super.toString() + " '" + keyCreationDate + "'";
             }
         }
     }
