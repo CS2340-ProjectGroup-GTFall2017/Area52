@@ -1,7 +1,7 @@
 package area52.rat_tracking_application;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -11,13 +11,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import area52.rat_tracking_application.model.RatReport;
-import area52.rat_tracking_application.model.RatReportLoader;
 import area52.rat_tracking_application.model.RatReportManager;
 import area52.rat_tracking_application.model.ReportLocation;
 
@@ -57,7 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     /**
-     * A method to get and filter out the ratreports based on date
+     * A method to get and filter out the rat reports based on date
      *
      *
      */
