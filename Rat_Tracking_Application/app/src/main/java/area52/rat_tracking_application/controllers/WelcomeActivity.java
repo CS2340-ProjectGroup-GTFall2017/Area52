@@ -4,12 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.File;
 import java.io.InputStream;
 
 import area52.rat_tracking_application.R;
+import area52.rat_tracking_application.model.Model;
+import area52.rat_tracking_application.model.PersistenceManager;
 import area52.rat_tracking_application.model.RatReportLoader;
 import area52.rat_tracking_application.model.RatReportManager;
 
@@ -30,10 +34,25 @@ public class WelcomeActivity extends Activity {
             }
         });
         loadRatReports();
+        loadUsers();
     }
 
     public void loadRatReports() {
-        InputStream csvReportFile = getResources().openRawResource(R.raw.rat_sightings);
-        RatReportManager.getInstance().loadRatReports(csvReportFile);
+        File ratReportsFile = new File(this.getFilesDir(),
+                PersistenceManager.RAT_REPORT_DATA_FILENAME);
+
+        if (!RatReportManager.getInstance().loadRatReports(ratReportsFile)) {
+            InputStream csvReportFile = getResources().openRawResource(R.raw.rat_sightings);
+            RatReportManager.getInstance().loadRatReports(csvReportFile);
+
+            PersistenceManager.getInstance()
+                    .saveBinary(ratReportsFile, RatReportManager.getInstance());
+        }
+    }
+
+    public void loadUsers() {
+        File usersFile = new File(this.getFilesDir(),
+                PersistenceManager.USERS_DATA_FILENAME);
+        Model.getInstance().loadUsers(usersFile);
     }
 }

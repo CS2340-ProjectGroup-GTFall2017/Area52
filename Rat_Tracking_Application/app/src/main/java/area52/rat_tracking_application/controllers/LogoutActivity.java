@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
 
+import area52.rat_tracking_application.DateRange;
+import area52.rat_tracking_application.MapsActivity;
 import area52.rat_tracking_application.R;
 
 /**
@@ -15,6 +17,7 @@ import area52.rat_tracking_application.R;
 public class LogoutActivity extends Activity {
     Button button;
     Button reportListButton;
+    Button mapButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,18 @@ public class LogoutActivity extends Activity {
                 context.startActivity(intent);
             }
         });
+
+        mapButton = (Button) findViewById(R.id.button_reportMap);
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = view.getContext();
+                Intent intent = new Intent(context, DateRange.class);
+                context.startActivity(intent);
+            }
+        });
+
+
     }
 
 }

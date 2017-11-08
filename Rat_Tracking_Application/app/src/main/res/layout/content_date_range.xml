@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="area52.rat_tracking_application.DateRange"
+    tools:showIn="@layout/activity_date_range">
+
+
+
+
+    <DatePicker
+        android:id="@+id/datePicker8"
+        android:layout_width="176dp"
+        android:layout_height="208dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <DatePicker
+        android:id="@+id/datePicker9"
+        android:layout_width="185dp"
+        android:layout_height="156dp"
+        android:layout_weight="0.09"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:text="Show these dates"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp" />
+</android.support.constraint.ConstraintLayout>

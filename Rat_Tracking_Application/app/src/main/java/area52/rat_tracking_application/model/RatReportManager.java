@@ -1,5 +1,8 @@
 package area52.rat_tracking_application.model;
 
+import android.util.Log;
+
+import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,6 +28,24 @@ public class RatReportManager implements Serializable {
     }
 
     /**
+     * Gets the rat report data from a binary file and loads it into the manager
+     * @param ratReportBinary The binary file that contains the rat report data
+     * @return whether or not the rate reports were retrieved successfully
+     */
+    public boolean loadRatReports(File ratReportBinary) {
+        boolean success = false;
+
+        Object fromBinary = PersistenceManager.getInstance().loadBinary(ratReportBinary);
+
+        if (fromBinary != null) {
+            //getInstance().setInternalRatReports( ((RatReportManager) fromBinary).internalRatReports );
+            instance = (RatReportManager) fromBinary;
+            instance.copyInternalReportsToHashMap();
+            success = true;
+        }
+        return success;
+    }
+    /**
      * Adds all rat reports in the CSV file to the list of current rat reports
      * @param csvInput InputStream containing the CSV file data
      */
@@ -42,6 +63,21 @@ public class RatReportManager implements Serializable {
         }
     }
 
+    /**
+     * Adds a new RatReport to the internalRatReport list and HashMap
+     * @param newReport The RatReport to add to the list
+     */
+    public void addRatReport(RatReport newReport) {
+        internalRatReports.add(newReport);
+        reports.put(newReport.getKey(), newReport);
+    }
+
+    public List<RatReport> getRatReportList() {
+        return internalRatReports;
+    }
+
     public static RatReportManager getInstance() { return instance; }
     public static HashMap<Long, RatReport> getReportsHashMap() { return reports; }
+
+
 }

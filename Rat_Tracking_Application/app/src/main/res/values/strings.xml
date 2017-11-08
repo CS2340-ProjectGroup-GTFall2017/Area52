@@ -48,4 +48,6 @@
         <item>BROOKLYN</item>
         <item>DA BRONX</item>
     </string-array>
+    <string name="title_activity_google_maps">GoogleMapsActivity</string>
+    <string name="title_activity_date_range">DateRange</string>
 </resources>
