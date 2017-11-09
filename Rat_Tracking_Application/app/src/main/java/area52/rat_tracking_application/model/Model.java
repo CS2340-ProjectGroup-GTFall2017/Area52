@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class Model {
     public static final Model model = new Model();
-    private static RatReport ratReport;
+    private RatReport ratReport;
 
     private static HashMap<String, User> _users = new HashMap<>();
 
@@ -33,11 +33,11 @@ public class Model {
         _users.put("randy", new User("randy", "randy", "numbers@5"));
     }
 
-    public static void setCurrentReport(RatReport rReport) {
+    public void setCurrentReport(RatReport rReport) {
         ratReport = rReport;
     }
 
-    public static RatReport getCurrentReport() {
+    public RatReport getCurrentReport() {
         return ratReport;
     }
 

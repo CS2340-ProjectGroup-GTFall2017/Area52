@@ -5,12 +5,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import static area52.rat_tracking_application.controllers.RatReportCSVReader.parsedLineAsList;
-import static area52.rat_tracking_application.controllers.RatReportCSVReader.wantedCSVColumnIndices;
-import static area52.rat_tracking_application.model.RatReport.getReportDate;
-import static area52.rat_tracking_application.model.RatReport.getReportKey;
-import static area52.rat_tracking_application.model.RatReport.getReportLocation;
-
 /**
  * RatReportMap class saved loaded rat reports from csv file, and also
  * accepts new puts to its static 'reports' hash map.
@@ -50,30 +44,11 @@ public class RatReportMap extends HashMap {
     public static List<String> cityList = Arrays.asList(
             "NYC", "ALBANY", "BUFFALO", "LONG ISLAND", "SYRACUSE", "NA");
 
-    public static void launchMaps() {
+    public void launchMaps() {
         if (reports == null) {
             reports = new HashMap<>();
             setZipCodePositions();
         }
-    }
-
-    /**
-     * setCreationDate from instance of rat report to add to
-     * keyCreationDateList
-     *
-     */
-    public static void setReportKeyCreationDate() {
-        String key = parsedLineAsList.get(wantedCSVColumnIndices.get(0));
-        String date = parsedLineAsList.get(wantedCSVColumnIndices.get(1));
-        keyCreationDate[0] = key;
-        keyCreationDate[1] = date;
-        keyCreationDateList.add(keyCreationDate);
-    }
-
-    public static void setNewReportKeyCreationDate(String key, String date) {
-        keyCreationDate[0] = key;
-        keyCreationDate[1] = date;
-        keyCreationDateList.add(keyCreationDate);
     }
 
     /**
@@ -101,17 +76,17 @@ public class RatReportMap extends HashMap {
      * @return boolean true if item can be added safely (i.e. no duplicate keys
      * or <key, value> mappings), and otherwise return false.
      */
-    public static void addSingleReport() {
-        ratReport = new RatReport(getReportKey(), getReportLocation(), getReportDate());
+    public static void addSingleReport(RatReport report) {
+        ratReport = report;
         if (reports.size() > 0) {
             for (String k : reports.keySet()) {
                 for (RatReport v : reports.values()) {
-                    if (k.equals(getReportKey()) || v.equals(ratReport)) {
+                    if (k.equals(ratReport.getReportKey()) || v.equals(ratReport)) {
                         return;
                     }
                 }
             }
-            reports.put(getReportKey(), ratReport);
+            reports.put(ratReport.getReportKey(), ratReport);
         }
     }
 

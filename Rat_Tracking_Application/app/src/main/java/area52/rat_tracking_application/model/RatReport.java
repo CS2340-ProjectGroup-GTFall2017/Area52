@@ -6,10 +6,6 @@ import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static area52.rat_tracking_application.controllers.RatReportCSVReader.parsedLineAsList;
 import static area52.rat_tracking_application.model.RatReportMap.reports;
 
 /**
@@ -22,38 +18,31 @@ import static area52.rat_tracking_application.model.RatReportMap.reports;
 
 public class RatReport {
 
-    private static String _key;
+    private String _key;
     /** the instance of report location*/
-    private static ReportLocation _location;
+    private ReportLocation _location;
 
-    private static SimpleDateFormat currentDate;
+    private SimpleDateFormat currentDate;
 
-    private static String _date;
-
-    private static List<Integer> wantedCSVColumnIndices = Arrays.asList(
-            0, 1, 7, 8, 9, 16, 23, 49, 50);
-    private static List<java.lang.String> wantedCSVColumns = Arrays.asList(
-            "Unique Key", "Created Date", "Location Type",
-            "Incident Zip", "Incident Address", "City", "Borough", "Latitude",
-            "Longitude");
+    private String _date;
 
     /**
      * Makes a new Report
      * @param key  the unique key auto-generated for the report
      * @param location the location of the rat sighting being reported
      */
-    public RatReport(String key, ReportLocation location, String date) {
+    RatReport(String key, ReportLocation location, String date) {
         _key = key;
         _location = location;
         _date = date;
     }
 
     public RatReport() {
-        this("", null, "");
+        this(Long.valueOf(0).toString(), null, "");
     }
 
-    public static void setReportKey() {
-        _key = parsedLineAsList.get(wantedCSVColumnIndices.get(0));
+    public void setReportKey(String key) {
+        _key = key;
     }
 
     /**
@@ -64,13 +53,13 @@ public class RatReport {
      *
      * @return unique key or 0
      */
-    public static String getReportKey() {
+    String getReportKey() {
         return _key;
     }
 
     public void setNewReportKey() {
-        Long key = Long.valueOf(reports.keySet().toArray().length + 1);
-        _key = key.toString();
+        Long[] reportKeys = (Long[]) reports.keySet().toArray();
+        _key = String.valueOf(reportKeys[reports.keySet().size() - 1] + 1);
     }
 
     public String getNewReportKey() {
@@ -78,12 +67,11 @@ public class RatReport {
     }
 
     @TargetApi(25)
-    public static void setReportDate() {
-        currentDate = new SimpleDateFormat(
-                    parsedLineAsList.get(wantedCSVColumnIndices.get(1)));
+    public void setReportDate(String date) {
+        currentDate = new SimpleDateFormat(date);
     }
 
-    public static String getReportDate() {
+    public String getReportDate() {
         _date = currentDate.toString();
         return _date;
     }
@@ -98,7 +86,7 @@ public class RatReport {
         return currentDate.toString();
     }
 
-    public static void setReportLocation(ReportLocation singleReportLocation) {
+    public void setReportLocation(ReportLocation singleReportLocation) {
         _location = singleReportLocation;
     }
 
@@ -106,7 +94,7 @@ public class RatReport {
      *
      * @return ReportLocation for instance of RatReport
      */
-    static ReportLocation getReportLocation() {
+    ReportLocation getReportLocation() {
         return _location;
     }
 
