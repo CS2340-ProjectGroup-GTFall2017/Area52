@@ -1,21 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_report_list"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="354dp"
+    android:layout_height="165dp"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
-    android:background="?attr/selectableItemBackground"
-    android:clipChildren="true"
-    android:clipToPadding="true"
-    android:scrollbars="vertical"
-    android:visibility="visible"
-    app:layoutManager="LinearLayoutManager"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    style="@style/Base.Widget.AppCompat.ListView.DropDown"
+    android:layout_marginTop="32dp"
+    android:orientation="vertical"
     tools:context="area52.rat_tracking_application.controllers.ReportListActivity"
-    tools:listitem="@layout/activity_report_list">
+    tools:showIn="@layout/activity_report_list">
 
-</android.support.v7.widget.RecyclerView>
+    <TextView
+        android:id="@+id/key_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:singleLine="true"
+        android:text="@string/appbar_scrolling_view_behavior"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textIsSelectable="true"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        tools:listitem="@android:layout/simple_list_item_single_choice"
+        tools:text="@string/report_id" />
+
+    <Button
+        android:id="@+id/lock_selection"
+        style="@android:style/Widget.DeviceDefault.Button.Inset"
+        android:layout_width="86dp"
+        android:layout_height="76dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        tools:text="@string/get_report" />
+
+    <include
+        layout="@layout/report_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
+</RelativeLayout>
+
+
+
+
+
