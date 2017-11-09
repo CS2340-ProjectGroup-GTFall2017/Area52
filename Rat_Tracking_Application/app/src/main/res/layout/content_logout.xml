@@ -13,12 +13,12 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:text="Logout"
         android:visibility="visible"
         tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="247dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        tools:layout_editor_absoluteY="247dp" />
 
     <Button
         android:id="@+id/button_reportList"
@@ -45,6 +45,6 @@
         android:layout_alignEnd="@+id/button_reportMap"
         android:layout_alignRight="@+id/button_reportMap"
         android:layout_centerVertical="true"
-        android:text="Report Graph (Coming Soon!)" />
+        android:text="Report Graph" />
 
 </RelativeLayout>

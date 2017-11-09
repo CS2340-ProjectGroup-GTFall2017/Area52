@@ -1,14 +1,14 @@
 package area52.rat_tracking_application.controllers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
 
 import area52.rat_tracking_application.DateRange;
-import area52.rat_tracking_application.MapsActivity;
+import area52.rat_tracking_application.GraphActivity;
 import area52.rat_tracking_application.R;
 
 /**
@@ -18,6 +18,7 @@ public class LogoutActivity extends Activity {
     Button button;
     Button reportListButton;
     Button mapButton;
+    Button graphButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,16 @@ public class LogoutActivity extends Activity {
             public void onClick(View view) {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, DateRange.class);
+                context.startActivity(intent);
+            }
+        });
+
+        graphButton = (Button) findViewById(R.id.button_reportGraph);
+        graphButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = view.getContext();
+                Intent intent = new Intent(context, GraphActivity.class);
                 context.startActivity(intent);
             }
         });
