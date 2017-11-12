@@ -11,16 +11,15 @@ import android.widget.DatePicker;
 
 import java.util.Date;
 
-public class DateRange extends AppCompatActivity {
-
+public class GraphSetup extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_date_range);
+        setContentView(R.layout.activity_graph_setup);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Button mapButton = (Button) findViewById(R.id.button4);
+        Button mapButton = (Button) findViewById(R.id.button5);
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -29,10 +28,6 @@ public class DateRange extends AppCompatActivity {
                 int month = datePicker.getMonth() + 1;
                 int year = datePicker.getYear();
 
-                //Date startDate = new Date();
-                //startDate.setYear(year);
-                //startDate.setMonth(month);
-                //startDate.setDate(day);
                 Date startDate = new Date(year - 1900, month, day);
 
                 DatePicker datePickerEnd = (DatePicker) findViewById(R.id.datePicker9);
@@ -40,14 +35,10 @@ public class DateRange extends AppCompatActivity {
                 int monthEnd = datePickerEnd.getMonth() + 1;
                 int yearEnd = datePickerEnd.getYear();
 
-                //Date endDate = new Date();
-                //endDate.setMonth(monthEnd);
-                //endDate.setYear(yearEnd);
-                //endDate.setDate(dayEnd);
                 Date endDate = new Date(yearEnd - 1900, monthEnd, dayEnd);
 
                 Context context = view.getContext();
-                Intent intent = new Intent(context, MapsActivity.class);
+                Intent intent = new Intent(context, GraphActivity.class);
                 intent.putExtra("start", startDate);
                 intent.putExtra("end", endDate);
                 context.startActivity(intent);

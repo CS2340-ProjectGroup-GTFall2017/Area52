@@ -7,11 +7,14 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import static area52.rat_tracking_application.R.layout.activity_graphs;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-/**
- * Created by eunjikang on 11/8/17.
- */
+import area52.rat_tracking_application.model.RatReport;
+import area52.rat_tracking_application.model.RatReportManager;
+
+import static area52.rat_tracking_application.R.layout.activity_graphs;
 
 public class GraphActivity extends AppCompatActivity {
 
@@ -19,6 +22,48 @@ public class GraphActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(activity_graphs);
+
+        Date start = (Date) getIntent().getSerializableExtra("start");
+        Date end = (Date) getIntent().getSerializableExtra("end");
+        List<RatReport> rawReports = (ArrayList<RatReport>) RatReportManager.getInstance().getRatReportList();
+
+
+//making a list(map) for all range of months chosen
+        Map<String, int> hist = new HashMap<String, int>();
+
+        int startYear = start.getYear();
+        int endYear = end.getYear();
+        int startMonth = start.getMonth() + 1;
+        int endMonth = end.getMonth() + 1;
+
+        for (int j = startMonth; j < 13; j++) {
+            hist.add(j + "-" + startYear);
+        }
+
+        for (int i = startYear + 1; i < endYear; i++) {
+            for (int j = 1; j < 13; j++) {
+                hist.add(j + "-" + i);
+            }
+        }
+
+        for (int j = 1; j < endMonth + 1; j++) {
+            hist.add(j + "-" + endYear);
+        }
+
+//for loop for reports
+        int month = aReport.getCreationDate().getMonth();
+        int year = aReport.getCreationDate().getYear();
+
+
+
+        for (int i = 0; i < rawReports.size(); i++) {
+            Date creationDate = rawReports.get(i).getCreationDate();
+            if (creationDate.after(start)
+                    && creationDate.before(end)) {
+
+            }
+        }
+
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {

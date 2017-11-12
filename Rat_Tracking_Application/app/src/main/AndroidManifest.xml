@@ -71,6 +71,9 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity
+            android:name=".GraphSetup"
+            android:label="GraphSetup" />
+        <activity
             android:name=".DateRange"
             android:label="@string/title_activity_date_range"
             android:theme="@style/AppTheme.NoActionBar"></activity>

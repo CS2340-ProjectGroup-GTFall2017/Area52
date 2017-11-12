@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import area52.rat_tracking_application.DateRange;
-import area52.rat_tracking_application.GraphActivity;
+import area52.rat_tracking_application.GraphSetup;
 import area52.rat_tracking_application.R;
 
 /**
@@ -59,7 +59,7 @@ public class LogoutActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Context context = view.getContext();
-                Intent intent = new Intent(context, GraphActivity.class);
+                Intent intent = new Intent(context, GraphSetup.class);
                 context.startActivity(intent);
             }
         });
