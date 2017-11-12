@@ -6,21 +6,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import area52.rat_tracking_application.R;
-import area52.rat_tracking_application.model.Model;
 import area52.rat_tracking_application.model.RatReport;
 
-import static area52.rat_tracking_application.model.RatReportMap.reports;
+import static area52.rat_tracking_application.controllers.RatReportCSVReader.allReportsList;
+import static area52.rat_tracking_application.model.RatReportMap.setCurrentReport;
 
 /**
  * An activity representing a list of RatReport instances.
@@ -33,11 +32,7 @@ import static area52.rat_tracking_application.model.RatReportMap.reports;
  */
 public class ReportListActivity extends AppCompatActivity {
 
-    private List<String[]> ratReportList;
-
-    private RecyclerView reportRecyclerView;
-
-    View report;
+    private boolean mTwoPane;
 
     private static final String ARG_UNIQUE_KEY_ID = "Report ID";//0
     private static final String ARG_CREATED_DATE_ID = "Report Creation Date";//1
@@ -53,46 +48,39 @@ public class ReportListActivity extends AppCompatActivity {
             ARG_LOCATION_TYPE_ID, ARG_INCIDENT_ZIP_ID, ARG_INCIDENT_ADDRESS_ID,
             ARG_CITY_ID, ARG_BOROUGH_ID, ARG_LATITUDE_ID, ARG_LONGITUDE_ID);
 
+    /**
+     * The adapter for the recycle view list of information from all rat reports
+     */
+    private ReportRecyclerViewAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        for (RatReport r : allReportsList) {
+            System.out.println(r.toString());
+        }
         setContentView(R.layout.activity_report_list);
-        setupButtonsOnStartup();
 
-        //String header_ListScreen = reportParams.get(0) + reportParams.get(1);
-        reportRecyclerView = (RecyclerView) findViewById(R.id.report_list);
+        View reportRecyclerView = findViewById(R.id.report_list);
         assert reportRecyclerView != null;
-        setupRecyclerView(reportRecyclerView);
+        setupReportRecyclerView((RecyclerView) reportRecyclerView);
     }
 
-    protected void setupButtonsOnStartup() {
-        Button logout_Button = (Button) findViewById(R.id.log_out_button);
-        logout_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context logoutContext = view.getContext();
-                Intent logoutIntent = new Intent(logoutContext, WelcomeActivity.class);
-                logoutContext.startActivity(logoutIntent);
-            }
-        });
-
-        Button goToReportEntryScreen = (Button) findViewById(R.id.go_to_report_entry_screen_button);
-        goToReportEntryScreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context reportEntryContext = view.getContext();
-                Intent reportEntryIntent = new Intent(reportEntryContext, ReportEntryActivity.class);
-                reportEntryContext.startActivity(reportEntryIntent);
-            }
-        });
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 
     /**
+     * Set up an adapter and hook it to the provided view
      *
-     * @param reportRecyclerView  the view that requires this adapter
+     * @param reportRecyclerView  the view that needs this adapter
      */
-    private void setupRecyclerView(@NonNull RecyclerView reportRecyclerView) {
-        reportRecyclerView.setAdapter(new ReportRecyclerViewAdapter((Collection<RatReport>) reports.values()));
+    private void setupReportRecyclerView(@NonNull RecyclerView reportRecyclerView) {
+        adapter = new ReportRecyclerViewAdapter(allReportsList);
+        Log.d("Adapter", adapter.toString());
+        reportRecyclerView.setAdapter(adapter);
     }
 
     /**
@@ -104,17 +92,21 @@ public class ReportListActivity extends AppCompatActivity {
         /**
          * Rat reports to be displayed in this list.
          */
-        private final Collection<RatReport> mReports;
+        private final List<RatReport> mReports;
 
-        ReportRecyclerViewAdapter(Collection<RatReport> fullReportListView) {
-            mReports = fullReportListView;
+        ReportRecyclerViewAdapter(List<RatReport> reportHashMapValues) {
+            mReports = reportHashMapValues;
+            for (RatReport r : mReports) {
+                System.out.println(r.toString());
+            }
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ReportRecyclerViewAdapter.ViewHolder onCreateViewHolder(
+                ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.content_report_list, parent, false);
-            return new ViewHolder(view);
+            return new ReportRecyclerViewAdapter.ViewHolder(view);
         }
 
         /**
@@ -128,21 +120,19 @@ public class ReportListActivity extends AppCompatActivity {
          * @param position index in list view
          */
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-            final Model model = Model.getInstance();
+            holder.mReport = mReports.get(position);
 
-            holder.mKey = String.valueOf(reportRecyclerView.getChildAt(position));
-            holder.mIdView.setText(holder.mKey);
-            holder.mReport = reports.get(holder.mKey);
-            holder.mContentView.setText(holder.mReport.toString());
+            holder.mReportContent.setText(String.format("%s", holder.mReport));
+
             holder.mView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
+                    setCurrentReport(holder.mReport);
                     Context context = view.getContext();
                     Intent intent = new Intent(context, ReportDetailActivity.class);
-                    model.setCurrentReport(holder.mReport);
                     context.startActivity(intent);
                 }
             });
@@ -150,30 +140,26 @@ public class ReportListActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return reports.size();
+            return mReports.size();
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            final Button lockSelection;
+
             final View mView;
-            final TextView mIdView;
-            final TextView mContentView;
+            final TextView mReportContent;
             RatReport mReport;
-            String mKey;
 
             ViewHolder(View view) {
 
                 super(view);
                 mView = view;
-                mIdView = (TextView) view.findViewById(R.id.key_view);
-                mContentView = (TextView) view.findViewById(R.id.report_content_view);
-                lockSelection = (Button) view.findViewById(R.id.lock_selection);
+                mReportContent = (TextView) view.findViewById(R.id.report_content);
             }
 
             @Override
             public String toString() {
 
-                return super.toString() + " '" + mContentView.getText() + "'";
+                return super.toString() + " '" + mReportContent.getText() + "'";
 
             }
         }

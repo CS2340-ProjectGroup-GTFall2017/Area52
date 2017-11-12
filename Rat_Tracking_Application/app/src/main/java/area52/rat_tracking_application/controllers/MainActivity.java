@@ -1,5 +1,6 @@
 package area52.rat_tracking_application.controllers;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -75,6 +76,7 @@ public class MainActivity extends Activity {
 
         loginButton.setOnClickListener(new View.OnClickListener() {
 
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
                 if (Model.getInstance().getUserMap().containsKey(

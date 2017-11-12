@@ -1,49 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_report_list"
-    android:layout_width="354dp"
-    android:layout_height="165dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:layout_marginTop="32dp"
-    android:orientation="vertical"
-    tools:context="area52.rat_tracking_application.controllers.ReportListActivity"
-    tools:showIn="@layout/activity_report_list">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
 
     <TextView
-        android:id="@+id/key_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:singleLine="true"
-        android:text="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/report_content"
+        style="@android:style/Widget.Holo.Light.TextView.SpinnerItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:textIsSelectable="true"
-        android:textSize="12sp"
-        android:textStyle="italic"
-        tools:listitem="@android:layout/simple_list_item_single_choice"
-        tools:text="@string/report_id" />
+        android:visibility="visible" />
 
-    <Button
-        android:id="@+id/lock_selection"
-        style="@android:style/Widget.DeviceDefault.Button.Inset"
-        android:layout_width="86dp"
-        android:layout_height="76dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        tools:text="@string/get_report" />
-
-    <include
-        layout="@layout/report_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
-
-</RelativeLayout>
-
-
-
-
-
+</LinearLayout>

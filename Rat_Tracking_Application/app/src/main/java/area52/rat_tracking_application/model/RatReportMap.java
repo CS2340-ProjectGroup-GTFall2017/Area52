@@ -1,5 +1,6 @@
 package area52.rat_tracking_application.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.List;
  * Created by Eric on 10/29/2017.
  */
 
-public class RatReportMap extends HashMap {
+public class RatReportMap extends HashMap implements Serializable {
 
     public static RatReport ratReport;
 
@@ -49,6 +50,22 @@ public class RatReportMap extends HashMap {
             reports = new HashMap<>();
             setZipCodePositions();
         }
+    }
+
+    public static void setCurrentReport(RatReport rReport) {
+        ratReport = rReport;
+    }
+
+    public static RatReport getCurrentReport() {
+        return ratReport;
+    }
+
+    public static List<String> getRatReportParams() {
+        List<String> report = new ArrayList<>();
+        report.add(0, ratReport.getReportKey());
+        report.add(1, String.valueOf(ratReport.getReportLocation()));
+        report.add(2, ratReport.getReportDate());
+        return report;
     }
 
     /**

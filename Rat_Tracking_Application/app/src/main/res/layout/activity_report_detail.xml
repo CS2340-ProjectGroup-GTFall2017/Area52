@@ -5,20 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    app:layout_collapseParallaxMultiplier="1.0"
-    tools:context="area52.rat_tracking_application.controllers.ReportDetailActivity"
-    tools:ignore="MergeRootFrame">
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="68dp"
-        android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-    </android.support.design.widget.AppBarLayout>
+    tools:context="area52.rat_tracking_application.controllers.ReportDetailActivity">
 
     <include
-        layout="@layout/content_report_detail" />
+        layout="@layout/content_report_detail"
+        android:visibility="visible" />
 
 </android.support.design.widget.CoordinatorLayout>

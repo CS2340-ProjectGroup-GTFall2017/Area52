@@ -61,4 +61,5 @@
     <string name="scroll_through_report_list">Scroll through list of rat reports below:</string>
     <string name="report_a_rat">Report a Rat</string>
     <string name="get_report">Get Report</string>
+    <string name="back_to_reports">Back to Rat Reports</string>
 </resources>

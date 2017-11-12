@@ -33,14 +33,6 @@ public class Model {
         _users.put("randy", new User("randy", "randy", "numbers@5"));
     }
 
-    public void setCurrentReport(RatReport rReport) {
-        ratReport = rReport;
-    }
-
-    public RatReport getCurrentReport() {
-        return ratReport;
-    }
-
     /**
      *
      *

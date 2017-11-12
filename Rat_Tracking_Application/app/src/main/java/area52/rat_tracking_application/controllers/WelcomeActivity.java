@@ -12,7 +12,6 @@ import area52.rat_tracking_application.R;
 public class WelcomeActivity extends Activity {
 
     Button goToMainButton;
-    Button launchReportsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

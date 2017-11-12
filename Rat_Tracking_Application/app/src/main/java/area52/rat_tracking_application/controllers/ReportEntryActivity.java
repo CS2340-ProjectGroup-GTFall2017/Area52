@@ -1,16 +1,19 @@
 package area52.rat_tracking_application.controllers;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,10 +23,8 @@ import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.model.RatReportMap;
 import area52.rat_tracking_application.model.ReportLocation;
 
-import static area52.rat_tracking_application.R.id.add_button;
 import static area52.rat_tracking_application.R.id.address_city_spinner;
 import static area52.rat_tracking_application.R.id.borough_spinner;
-import static area52.rat_tracking_application.R.id.cancel_button;
 import static area52.rat_tracking_application.R.id.location_type_spinner;
 import static area52.rat_tracking_application.R.id.zip_code_spinner;
 import static area52.rat_tracking_application.controllers.MainActivity.getCurrentUser;
@@ -42,8 +43,6 @@ import static area52.rat_tracking_application.model.RatReportMap.reports;
 public class ReportEntryActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
 
-    private TextView adminGeneratedUniqueKey;
-    private TextView username;
     private String reportBorough;
     private Integer reportZipCode;
     private String reportCity;
@@ -54,116 +53,146 @@ public class ReportEntryActivity extends AppCompatActivity implements AdapterVie
     Spinner locationTypeSpinner;
     Spinner addressCitySpinner;
 
-    private RatReport _report = new RatReport();
+    private RatReport _report;
 
     private ReportLocation reportLocation = new ReportLocation();
+
+    /* ***********************
+       flag for whether this is a new rat report being added or an existing report being edited.
+     */
+    private boolean editing;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_entry);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        username = (TextView) findViewById(R.id.user_name);
-        username.setText(getCurrentUser().getUName());
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "TBD", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
-        adminGeneratedUniqueKey = (TextView) findViewById(R.id.unique_key_id);
+        /**
+         * Grab the dialog widgets so we can get info for later
+         */
+        TextView username = (TextView) findViewById(R.id.user_name);
+
+        TextView adminGeneratedUniqueKey = (TextView) findViewById(R.id.unique_key_id);
 
         boroughSpinner = (Spinner) findViewById(borough_spinner);
         zipCodeSpinner = (Spinner) findViewById(zip_code_spinner);
         locationTypeSpinner = (Spinner) findViewById(location_type_spinner);
         addressCitySpinner = (Spinner) findViewById(address_city_spinner);
 
-        ArrayAdapter<String> adapterBoroughs = new ArrayAdapter(
+        /*
+          Set up the adapter to display the allowable boroughs in the spinner
+         */
+        ArrayAdapter adapterBoroughs = new ArrayAdapter(
                 this, android.R.layout.simple_spinner_item, nycBoroughs);
         adapterBoroughs.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         boroughSpinner.setAdapter(adapterBoroughs);
 
+        /*
+          Set up the adapter to display the allowable zip codes in the spinner
+         */
         ArrayAdapter<String> adapterZip = new ArrayAdapter(
                 this, android.R.layout.simple_spinner_item, nycZipCodes);
         adapterZip.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         zipCodeSpinner.setAdapter(adapterZip);
 
+        /*
+          Set up the adapter to display the allowable location types in the spinner
+         */
         ArrayAdapter<String> adapterLocationType = new ArrayAdapter(
                 this, android.R.layout.simple_spinner_item, locationTypes);
         adapterLocationType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationTypeSpinner.setAdapter(adapterLocationType);
 
+        /*
+          Set up the adapter to display the allowable cities in the spinner
+         */
         ArrayAdapter<String> adapterCity = new ArrayAdapter(
                 this, android.R.layout.simple_spinner_item, cityList);
         adapterCity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         addressCitySpinner.setAdapter(adapterCity);
 
-        Button cancelButton = (Button) findViewById(cancel_button);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Button handler for the add new report button
-             *
-             * @param view the button
-             */
-            @Override
-            public void onClick(View view) {
-                Log.d("Cancel Entry", "Cancel Report Entry");
-                Context reportListActivity_Context = view.getContext();
-                Intent reportListActivity_Intent = new Intent(
-                        reportListActivity_Context, ReportDetailActivity.class);
-                reportListActivity_Context.startActivity(reportListActivity_Intent);
-            }
-        });
+        boroughSpinner.setSelection(
+                RatReportMap.findBoroughPosition(reportBorough));
+        zipCodeSpinner.setSelection(
+                RatReportMap.findZipCodePosition(reportZipCode));
+        locationTypeSpinner.setSelection(
+                RatReportMap.findLocationTypePosition(reportLocationType));
+        addressCitySpinner.setSelection(
+                RatReportMap.findCityPosition(reportCity));
 
-        Button addButton = (Button) findViewById(add_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Button handler for the add new report button
-             *
-             * @param view the button
-             */
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onClick(View view) {
+        username.setText(getCurrentUser().getUName());
 
-                boroughSpinner.setSelection(
-                        RatReportMap.findBoroughPosition(reportBorough));
-                zipCodeSpinner.setSelection(
-                        RatReportMap.findZipCodePosition(reportZipCode));
-                locationTypeSpinner.setSelection(
-                        RatReportMap.findLocationTypePosition(reportLocationType));
-                addressCitySpinner.setSelection(
-                        RatReportMap.findCityPosition(reportCity));
+        String key = _report.getNewReportKey();
+        adminGeneratedUniqueKey.setText("" + key);
 
-                Log.d("Add New Entry", "Add Report");
+    }
 
-                reportLocation.setLatitude("0");
-                reportLocation.setLongitude("0");
-                reportLocation.setLocationType((String) locationTypeSpinner.getSelectedItem());
-                reportLocation.setCity((String) addressCitySpinner.getSelectedItem());
-                reportLocation.setBorough((String) boroughSpinner.getSelectedItem());
-                reportLocation.setZipCode((String) zipCodeSpinner.getSelectedItem());
+    /**
+     * Button handler for the add new rat report button
+     * @param view the button
+     */
+    @TargetApi(Build.VERSION_CODES.N)
+    public void onAddPressed(View view) {
+        Log.d("Edit Existing Report", "Add New Report");
 
-                reportLocation.setAddress(reportLocation.getBorough()
-                        + reportLocation.getCity() + reportLocation.getZipCode());
+        reportLocation.setLatitude("0");
+        reportLocation.setLongitude("0");
+        reportLocation.setLocationType((String) locationTypeSpinner.getSelectedItem());
+        reportLocation.setCity((String) addressCitySpinner.getSelectedItem());
+        reportLocation.setBorough((String) boroughSpinner.getSelectedItem());
+        reportLocation.setZipCode((String) zipCodeSpinner.getSelectedItem());
 
-                _report.setNewReportKey();
-                _report.setNewReportDate();
-                _report.setNewReportLocation(reportLocation);
+        reportLocation.setAddress(reportLocation.getBorough()
+                + reportLocation.getCity() + reportLocation.getZipCode());
 
-                Log.d("New Report Entry", "New report data: " + _report);
+        _report.setNewReportKey();
+        _report.setNewReportDate();
+        _report.setNewReportLocation(reportLocation);
 
-                String key = _report.getNewReportKey();
-                reports.put(key , _report);
+        Log.d("New Report Entry", "New report data: " + _report);
 
-                adminGeneratedUniqueKey.setText("" + key);
+        Log.d("Edit", "Got new rat report data: " + _report);
+        if (!editing) {
+            reports.put(_report.getNewReportKey() , _report);
+            Toast.makeText(
+                    getApplicationContext(),
+                    "Report has been added",
+                    Toast.LENGTH_LONG).show();
+        }  else {
+            Toast.makeText(
+                    getApplicationContext(),
+                    "Report has been edited",
+                    Toast.LENGTH_LONG).show();
+            //code for setting edited rat data is pending
+            return;//replaceReportData(_report);
+        }
 
-                Toast.makeText(
-                        getApplicationContext(),
-                        "Report has been added",
-                        Toast.LENGTH_LONG).show();
-                Context reportDetailActivity_Context = view.getContext();
-                Intent reportDetailActivity_Intent = new Intent(
-                        reportDetailActivity_Context, ReportListActivity.class);
-                reportDetailActivity_Context.startActivity(reportDetailActivity_Intent);
-            }
-        });
+        finish();
+    }
+
+    /**
+     * Button handler for cancel
+     *
+     * @param view the button pressed
+     */
+    public void onCancelPressed(View view) {
+        Log.d("Edit", "Cancel Report Entry/Edit");
+        Context reportDetailActivity_Context = view.getContext();
+        Intent reportDetailActivity_Intent = new Intent(
+                reportDetailActivity_Context, ReportListActivity.class);
+        reportDetailActivity_Context.startActivity(reportDetailActivity_Intent);
     }
 
     @Override

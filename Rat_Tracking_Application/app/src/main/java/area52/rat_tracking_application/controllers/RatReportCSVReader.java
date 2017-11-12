@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,21 +31,16 @@ import static area52.rat_tracking_application.model.RatReportMap.reports;
  *
  * Created by Eric on 10/29/2017.
  */
-public class RatReportCSVReader extends AppCompatActivity {
-
-
+public class RatReportCSVReader extends AppCompatActivity implements Serializable {
 
     public static List<Integer> wantedCSVColumnIndices = Arrays.asList(
             0, 1, 7, 8, 9, 16, 23, 49, 50);
 
-    static List<String[]> preParsedList = new ArrayList<>();
+    static List<RatReport> allReportsList = new ArrayList<>();
     static List<String[]> newList = new ArrayList<>();
     public static List<String[]> newListString = new ArrayList<>();
     private File csvFile = null;
 
-    private String[] headerLine = new String[9];
-
-   public static RatReport csvExtractReport;
     RatReportCSVReader getNonStaticInstance() {
         return this;
     }
@@ -62,10 +58,6 @@ public class RatReportCSVReader extends AppCompatActivity {
         String borough;
         String zipCode;
         String date;
-
-        List<String> rowAsList;
-
-        List<String> headerLineAsList;
 
         if (!reports.isEmpty()) {
 
@@ -85,14 +77,15 @@ public class RatReportCSVReader extends AppCompatActivity {
                 List<String> rowList = Arrays.asList(rowToParse);
                 for (String itemInRow : rowList) {
                     for (Integer idx : wantedCSVColumnIndices) {
-                        if (rowList.indexOf(itemInRow) == idx) {
-                            newLine[i++] = itemInRow;
+                        if (itemInRow != null) {
+                            if (rowList.indexOf(itemInRow) == idx) {
+                                newLine[i++] = itemInRow;
+                            }
                         }
                     }
                 }
 
                 RatReport csvExtractReport = new RatReport();
-                System.out.println(Arrays.asList(newLine));
 
                 newListString.add(newLine);
 
@@ -119,13 +112,13 @@ public class RatReportCSVReader extends AppCompatActivity {
                         locationType, zipCode, address, city, borough,
                         latitude, longitude));
                 RatReportMap.addSingleReport(csvExtractReport);
+                allReportsList.add(csvExtractReport);
             }
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "We're experiencing an issue with the specified input file",
                     Toast.LENGTH_SHORT).show();
         }
-        newList = newListString;
         RatReportMap.setZipCodePositions();
     }
 
@@ -176,7 +169,7 @@ public class RatReportCSVReader extends AppCompatActivity {
 
         try {
 
-            InputStream csvReportFile = getResources().openRawResource(R.raw.rat_sightings_v2);
+            InputStream csvReportFile = getResources().openRawResource(R.raw.rat_sightings);
 
             readInFile(csvReportFile);
 
@@ -199,8 +192,5 @@ public class RatReportCSVReader extends AppCompatActivity {
                 "Bridge Highway Direction", "Road Ramp", "Bridge Highway Segment",
                 "Garage Lot Name", "Ferry Direction", "Ferry Terminal Name",
                 "Latitude", "Longitude", "Location"};
-
-        /***List<Integer> wantedCSVColumnIndices = Arrays.asList(
-                0, 1, 7, 8, 9, 16, 23, 49, 50);***/
     }
 }

@@ -1,50 +1,32 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_report_detail"
+    style="@style/Base.TextAppearance.AppCompat.Display2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="32dp"
-    android:visibility="visible"
-    tools:context="area52.rat_tracking_application.controllers.ReportDetailActivity"
-    tools:showIn="@layout/activity_report_detail" >
+    tools:context=".controllers.ReportListActivity"
+    tools:showIn="@layout/activity_report_detail">
+
+    <TextView
+        android:id="@+id/single_report_content"
+        style="@style/Base.TextAppearance.AppCompat.SearchResult"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:layout_marginBottom="210dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@android:drawable/screen_background_light"
+        android:textAlignment="textStart"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.TextView" />
 
     <Button
-        android:id="@+id/go_to_report_list_screen_button"
+        android:id="@+id/back_to_reports_button"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back to Report List Screen"
-        android:layout_marginBottom="35dp"
-        android:layout_above="@+id/go_to_report_entry_screen_button"
-        android:layout_centerHorizontal="true" />
+        android:text="@string/back_to_reports"
+        android:textColorLink="@android:color/holo_blue_light"
+        android:visibility="visible" />
 
-    <Button
-        android:id="@+id/go_to_report_entry_screen_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/report_a_rat_sighting"
-        android:visibility="visible"
-        android:layout_above="@+id/logout_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="81dp" />
-
-    <Button
-        android:id="@+id/logout_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="21dp"
-        android:text="@string/logout_report_detail" />
-
-    <include
-        layout="@layout/report_content_view"
-        android:layout_width="wrap_content"
-        android:layout_height="166dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
-
-</RelativeLayout>
+</LinearLayout>

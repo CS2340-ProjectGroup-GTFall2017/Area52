@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -5,61 +6,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    app:layout_collapseParallaxMultiplier="1.0"
-    tools:context="area52.rat_tracking_application.controllers.ReportListActivity" >
+    tools:context="area52.rat_tracking_application.controllers.ReportListActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
+    <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        android:isScrollContainer="true"
+        android:saveEnabled="true"
+        android:scrollbars="horizontal|vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:id="@+id/textView_rat_reports"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_weight="1"
-            android:text="@string/scroll_through_report_list"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            tools:layout_editor_absoluteX="62dp"
-            tools:layout_editor_absoluteY="142dp" />
-
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="14dp"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    <Button
-        android:id="@+id/log_out_button"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_below="@+id/go_to_report_entry_screen_button"
-        android:text="@string/logout_report_detail"
-        android:textSize="12sp"
-        android:layout_alignLeft="@+id/content" />
-
-    <Button
-        android:id="@+id/go_to_report_entry_screen_button"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center|center_horizontal"
-        android:text="@string/report_a_rat"
-        tools:textSize="12sp"
-        android:layout_alignLeft="@+id/content" />
-
-    <include
-        layout="@layout/content_report_list"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        <include
+            android:id="@+id/report_list"
+            style="@android:style/Widget.DeviceDefault.Light.ScrollView"
+            layout="@layout/report_list"
+            android:visibility="visible" />
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

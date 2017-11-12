@@ -6,6 +6,8 @@ import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import java.io.Serializable;
+
 import static area52.rat_tracking_application.model.RatReportMap.reports;
 
 /**
@@ -16,7 +18,7 @@ import static area52.rat_tracking_application.model.RatReportMap.reports;
  * saved in the application's server
  */
 
-public class RatReport {
+public class RatReport implements Serializable {
 
     private String _key;
     /** the instance of report location*/
@@ -53,7 +55,7 @@ public class RatReport {
      *
      * @return unique key or 0
      */
-    String getReportKey() {
+    public String getReportKey() {
         return _key;
     }
 
@@ -94,7 +96,7 @@ public class RatReport {
      *
      * @return ReportLocation for instance of RatReport
      */
-    ReportLocation getReportLocation() {
+    public ReportLocation getReportLocation() {
         return _location;
     }
 

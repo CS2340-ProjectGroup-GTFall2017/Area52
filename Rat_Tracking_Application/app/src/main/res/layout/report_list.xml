@@ -3,26 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/report_list"
-    style="@style/Base.Widget.AppCompat.ListView.DropDown"
+    style="@style/Base.Widget.AppCompat.ListView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
-    android:background="?android:attr/listChoiceBackgroundIndicator"
+    android:background="@android:drawable/list_selector_background"
     android:clipChildren="true"
     android:clipToPadding="true"
     android:isScrollContainer="true"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/fab_margin"
-    android:paddingRight="@dimen/fab_margin"
     android:saveEnabled="true"
+    android:scrollbarStyle="outsideOverlay"
     android:scrollbars="horizontal|vertical"
-    android:verticalScrollbarPosition="right"
+    android:theme="@android:style/Widget.DeviceDefault.Light.ScrollView"
     android:visibility="visible"
     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
     tools:context="area52.rat_tracking_application.controllers.ReportListActivity"
-    tools:listitem="@android:layout/simple_list_item_single_choice"
-    tools:showIn="@+id/content_report_list">
-
-
-</android.support.v7.widget.RecyclerView>
+    tools:listitem="@layout/content_report_list" />

@@ -1,6 +1,8 @@
 package area52.rat_tracking_application.model;
 
-public class ReportLocation {
+import java.io.Serializable;
+
+public class ReportLocation implements Serializable {
 
     /** the date the report was created */
     private static String _creationDate;
