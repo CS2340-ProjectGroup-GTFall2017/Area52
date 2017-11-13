@@ -9,7 +9,9 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.model.RatReportManager;
@@ -29,52 +31,55 @@ public class GraphActivity extends AppCompatActivity {
 
 
 //making a list(map) for all range of months chosen
-        Map<String, int> hist = new HashMap<String, int>();
+        Map<Date, Integer> hist = new HashMap<Date, Integer>();
 
         int startYear = start.getYear();
         int endYear = end.getYear();
-        int startMonth = start.getMonth() + 1;
-        int endMonth = end.getMonth() + 1;
+        int startMonth = start.getMonth();
+        int endMonth = end.getMonth();
 
-        for (int j = startMonth; j < 13; j++) {
-            hist.add(j + "-" + startYear);
-        }
-
-        for (int i = startYear + 1; i < endYear; i++) {
-            for (int j = 1; j < 13; j++) {
-                hist.add(j + "-" + i);
+        int count = 0;
+        int x = startMonth;
+        for (int y = startYear; y < endYear + 1; y++) {
+            if (y == endYear) {
+                while (x < endMonth + 1) {
+                    hist.put(new Date(endYear, x, 0), 0);
+                    x++;
+                    count++;
+                }
+            } else {
+                while (x < 12) {
+                    hist.put(new Date(y, x, 0), 0);
+                    x++;
+                    count++;
+                }
             }
+            x = 0;
         }
-
-        for (int j = 1; j < endMonth + 1; j++) {
-            hist.add(j + "-" + endYear);
-        }
-
 //for loop for reports
-        int month = aReport.getCreationDate().getMonth();
-        int year = aReport.getCreationDate().getYear();
-
-
-
-        for (int i = 0; i < rawReports.size(); i++) {
-            Date creationDate = rawReports.get(i).getCreationDate();
+        for (RatReport report : rawReports) {
+            Date creationDate = report.getCreationDate();
+            int month = report.getCreationDate().getMonth();
+            int year = report.getCreationDate().getYear();
             if (creationDate.after(start)
                     && creationDate.before(end)) {
+                for (Date d : hist.keySet()) { //would we have more efficient way?
+                    if (d.getMonth() == month
+                            && d.getYear() == year) {
+                        hist.put(d, hist.get(d) + 1);
+                    }
+                }
 
             }
         }
-
-
+        int i = 0;
+        DataPoint[] dp = new DataPoint[count];
+        for (Date d : hist.keySet()) {
+            dp[i++] = new DataPoint(d, hist.get(d));
+        }
         GraphView graph = (GraphView) findViewById(R.id.graph);
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0,1),
-                new DataPoint(1,4),
-                new DataPoint(2,3),
-                new DataPoint(3, 8),
-                new DataPoint(4,1)
-        });
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dp);
         graph.addSeries(series);
-
         // bar graph
 //        GraphView graph1 = (GraphView) findViewById(R.id.graph);
 //        BarGraphSeries<DataPoint> series1 = new BarGraphSeries<>(new DataPoint[] {
