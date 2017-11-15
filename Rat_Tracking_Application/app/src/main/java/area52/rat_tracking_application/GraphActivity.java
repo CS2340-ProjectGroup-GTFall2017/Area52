@@ -36,7 +36,7 @@ public class GraphActivity extends AppCompatActivity {
         int i = 0;
         DataPoint[] dp = new DataPoint[reportsByMonths.size()];
         for (Date d : reportsByMonths.keySet()) {
-            dp[i++] = new DataPoint(d, reportsByMonths.get(d));
+            dp[i++] = new DataPoint(i, reportsByMonths.get(d));
         }
 
         String graphType = (String) getIntent().getSerializableExtra("graphType");
