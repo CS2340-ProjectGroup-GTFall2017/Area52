@@ -39,57 +39,71 @@ public class GraphActivity extends AppCompatActivity {
             dp[i++] = new DataPoint(i, reportsByMonths.get(d));
         }
 
-        String graphType = (String) getIntent().getSerializableExtra("graphType");
+//        for (int j = 0; j < dp.length; j++) {
+//            Log.d("Graph", j + " " + );
+//        }
 
-        if (graphType.equals("Line Graph")) {
-            GraphView graph = (GraphView) findViewById(R.id.graph);
+        String graphType = (String) getIntent().getSerializableExtra("graphType");
+        GraphView graph = (GraphView) findViewById(R.id.graph);
+
+        if (graphType.equals("Line graph")) {
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dp);
             graph.addSeries(series);
+            graph.getViewport().setMinX(0);
+            graph.getViewport().setMaxX(12);
+
 
         } else if (graphType.equals("Histogram")) {
              //bar graph
-            GraphView graph1 = (GraphView) findViewById(R.id.graph);
             BarGraphSeries<DataPoint> series1 = new BarGraphSeries<>(dp);
             series1.setValueDependentColor(new ValueDependentColor<DataPoint>() {
-            @Override
-            public int get(DataPoint data) {
-                return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
-            }
-        });
-        series1.setSpacing(50);
-        series1.setDrawValuesOnTop(true);
-        series1.setValuesOnTopColor(Color.RED);
-             graph1.addSeries(series1);
+                @Override
+                public int get(DataPoint data) {
+                    return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+                }
+            });
+            series1.setSpacing(50);
+            series1.setDrawValuesOnTop(true);
+            series1.setValuesOnTopColor(Color.RED);
+             graph.addSeries(series1);
         }
 
+        //graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
+        graph.getGridLabelRenderer().setNumHorizontalLabels(reportsByMonths.size());
 
-
+        graph.getGridLabelRenderer().setHumanRounding(false);
     }
 
+    /**
+     * A method to get a map which has dates as key, and the number of reports as the value.
+     *
+     *
+     */
     private Map<Date, Integer> reportsByMonths(Date start, Date end, List<RatReport> rawReports) {
         //making a list(map) for all range of months chosen
         Map<Date, Integer> numOfReports = new HashMap<Date, Integer>();
 
-        int startYear = start.getYear();
-        int endYear = end.getYear();
-        int startMonth = start.getMonth();
-        int endMonth = end.getMonth();
+        int startYear = start.getYear(); //2016
+        int endYear = end.getYear(); // 2017
+        int startMonth = start.getMonth(); // 10
+        int endMonth = end.getMonth(); // 11
 
-        int x = startMonth;
-        for (int y = startYear; y < endYear + 1; y++) {
+        int x = startMonth; // 10
+        for (int y = startYear; y < endYear + 1; y++) { // y = 2017, while y < 2018, y++
             if (y == endYear) {
-                while (x < endMonth + 1) {
-                    numOfReports.put(new Date(endYear, x, 0), 0);
+                while (x < endMonth + 1) { // x = 0, x < 11 + 1
+                    numOfReports.put(new Date(endYear, x, 0), 0); // 2017, 0, 0; 2017, 1, 0; 2017, 2, 0; ...
                     x++;
                 }
             } else {
                 while (x < 12) {
-                    numOfReports.put(new Date(y, x, 0), 0);
+                    numOfReports.put(new Date(y, x, 0), 0); // 2016, 10, 0; 2016, 11, 0;
                     x++;
                 }
             }
             x = 0;
         }
+
         for (RatReport report : rawReports) {
             Date creationDate = report.getCreationDate();
             int month = report.getCreationDate().getMonth();
