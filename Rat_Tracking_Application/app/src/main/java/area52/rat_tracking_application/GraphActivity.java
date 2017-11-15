@@ -46,7 +46,7 @@ public class GraphActivity extends AppCompatActivity {
         String graphType = (String) getIntent().getSerializableExtra("graphType");
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
-        if (graphType.equals("Line graph")) {
+        if (graphType.equals("Line Graph")) {
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dp);
             graph.addSeries(series);
             graph.getViewport().setMinX(0);
