@@ -42,7 +42,6 @@ public class GraphSetup extends AppCompatActivity {
                 Intent intent = new Intent(context, GraphActivity.class);
                 intent.putExtra("start", startDate);
                 intent.putExtra("end", endDate);
-                context.startActivity(intent);
 
                 Spinner spinner = (Spinner) findViewById(R.id.graph_spinner);
 // Create an ArrayAdapter using the string array and a default spinner layout
@@ -53,8 +52,9 @@ public class GraphSetup extends AppCompatActivity {
 // Apply the adapter to the spinner
                 spinner.setAdapter(adapter);
 
-                String selectedGraph = (String) spinner.getItemAtPosition(android.R.layout.simple_spinner_dropdown_item);
+                String selectedGraph = (String) spinner.getSelectedItem();
                 intent.putExtra("graphType", selectedGraph);
+                context.startActivity(intent);
 
             }
         });

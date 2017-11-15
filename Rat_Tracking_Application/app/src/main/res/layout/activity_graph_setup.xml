@@ -44,6 +44,7 @@
             android:layout_weight="0.14" />
 
         <Spinner
+            android:entries="@array/graphs_array"
             android:id="@+id/graph_spinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />

@@ -48,9 +48,9 @@ public class GraphActivity extends AppCompatActivity {
 
         } else if (graphType.equals("Histogram")) {
              //bar graph
-        GraphView graph1 = (GraphView) findViewById(R.id.graph);
-        BarGraphSeries<DataPoint> series1 = new BarGraphSeries<>(dp);
-        series1.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+            GraphView graph1 = (GraphView) findViewById(R.id.graph);
+            BarGraphSeries<DataPoint> series1 = new BarGraphSeries<>(dp);
+            series1.setValueDependentColor(new ValueDependentColor<DataPoint>() {
             @Override
             public int get(DataPoint data) {
                 return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
