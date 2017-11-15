@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 
 import java.util.Date;
 
@@ -18,8 +20,8 @@ public class GraphSetup extends AppCompatActivity {
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
-        Button mapButton = (Button) findViewById(R.id.button5);
-        mapButton.setOnClickListener(new View.OnClickListener() {
+        Button graphButton = (Button) findViewById(R.id.button5);
+        graphButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker8);
@@ -41,6 +43,19 @@ public class GraphSetup extends AppCompatActivity {
                 intent.putExtra("start", startDate);
                 intent.putExtra("end", endDate);
                 context.startActivity(intent);
+
+                Spinner spinner = (Spinner) findViewById(R.id.graph_spinner);
+// Create an ArrayAdapter using the string array and a default spinner layout
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
+                        R.array.graphs_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+                spinner.setAdapter(adapter);
+
+                String selectedGraph = (String) spinner.getItemAtPosition(android.R.layout.simple_spinner_dropdown_item);
+                intent.putExtra("graphType", selectedGraph);
+
             }
         });
 

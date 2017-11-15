@@ -32,9 +32,8 @@
             android:id="@+id/datePicker8"
             android:layout_width="wrap_content"
             android:layout_height="132dp"
-            android:datePickerMode="spinner"
             android:calendarViewShown="false"
-            />
+            android:datePickerMode="spinner" />
 
         <DatePicker
             android:id="@+id/datePicker9"
@@ -43,6 +42,11 @@
             android:datePickerMode="spinner"
             android:calendarViewShown="false"
             android:layout_weight="0.14" />
+
+        <Spinner
+            android:id="@+id/graph_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/button5"
