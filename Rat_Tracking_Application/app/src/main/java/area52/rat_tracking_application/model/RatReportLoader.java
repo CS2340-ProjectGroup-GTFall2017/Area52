@@ -97,7 +97,7 @@ public class RatReportLoader {
         String keyString = getCSVStringForColumn(wantedCSVColumns[0], csvRow);
         return (isNum(keyString)) ? Long.valueOf(keyString) : 0;
     }
-    private boolean isNum(String toBeChecked) {
+    public boolean isNum(String toBeChecked) {  //TODO: Move this to an interface-style class
         try {
             double d = Double.parseDouble(toBeChecked);
         } catch (NumberFormatException e) {

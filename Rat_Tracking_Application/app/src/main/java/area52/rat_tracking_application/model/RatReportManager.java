@@ -30,7 +30,7 @@ public class RatReportManager implements Serializable {
     /**
      * Gets the rat report data from a binary file and loads it into the manager
      * @param ratReportBinary The binary file that contains the rat report data
-     * @return whether or not the rate reports were retrieved successfully
+     * @return whether or not the rat reports were retrieved successfully
      */
     public boolean loadRatReports(File ratReportBinary) {
         boolean success = false;
@@ -38,7 +38,6 @@ public class RatReportManager implements Serializable {
         Object fromBinary = PersistenceManager.getInstance().loadBinary(ratReportBinary);
 
         if (fromBinary != null) {
-            //getInstance().setInternalRatReports( ((RatReportManager) fromBinary).internalRatReports );
             instance = (RatReportManager) fromBinary;
             instance.copyInternalReportsToHashMap();
             success = true;
