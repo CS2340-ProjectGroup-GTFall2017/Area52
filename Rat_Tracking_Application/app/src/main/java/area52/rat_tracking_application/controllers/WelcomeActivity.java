@@ -60,8 +60,13 @@ public class WelcomeActivity extends Activity {
         File usersFile = new File(this.getFilesDir(),
                 PersistenceManager.USERS_DATA_FILENAME);
         if (!Model.getInstance().loadUsers(usersFile)) {
+
             Model.getInstance().loadTestData();
+
             Model.getInstance().syncUsersListAndHashMap();
+
+            getPersistManagerInstance()
+                    .saveBinary(usersFile, Model.getInstance());
         }
     }
 }
