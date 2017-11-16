@@ -62,4 +62,10 @@
     <string name="report_a_rat">Report a Rat</string>
     <string name="get_report">Get Report</string>
     <string name="back_to_reports">Back to Rat Reports</string>
+    <string name="address">address</string>
+    <string name="latitude">latitude</string>
+    <string name="longitude">longitude</string>
+    <string name="add_report">Add Report</string>
+    <string name="cancel_report">Cancel</string>
+    <string name="enter_new_report">Enter New Report</string>
 </resources>

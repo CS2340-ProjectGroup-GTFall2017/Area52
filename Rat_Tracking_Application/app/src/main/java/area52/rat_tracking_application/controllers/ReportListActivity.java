@@ -10,16 +10,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.RatReport;
 
-import static area52.rat_tracking_application.controllers.RatReportCSVReader.allReportsList;
-import static area52.rat_tracking_application.model.RatReportMap.setCurrentReport;
+import static area52.rat_tracking_application.model.RatReportCSVReader.getCSVReaderInstance;
 
 /**
  * An activity representing a list of RatReport instances.
@@ -31,8 +32,6 @@ import static area52.rat_tracking_application.model.RatReportMap.setCurrentRepor
  * an inner class in ReportListActivity
  */
 public class ReportListActivity extends AppCompatActivity {
-
-    private boolean mTwoPane;
 
     private static final String ARG_UNIQUE_KEY_ID = "Report ID";//0
     private static final String ARG_CREATED_DATE_ID = "Report Creation Date";//1
@@ -53,13 +52,28 @@ public class ReportListActivity extends AppCompatActivity {
      */
     private ReportRecyclerViewAdapter adapter;
 
+    Button addNewRatReport;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        for (RatReport r : allReportsList) {
-            System.out.println(r.toString());
-        }
         setContentView(R.layout.activity_report_list);
+
+        this.createRatReportRecyclerView();
+
+        addNewRatReport = (Button) findViewById(R.id.report_add);
+
+        addNewRatReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = view.getContext();
+                Intent intent = new Intent(context, ReportEntryActivity.class);
+                context.startActivity(intent);
+            }
+        });
+    }
+
+    private void createRatReportRecyclerView() {
 
         View reportRecyclerView = findViewById(R.id.report_list);
         assert reportRecyclerView != null;
@@ -78,7 +92,8 @@ public class ReportListActivity extends AppCompatActivity {
      * @param reportRecyclerView  the view that needs this adapter
      */
     private void setupReportRecyclerView(@NonNull RecyclerView reportRecyclerView) {
-        adapter = new ReportRecyclerViewAdapter(allReportsList);
+
+        adapter = new ReportRecyclerViewAdapter(new ArrayList<>(getCSVReaderInstance().getRatReportList()));
         Log.d("Adapter", adapter.toString());
         reportRecyclerView.setAdapter(adapter);
     }
@@ -94,12 +109,26 @@ public class ReportListActivity extends AppCompatActivity {
          */
         private final List<RatReport> mReports;
 
-        ReportRecyclerViewAdapter(List<RatReport> reportHashMapValues) {
-            mReports = reportHashMapValues;
-            for (RatReport r : mReports) {
-                System.out.println(r.toString());
-            }
+        ReportRecyclerViewAdapter(ArrayList<RatReport> allReports) {
+            mReports = allReports;
+            //sortRatReportsByDate();
         }
+
+        /**
+         * Method added by Jake Deerin on 10/31/2017
+         *
+         * Sorts the ratReports list by date in descending order (most recent first)
+
+        private void sortRatReportsByDate() {
+            Collections.sort(mReports, new Comparator<RatReport>() {
+                @Override
+                public int compare(RatReport o1, RatReport o2) {
+                    Date date1 = new Date(o1.getReportDate());
+                    Date date2 = new Date(o2.getReportDate());
+                    return date2.compareTo(date1);
+                }
+            });
+        }*/
 
         @Override
         public ReportRecyclerViewAdapter.ViewHolder onCreateViewHolder(
@@ -130,7 +159,7 @@ public class ReportListActivity extends AppCompatActivity {
 
                 @Override
                 public void onClick(View view) {
-                    setCurrentReport(holder.mReport);
+                    getCSVReaderInstance().setCurrentReport(holder.mReport);
                     Context context = view.getContext();
                     Intent intent = new Intent(context, ReportDetailActivity.class);
                     context.startActivity(intent);

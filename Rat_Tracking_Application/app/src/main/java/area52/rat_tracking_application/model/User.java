@@ -1,10 +1,6 @@
 package area52.rat_tracking_application.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.util.Arrays;
-import java.util.List;
+import java.io.Serializable;
 
 import area52.rat_tracking_application.controllers.RegistrationActivity;
 
@@ -18,7 +14,7 @@ import area52.rat_tracking_application.controllers.RegistrationActivity;
  * the Parcelable interface.
  *
  */
-public class User {
+public class User implements Serializable {
     private String email;
     private String pWord;
     private String uName;

@@ -4,9 +4,6 @@ import java.io.Serializable;
 
 public class ReportLocation implements Serializable {
 
-    /** the date the report was created */
-    private static String _creationDate;
-
     private String _latitude;
     private String _longitude;
     private String _locationType; // alternative to class Enum -> List<String> locationTypes

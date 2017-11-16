@@ -54,7 +54,7 @@
                 android:value=".controllers.ReportDetailActivity" />
         </activity>
         <activity
-            android:name=".controllers.RatReportCSVReader"
+            android:name=".model.RatReportCSVReader"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/FullscreenTheme">
             <meta-data
@@ -68,7 +68,7 @@
             android:theme="@style/FullscreenTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".controllers.RatReportCSVReader" />
+                android:value=".model.RatReportCSVReader" />
         </activity>
     </application>
 

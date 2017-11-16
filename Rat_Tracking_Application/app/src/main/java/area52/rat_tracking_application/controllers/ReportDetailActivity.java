@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import area52.rat_tracking_application.R;
 
-import static area52.rat_tracking_application.model.RatReportMap.getCurrentReport;
+import static area52.rat_tracking_application.model.RatReportCSVReader.getCSVReaderInstance;
 
 /**
  * Displays the details of a single report, selected on the ReportListActivity
@@ -31,7 +31,7 @@ public class ReportDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_report_detail);
 
         reportContentView = (TextView) findViewById(R.id.single_report_content);
-        reportContentView.setText(String.format("%s", getCurrentReport()));
+        reportContentView.setText(String.format("%s", getCSVReaderInstance().getCurrentReport()));
 
         backToReportsButton = (Button) findViewById(R.id.back_to_reports_button);
 

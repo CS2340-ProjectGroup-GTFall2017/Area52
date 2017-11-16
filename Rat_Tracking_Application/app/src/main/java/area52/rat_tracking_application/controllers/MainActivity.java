@@ -91,10 +91,9 @@ public class MainActivity extends Activity {
                                         + getCurrentUser() + " !",
                                 Toast.LENGTH_LONG).show();
                         match = true;
-                        Context CSVReaderContext = view.getContext();
-                        Intent CSVReaderIntent = new Intent(
-                                CSVReaderContext, RatReportCSVReader.class);
-                        CSVReaderContext.startActivity(CSVReaderIntent);
+                        Context context = view.getContext();
+                        Intent intent = new Intent(context, ReportListActivity.class);
+                        context.startActivity(intent);
                     }
                 } else {
                     if (!match) {

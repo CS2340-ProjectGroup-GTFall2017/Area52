@@ -9,12 +9,16 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import java.io.File;
 import java.util.HashMap;
 
 import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.Admin;
 import area52.rat_tracking_application.model.Model;
+import area52.rat_tracking_application.model.PersistenceManager;
 import area52.rat_tracking_application.model.User;
+
+import static area52.rat_tracking_application.model.PersistenceManager.getPersistManagerInstance;
 
 public class RegistrationActivity extends AppCompatActivity {
     EditText usernameText;
@@ -62,6 +66,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 HashMap<String, User> userMap = Model.model.getUserMap();//.put(getUsername(), newUser);
                 if (!userMap.containsKey(getUsername())){
                     Model.model.getUserMap().put(getUsername(), newUser);
+                    Model.getInstance().addNewUser(newUser);
                     Context reportDetailContext = view.getContext();
                     Intent reportDetailIntent = new Intent(reportDetailContext, ReportDetailActivity.class);
                     reportDetailContext.startActivity(reportDetailIntent);
@@ -77,6 +82,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 HashMap<String, User> userMap = Model.model.getUserMap();
                 if (!userMap.containsKey(getUsername())){
                     Model.model.getUserMap().put(getUsername(), newUser);
+                    Model.getInstance().addNewUser(newUser);
                     Context mainContext = view.getContext();
                     Intent mainIntent = new Intent(mainContext, MainActivity.class);
                     mainContext.startActivity(mainIntent);
@@ -115,5 +121,14 @@ public class RegistrationActivity extends AppCompatActivity {
     public void goBackToLoginScreen(View view) {
         Intent loginScreenActivity = new Intent(this, MainActivity.class);
         startActivity(loginScreenActivity);
+    }
+    /**
+     * Save rat reports as a binary file
+     *
+     * Should be changed to onClose() saveRatReports() && onLogout() saveRatReports()
+     */
+    private void saveNewUser() {
+        File usersFile = new File(this.getFilesDir(), PersistenceManager.USERS_DATA_FILENAME);
+        getPersistManagerInstance().saveBinary(usersFile, Model.getInstance());
     }
 }

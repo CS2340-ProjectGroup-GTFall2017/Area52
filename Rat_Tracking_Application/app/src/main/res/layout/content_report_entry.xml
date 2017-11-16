@@ -34,28 +34,35 @@
         android:visibility="gone" />
 
     <Spinner
+        android:id="@+id/location_type_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/borough_spinner"
+        android:layout_marginTop="19dp"
+        android:dropDownSelector="@android:drawable/spinner_dropdown_background"
+        android:entries="?attr/listChoiceBackgroundIndicator"
+        android:scrollbars="vertical"
+        android:spinnerMode="dropdown"
+        android:text="@string/select_location_type"
+        android:visibility="visible"
+        tools:listitem="@android:layout/simple_spinner_dropdown_item" />
+
+    <Spinner
         android:id="@+id/borough_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/unique_key_id"
-        android:layout_marginTop="32dp"
+        android:layout_alignTop="@+id/user_name"
         android:dropDownSelector="@android:drawable/spinner_dropdown_background"
         android:entries="?attr/listChoiceBackgroundIndicator"
         android:scrollbars="vertical"
         android:spinnerMode="dropdown"
         android:text="@string/select_borough"
         android:visibility="visible"
-        tools:listitem="@android:layout/simple_spinner_dropdown_item">
-
-        <TextView
-            style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
-
-    </Spinner>
+        tools:listitem="@android:layout/simple_spinner_dropdown_item" />
 
     <Spinner
         android:id="@+id/address_city_spinner"
@@ -63,88 +70,78 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/borough_spinner"
-        android:layout_marginTop="33dp"
-        android:background="@android:drawable/spinner_dropdown_background"
+        android:layout_below="@+id/location_type_spinner"
+        android:layout_marginTop="13dp"
         android:dropDownSelector="@android:drawable/spinner_dropdown_background"
         android:entries="?android:attr/listChoiceBackgroundIndicator"
         android:scrollbars="vertical"
         android:spinnerMode="dropdown"
         android:text="@string/select_city"
         android:visibility="visible"
-        tools:listitem="@android:layout/simple_spinner_dropdown_item">
+        tools:listitem="@android:layout/simple_spinner_dropdown_item" />
 
-        <TextView
-            style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
-
-    </Spinner>
-
-    <Spinner
-        android:id="@+id/zip_code_spinner"
+    <EditText
+        android:id="@+id/zip_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/address_city_spinner"
-        android:layout_marginTop="32dp"
-        android:dropDownSelector="@android:drawable/spinner_dropdown_background"
-        android:entries="?android:attr/listChoiceBackgroundIndicator"
+        android:layout_centerVertical="true"
+        android:inputType="text"
         android:scrollbars="vertical"
         android:spinnerMode="dropdown"
         android:text="@string/select_zip_code"
-        android:visibility="visible"
-        tools:listitem="@android:layout/simple_spinner_dropdown_item">
+        android:visibility="visible" />
 
-        <TextView
-            style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
-
-    </Spinner>
-
-    <Spinner
-        android:id="@+id/location_type_spinner"
+    <TextView
+        android:id="@+id/address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/zip_code_spinner"
-        android:layout_marginTop="32dp"
-        android:dropDownSelector="@android:drawable/spinner_dropdown_background"
-        android:entries="?attr/listChoiceBackgroundIndicator"
-        android:scrollbars="vertical"
-        android:spinnerMode="dropdown"
-        android:text="@string/select_location_type"
-        android:visibility="visible"
-        tools:listitem="@android:layout/simple_spinner_dropdown_item">
+        android:layout_below="@+id/zip_code"
+        android:text="@string/address"
+        android:textSize="24sp" />
 
-        <TextView
-            style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
+    <EditText
+        android:id="@+id/latitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/longitude"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:inputType="text"
+        android:singleLine="true"
+        android:text="@string/latitude" />
 
-    </Spinner>
+    <EditText
+        android:id="@+id/longitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_submit"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="12dp"
+        android:inputType="text"
+        android:singleLine="true"
+        android:text="@string/longitude" />
 
     <Button
-        android:text="Add Report"
+        android:id="@+id/button_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/add_button"
-        android:layout_above="@+id/cancel_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="33dp" />
-
-    <Button
-        android:text="Cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/cancel_button"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/add_report" />
+
+    <Button
+        android:id="@+id/cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/longitude"
+        android:text="@string/cancel_report" />
 
 </RelativeLayout>
