@@ -19,13 +19,12 @@ public class PersistenceManager {
     public static final String RAT_REPORT_DATA_FILENAME = "ratReports.bin";
     public static final String USERS_DATA_FILENAME = "users.bin";
 
-    public ObjectOutputStream out;
     /**
      * Singleton pattern, because I am an original human being
      */
     private static PersistenceManager instance = new PersistenceManager();
 
-    public PersistenceManager() {}
+    private PersistenceManager() {}
     public static PersistenceManager getPersistManagerInstance() { return instance; }
 
     /**
@@ -33,26 +32,22 @@ public class PersistenceManager {
      * based on Prof. Robert Water's example code
      * @param file The file the object will be saved to
      * @param objToBeSaved The object to be saved; must implement Serializable
-     * @return true/false of if the file was saved successfully
      */
-    public boolean saveBinary(File file, Serializable objToBeSaved) {
-        boolean success = true;
+    public void saveBinary(File file, Serializable objToBeSaved) {
         try {
-            out = new ObjectOutputStream(new FileOutputStream(file));
-            // As per Prof. Bob Waters:
-            //
-            // We basically can save our entire data model with one write, since this will follow
-            // all the links and pointers to save everything.  Just save the top level object.
-            //
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+            /**As per Prof. Bob Waters:
+             *
+             * We basically can save our entire data model with one write, since this will follow
+             * all the links and pointers to save everything.  Just save the top level object.
+             */
             out.writeObject(objToBeSaved);
             out.close();
 
         } catch (IOException e) {
             Log.e("PersistenceManager", "Error writing an entry from binary file",e);
-            success = false;
         }
         Log.e("PersistenceManager", "Your entry has been successfully saved");
-        return success;
     }
 
     Object loadBinary(File file) {

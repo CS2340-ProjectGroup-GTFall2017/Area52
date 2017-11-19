@@ -67,6 +67,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (!userMap.containsKey(getUsername())){
                     Model.model.getUserMap().put(getUsername(), newUser);
                     Model.getInstance().addNewUser(newUser);
+                    saveNewUser();
                     Context reportDetailContext = view.getContext();
                     Intent reportDetailIntent = new Intent(reportDetailContext, ReportDetailActivity.class);
                     reportDetailContext.startActivity(reportDetailIntent);
@@ -83,6 +84,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (!userMap.containsKey(getUsername())){
                     Model.model.getUserMap().put(getUsername(), newUser);
                     Model.getInstance().addNewUser(newUser);
+                    saveNewUser();
                     Context mainContext = view.getContext();
                     Intent mainIntent = new Intent(mainContext, MainActivity.class);
                     mainContext.startActivity(mainIntent);

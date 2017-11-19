@@ -164,7 +164,7 @@ public class RatReportCSVReader implements Serializable {
 
         if (fromBinary != null) {
             readerInstance = (RatReportCSVReader) fromBinary;
-            copyAllReportsListToHashMap();
+            readerInstance.copyAllReportsListToHashMap();
             success = true;
         }
         return success;
@@ -174,16 +174,14 @@ public class RatReportCSVReader implements Serializable {
      * Puts all ratReports in internalRatReports into the "reports" HashMap
      */
     private void copyAllReportsListToHashMap() {
-        for (RatReport report : allReportsList) {
+        launchMaps();
+        for (RatReport report : readerInstance.allReportsList) {
             reports.put(report.getReportKey(), report);
-            for (int i = 0; i < 50; i++) {
-                System.out.println(report.getReportKey() + ": " + report);
-            }
         }
     }
 
     public List<RatReport> getRatReportList() {
-        return allReportsList;
+        return readerInstance.allReportsList;
     }
 
     private HashMap<String, RatReport> getReportsHashMap() { return reports; }
@@ -225,8 +223,8 @@ public class RatReportCSVReader implements Serializable {
                     }
                 }
             }
-            allReportsList.add(ratReport);
-            getReportsHashMap().put(ratReport.getReportKey(), ratReport);
+            readerInstance.getRatReportList().add(ratReport);
+            readerInstance.getReportsHashMap().put(ratReport.getReportKey(), ratReport);
         }
     }
 }

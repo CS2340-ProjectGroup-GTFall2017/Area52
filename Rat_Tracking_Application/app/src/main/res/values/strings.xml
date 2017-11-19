@@ -68,4 +68,6 @@
     <string name="add_report">Add Report</string>
     <string name="cancel_report">Cancel</string>
     <string name="enter_new_report">Enter New Report</string>
+    <string name="enter_zip_code">Enter Zip Code</string>
+    <string name="user_name_string">Username</string>
 </resources>

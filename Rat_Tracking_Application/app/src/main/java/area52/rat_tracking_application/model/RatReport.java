@@ -6,9 +6,10 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Set;
 
 import static area52.rat_tracking_application.model.RatReportCSVReader.reports;
+import static java.lang.String.valueOf;
 
 /**
  * INFORMATION HOLDER Represents a single report in the model
@@ -32,7 +33,7 @@ public class RatReport implements Serializable {
      * @param key  the unique key auto-generated for the report
      * @param location the location of the rat sighting being reported
      */
-    RatReport(String key, ReportLocation location, String date) {
+    private RatReport(String key, ReportLocation location, String date) {
         _key = key;
         _location = location;
         currentDate = date;
@@ -42,7 +43,7 @@ public class RatReport implements Serializable {
         this("", null, null);
     }
 
-    public void setReportKey(String key) {
+    void setReportKey(String key) {
         _key = key;
     }
 
@@ -54,13 +55,14 @@ public class RatReport implements Serializable {
      *
      * @return unique key or 0
      */
-    public String getReportKey() {
+    String getReportKey() {
         return _key;
     }
 
     public void setNewReportKey() {
-        Long[] reportKeys = (Long[]) reports.keySet().toArray();
-        _key = String.valueOf(reportKeys[reports.keySet().size() - 1] + 1);
+        Set<String> reportKeys = reports.keySet();
+        Long _key_ = Long.valueOf(String.format("%s", reportKeys.toArray()[reports.keySet().size() - 1])) + 1;
+        _key = valueOf(_key_);
     }
 
     public String getNewReportKey() {
@@ -68,33 +70,28 @@ public class RatReport implements Serializable {
     }
 
     @TargetApi(25)
-    public void setReportDate(String date) {
+    void setReportDate(String date) {
         currentDate = date;
-    }
-
-    public String getReportDate() {
-        return currentDate;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setNewReportDate() {
         DateTimePatternGenerator dateTime = DateTimePatternGenerator.getInstance();
-        Date newDate = new Date(dateTime.toString());
-        currentDate = newDate.toString();
+        currentDate = String.format("%s", dateTime);
     }
 
     void setReportLocation(ReportLocation singleReportLocation) {
         _location = singleReportLocation;
     }
 
-    /**
-     *
-     * @return ReportLocation for instance of RatReport
-     */
-    public ReportLocation getReportLocation() {
+    ReportLocation getLocation() {
         return _location;
     }
 
+    /**
+     *
+     * Set new entry's report location, for instance of RatReport entered by the user.
+     */
     public void setNewReportLocation(ReportLocation location) {
         _location = location;
     }
@@ -103,5 +100,4 @@ public class RatReport implements Serializable {
     public String toString() {
         return "" + _key + "| " + currentDate;
     }
-
 }

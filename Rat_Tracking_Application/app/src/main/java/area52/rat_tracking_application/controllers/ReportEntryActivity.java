@@ -23,9 +23,6 @@ import area52.rat_tracking_application.model.PersistenceManager;
 import area52.rat_tracking_application.model.RatReport;
 import area52.rat_tracking_application.model.ReportLocation;
 
-import static area52.rat_tracking_application.R.id.address_city_spinner;
-import static area52.rat_tracking_application.R.id.borough_spinner;
-import static area52.rat_tracking_application.R.id.location_type_spinner;
 import static area52.rat_tracking_application.controllers.MainActivity.getCurrentUser;
 import static area52.rat_tracking_application.model.PersistenceManager.getPersistManagerInstance;
 import static area52.rat_tracking_application.model.RatReportCSVReader.cityList;
@@ -41,32 +38,21 @@ import static area52.rat_tracking_application.model.RatReportCSVReader.nycBoroug
 
 public class ReportEntryActivity extends AppCompatActivity {
 
+    private Spinner boroughSpinner;
+    private Spinner locationTypeSpinner;
+    private Spinner addressCity;
 
-    private String reportBorough;
-    private Integer reportZipCode;
-    private String reportCity;
-    private String reportLocationType;
+    private TextView adminGenUniqueKey;
 
-    Button cancelButton;
-    Button submitButton;
-
-    Spinner boroughSpinner;
-    Spinner locationTypeSpinner;
-    Spinner addressCity;
-
-    private EditText latitude;
-    private EditText longitude;
-    private TextView address;
+    private TextView latitude;
+    private TextView longitude;
     private EditText zipCode;
+
+    private TextView address;
 
     private RatReport _report = new RatReport();
 
     private ReportLocation reportLocation = new ReportLocation();
-
-    /* ***********************
-       flag for whether this is a new rat report being added or an existing report being edited.
-     */
-    private boolean editing = false;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -76,32 +62,27 @@ public class ReportEntryActivity extends AppCompatActivity {
 
         getReportEntryViewWidgets();
         setListeners();
-
-
-        /**
-         * Grab the dialog widgets so we can get info for later
-         */
     }
 
     private void getReportEntryViewWidgets() {
 
-        latitude = (EditText) findViewById(R.id.latitude);
-        longitude = (EditText) findViewById(R.id.longitude);
+        latitude = (TextView) findViewById(R.id.latitude);
+        longitude = (TextView) findViewById(R.id.longitude);
         address  = (TextView) findViewById(R.id.address);
         zipCode = (EditText) findViewById(R.id.zip_code);
 
         TextView username = (TextView) findViewById(R.id.user_name);
 
-        TextView adminGeneratedUniqueKey = (TextView) findViewById(R.id.unique_key_id);
+        adminGenUniqueKey = (TextView) findViewById(R.id.unique_key_id);
 
-        boroughSpinner = (Spinner) findViewById(borough_spinner);
-        locationTypeSpinner = (Spinner) findViewById(location_type_spinner);
-        addressCity = (Spinner) findViewById(address_city_spinner);
+        boroughSpinner = (Spinner) findViewById(R.id.borough_spinner);
+        locationTypeSpinner = (Spinner) findViewById(R.id.location_type_spinner);
+        addressCity = (Spinner) findViewById(R.id.address_city_spinner);
 
         /*
           Set up the adapter to display the allowable boroughs in the spinner
          */
-        ArrayAdapter adapterBoroughs = new ArrayAdapter(
+        ArrayAdapter adapterBoroughs = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, nycBoroughs);
         adapterBoroughs.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         boroughSpinner.setAdapter(adapterBoroughs);
@@ -109,7 +90,7 @@ public class ReportEntryActivity extends AppCompatActivity {
         /*
           Set up the adapter to display the allowable location types in the spinner
          */
-        ArrayAdapter<String> adapterLocationType = new ArrayAdapter(
+        ArrayAdapter<String> adapterLocationType = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, locationTypes);
         adapterLocationType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationTypeSpinner.setAdapter(adapterLocationType);
@@ -117,28 +98,23 @@ public class ReportEntryActivity extends AppCompatActivity {
         /*
           Set up the adapter to display the allowable cities in the spinner
          */
-        ArrayAdapter<String> adapterCity = new ArrayAdapter(
+        ArrayAdapter<String> adapterCity = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, cityList);
         adapterCity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         addressCity.setAdapter(adapterCity);
 
         username.setText(getCurrentUser().getUName());
-
-        _report.setNewReportKey();
-        String key = _report.getNewReportKey();
-        adminGeneratedUniqueKey.setText("" + key);
-
     }
 
     private void setListeners() {
-        cancelButton = (Button) findViewById(R.id.button_cancel);
+        Button cancelButton = (Button) findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 returnToRatReportList(view);
             }
         });
-        submitButton = (Button) findViewById(R.id.button_submit);
+        Button submitButton = (Button) findViewById(R.id.button_submit);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,7 +131,7 @@ public class ReportEntryActivity extends AppCompatActivity {
      * @param view the button
      */
     @TargetApi(Build.VERSION_CODES.N)
-    public void addReportToCurrentList(View view) {
+    private void addReportToCurrentList(View view) {
         Log.d("Edit Existing Report", "Add New Report");
 
         String lat = latitude.getText().toString();
@@ -175,19 +151,23 @@ public class ReportEntryActivity extends AppCompatActivity {
         address.setText(reportLocation.getAddress());
 
         _report.setNewReportKey();
+        String key = _report.getNewReportKey();
+        adminGenUniqueKey.setText(String.format("%s", key));
+
         _report.setNewReportDate();
+
         _report.setNewReportLocation(reportLocation);
 
         Log.d("New Report Entry", "New report data: " + _report);
 
-        Log.d("Edit", "Got new rat report data: " + _report);
-            getCSVReaderInstance().addSingleReport(_report);
-            Toast.makeText(
-                    getApplicationContext(),
-                    "Report has been added",
-                    Toast.LENGTH_LONG).show();
+        getCSVReaderInstance().addSingleReport(_report);
 
-        saveRatReports();
+        Toast.makeText(
+                getApplicationContext(),
+                "Report has been added",
+                Toast.LENGTH_LONG).show();
+
+        saveRatReports(view);
     }
 
     /**
@@ -195,8 +175,8 @@ public class ReportEntryActivity extends AppCompatActivity {
      *
      * @param view the button pressed
      */
-    public void returnToRatReportList(View view) {
-        Log.d("Edit", "Cancel Report Entry/Edit");
+    private void returnToRatReportList(View view) {
+        Log.d("Return to Report List", "Cancel Report Entry/Edit");
         Context context = view.getContext();
         Intent intent = new Intent(
                 context, ReportListActivity.class);
@@ -208,8 +188,18 @@ public class ReportEntryActivity extends AppCompatActivity {
      *
      * Should be changed to onClose() saveRatReports() && onLogout() saveRatReports()
      */
-    private void saveRatReports() {
-        File ratReportsFile = new File(this.getFilesDir(), PersistenceManager.RAT_REPORT_DATA_FILENAME);
+    private void saveRatReports(View view) {
+        File ratReportsFile = new File(
+                this.getFilesDir(), PersistenceManager.RAT_REPORT_DATA_FILENAME);
         getPersistManagerInstance().saveBinary(ratReportsFile, getCSVReaderInstance());
+        returnToRatReports(view);
+    }
+
+    private void returnToRatReports(View view) {
+        Log.d("Return to Report List", "New report entry successfully saved");
+        Context context = view.getContext();
+        Intent intent = new Intent(
+                context, ReportListActivity.class);
+        context.startActivity(intent);
     }
 }
