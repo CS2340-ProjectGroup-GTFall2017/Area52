@@ -7,9 +7,6 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Random;
 
-import area52.rat_tracking_application.GraphActivity;
-
-
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -26,10 +23,6 @@ public class monthsRangeTest {
         loader = new GraphActivity();
     }
 
-    private int randInt(int min, int max) {
-        return rand.nextInt(max - min + 1) + min;
-    }
-
     @Test(expected = NullPointerException.class)
     public void testEmptyStartDate() {
         loader.monthsRange(null, new Date(2000, 0, 0));
@@ -37,7 +30,7 @@ public class monthsRangeTest {
 
     @Test(expected = NullPointerException.class)
     public void testEmptyEndDate() {
-        loader.monthsRange(new Date(2000, 0, 0), null));
+        loader.monthsRange(new Date(2000, 0, 0), null);
     }
 
     @Test
@@ -49,7 +42,7 @@ public class monthsRangeTest {
     @Test
     public void testSameMonthAnyDay() {
         Date testDate = new Date(2000, 0, 0);
-        Date testDate2 = new Date(2000, 0, randInt(0, 30));
+        Date testDate2 = new Date(2000, 0, rand.nextInt(0) + 30);
         assertEquals(1, loader.monthsRange(testDate, testDate2).size());
     }
 
@@ -62,28 +55,31 @@ public class monthsRangeTest {
 
     @Test
     public void testMonths() {
-        Date[] actualMonths = [new Date(2000, 0, 0),
-            new Date(2000, 1, 0),
-            new Date(2000, 2, 0),
-            new Date(2000, 3, 0),
-            new Date(2000, 4, 0),
-            new Date(2000, 5, 0),
-            new Date(2000, 6, 0)]
+        Date[] actualMonths = {
+                new Date(2000, 0, 0),
+                new Date(2000, 1, 0),
+                new Date(2000, 2, 0),
+                new Date(2000, 3, 0),
+                new Date(2000, 4, 0),
+                new Date(2000, 5, 0),
+                new Date(2000, 6, 0)
+        };
 
         Date testStart = new Date(2000, 0, 0);
         Date testEnd = new Date(2000, 6, 0);
         Map<Date, Integer> testMonths = loader.monthsRange(testStart, testEnd);
 
         int i = 0;
-        for (Date d: testMonths.keySet()) {
+        for (Date d : testMonths.keySet()) {
             assertEquals(actualMonths[i], d);
             i++;
         }
-        for (Integer j: testMonths.values()) {
+        for (Integer j : testMonths.values()) {
             assertEquals((Integer) 0, j);
             i++;
         }
     }
+}
 // private Map<Date, Integer> monthsRange(Date start, Date end) {
 //         //making a list(map) for all range of months chosen
 //         Map<Date, Integer> monthRange = new HashMap<Date, Integer>();
