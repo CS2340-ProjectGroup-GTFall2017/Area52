@@ -85,7 +85,7 @@ public class GraphActivity extends AppCompatActivity {
      *
      *
      */
-    private Map<Date, Integer> monthsRange(Date start, Date end) {
+    public Map<Date, Integer> monthsRange(Date start, Date end) {
         //making a list(map) for all range of months chosen
         Map<Date, Integer> monthRange = new HashMap<Date, Integer>();
 
