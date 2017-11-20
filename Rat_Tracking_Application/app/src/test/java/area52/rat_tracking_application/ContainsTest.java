@@ -21,7 +21,7 @@ public class ContainsTest {
         Assert.assertEquals(false, c.contains(arr, element));
     }
 
-    @Test
+    @Test(expected = NullPointerException.class )
     public void isContain1() throws Exception {
         String[] arr = null;
         String element = "New York";
@@ -51,7 +51,7 @@ public class ContainsTest {
 
     @Test
     public void isContain5() throws Exception {
-        String[] arr = {123};
+        String[] arr = {"Hello", "", "NewYork"};
         String element = "New York";
         Assert.assertEquals(false, c.contains(arr, element));
     }
