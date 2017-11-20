@@ -39,7 +39,7 @@ public class Model implements Serializable {
      * populate model with data to test app if no users are found.
      */
     private void loadTestData() {
-        if (users.size() == 0) {
+        if (users.isEmpty()) {
             //the most secure password
             users.add(new Admin("admin", "admin", "password"));
         }

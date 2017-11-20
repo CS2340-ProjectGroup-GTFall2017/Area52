@@ -46,9 +46,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
+        // Add a marker at New York City location and move the camera
         LatLng NY = new LatLng(40.67, -73.94);
-        //.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(NY));
         getRatReportFilteredList();
     }
@@ -62,7 +61,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Date start= (Date)getIntent().getSerializableExtra("start");
         Date end = (Date)getIntent().getSerializableExtra("end");
         List<RatReport> rawReports = (ArrayList<RatReport>) RatReportManager.getInstance().getRatReportList();
-
 
         for (int i = 0; i < rawReports.size(); i++) {
             Date creationDate = rawReports.get(i).getCreationDate();

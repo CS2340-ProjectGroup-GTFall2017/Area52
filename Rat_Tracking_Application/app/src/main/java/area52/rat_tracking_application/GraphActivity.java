@@ -22,6 +22,9 @@ import area52.rat_tracking_application.model.RatReportManager;
 import static area52.rat_tracking_application.R.layout.activity_graphs;
 
 public class GraphActivity extends AppCompatActivity {
+    final int GRAPH_MIN_X = 0;
+    final int GRAPH_MAX_X = 12;
+    final int BAR_GRAPH_SPACING = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +52,8 @@ public class GraphActivity extends AppCompatActivity {
         if (graphType.equals("Line Graph")) {
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dp);
             graph.addSeries(series);
-            graph.getViewport().setMinX(0);
-            graph.getViewport().setMaxX(12);
+            graph.getViewport().setMinX(GRAPH_MIN_X);
+            graph.getViewport().setMaxX(GRAPH_MAX_X);
 
 
         } else if (graphType.equals("Histogram")) {
@@ -59,10 +62,13 @@ public class GraphActivity extends AppCompatActivity {
             series1.setValueDependentColor(new ValueDependentColor<DataPoint>() {
                 @Override
                 public int get(DataPoint data) {
-                    return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+                    int red = 255/4;
+                    int green = 255/6;
+                    int blue = 100;
+                    return Color.rgb((int) data.getX()*red, (int) Math.abs(data.getY()*green), blue);
                 }
             });
-            series1.setSpacing(50);
+            series1.setSpacing(BAR_GRAPH_SPACING);
             series1.setDrawValuesOnTop(true);
             series1.setValuesOnTopColor(Color.RED);
              graph.addSeries(series1);
@@ -96,7 +102,7 @@ public class GraphActivity extends AppCompatActivity {
                     x++;
                 }
             } else {
-                while (x < 12) {
+                while (x < GRAPH_MAX_X) {
                     numOfReports.put(new Date(y, x, 0), 0); // 2016, 10, 0; 2016, 11, 0;
                     x++;
                 }

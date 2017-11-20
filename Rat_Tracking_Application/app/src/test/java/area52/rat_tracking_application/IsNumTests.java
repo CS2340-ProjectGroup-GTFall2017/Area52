@@ -1,16 +1,11 @@
 package area52.rat_tracking_application;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Random;
 
 import area52.rat_tracking_application.model.RatReportLoader;
-import area52.rat_tracking_application.model.RatReportManager;
 
 import static org.junit.Assert.assertEquals;
 

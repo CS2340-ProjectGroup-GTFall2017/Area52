@@ -23,7 +23,6 @@ import java.util.List;
 
 import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.RatReport;
-import area52.rat_tracking_application.model.RatReportLoader;
 import area52.rat_tracking_application.model.RatReportManager;
 
 public class ReportListActivity extends AppCompatActivity {

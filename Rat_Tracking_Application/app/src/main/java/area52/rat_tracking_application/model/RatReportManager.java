@@ -1,7 +1,5 @@
 package area52.rat_tracking_application.model;
 
-import android.util.Log;
-
 import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;

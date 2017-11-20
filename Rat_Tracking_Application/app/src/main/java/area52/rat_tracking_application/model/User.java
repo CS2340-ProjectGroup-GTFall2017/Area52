@@ -47,7 +47,7 @@ public class User implements Serializable {
      * @param uName username of user instance
      */
     public void setUName(String uName) {
-        uName = regAct.getUsername();
+        this.uName = uName;
     }
 
     /**

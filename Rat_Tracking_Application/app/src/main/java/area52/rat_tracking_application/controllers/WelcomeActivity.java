@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -14,7 +13,6 @@ import java.io.InputStream;
 import area52.rat_tracking_application.R;
 import area52.rat_tracking_application.model.Model;
 import area52.rat_tracking_application.model.PersistenceManager;
-import area52.rat_tracking_application.model.RatReportLoader;
 import area52.rat_tracking_application.model.RatReportManager;
 
 public class WelcomeActivity extends Activity {

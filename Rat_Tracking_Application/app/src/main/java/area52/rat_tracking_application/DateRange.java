@@ -29,22 +29,16 @@ public class DateRange extends AppCompatActivity {
                 int month = datePicker.getMonth() + 1;
                 int year = datePicker.getYear();
 
-                //Date startDate = new Date();
-                //startDate.setYear(year);
-                //startDate.setMonth(month);
-                //startDate.setDate(day);
-                Date startDate = new Date(year - 1900, month, day);
+                int yearOffset = 1900;
+
+                Date startDate = new Date(year - yearOffset, month, day);
 
                 DatePicker datePickerEnd = (DatePicker) findViewById(R.id.datePicker9);
                 int dayEnd = datePickerEnd.getDayOfMonth();
                 int monthEnd = datePickerEnd.getMonth() + 1;
                 int yearEnd = datePickerEnd.getYear();
 
-                //Date endDate = new Date();
-                //endDate.setMonth(monthEnd);
-                //endDate.setYear(yearEnd);
-                //endDate.setDate(dayEnd);
-                Date endDate = new Date(yearEnd - 1900, monthEnd, dayEnd);
+                Date endDate = new Date(yearEnd - yearOffset, monthEnd, dayEnd);
 
                 Context context = view.getContext();
                 Intent intent = new Intent(context, MapsActivity.class);
