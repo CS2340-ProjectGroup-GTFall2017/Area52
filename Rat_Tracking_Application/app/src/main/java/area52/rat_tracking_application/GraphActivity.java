@@ -34,7 +34,7 @@ public class GraphActivity extends AppCompatActivity {
         Date start = (Date) getIntent().getSerializableExtra("start");
         Date end = (Date) getIntent().getSerializableExtra("end");
         List<RatReport> rawReports = (ArrayList<RatReport>) RatReportManager.getInstance().getRatReportList();
-        Map<Date, Integer> reportsByMonths = reportsByMonths(start, end, rawReports);
+        Map<Date, Integer> reportsByMonths = reportsByMonths(monthsRange(start, end), rawReports, start, end);
 
         int i = 0;
         DataPoint[] dp = new DataPoint[reportsByMonths.size()];
@@ -85,9 +85,9 @@ public class GraphActivity extends AppCompatActivity {
      *
      *
      */
-    private Map<Date, Integer> reportsByMonths(Date start, Date end, List<RatReport> rawReports) {
+    private Map<Date, Integer> monthsRange(Date start, Date end) {
         //making a list(map) for all range of months chosen
-        Map<Date, Integer> numOfReports = new HashMap<Date, Integer>();
+        Map<Date, Integer> monthRange = new HashMap<Date, Integer>();
 
         int startYear = start.getYear(); //2016
         int endYear = end.getYear(); // 2017
@@ -98,35 +98,37 @@ public class GraphActivity extends AppCompatActivity {
         for (int y = startYear; y < endYear + 1; y++) { // y = 2017, while y < 2018, y++
             if (y == endYear) {
                 while (x < endMonth + 1) { // x = 0, x < 11 + 1
-                    numOfReports.put(new Date(endYear, x, 0), 0); // 2017, 0, 0; 2017, 1, 0; 2017, 2, 0; ...
+                    monthRange.put(new Date(endYear, x, 0), 0); // 2017, 0, 0; 2017, 1, 0; 2017, 2, 0; ...
                     x++;
                 }
             } else {
                 while (x < GRAPH_MAX_X) {
-                    numOfReports.put(new Date(y, x, 0), 0); // 2016, 10, 0; 2016, 11, 0;
+                    monthRange.put(new Date(y, x, 0), 0); // 2016, 10, 0; 2016, 11, 0;
                     x++;
                 }
             }
             x = 0;
         }
+        return monthRange;
+    }
 
+    private Map<Date, Integer> reportsByMonths(Map<Date, Integer> months, List<RatReport> rawReports,
+                                               Date start, Date end) {
         for (RatReport report : rawReports) {
             Date creationDate = report.getCreationDate();
             int month = report.getCreationDate().getMonth();
             int year = report.getCreationDate().getYear();
             if (creationDate.after(start)
                     && creationDate.before(end)) {
-                for (Date d : numOfReports.keySet()) { //would we have more efficient way?
+                for (Date d : months.keySet()) { //would we have more efficient way?
                     if (d.getMonth() == month
                             && d.getYear() == year) {
-                        numOfReports.put(d, numOfReports.get(d) + 1);
+                        months.put(d,months.get(d) + 1);
                     }
                 }
 
             }
         }
-        return numOfReports;
+        return months;
     }
-
-
 }
