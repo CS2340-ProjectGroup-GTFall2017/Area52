@@ -1,38 +1,39 @@
 package area52.rat_tracking_application.model;
 
-import android.support.v4.content.res.TypedArrayUtils;
-import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
+import java.util.List;
 
 public class RatReportLoader {
-    public static HashMap<Long, RatReport> reports;
+    /**
+     * Singleton pattern, the most original, clever, not-at-all-lazy piece of design appropriate for
+     * this situation
+     */
+    private static RatReportLoader instance = new RatReportLoader();
+
     private HashMap<String, Integer> indexOfCSVColumn;
     private String[] wantedCSVColumns = {"Unique Key", "Created Date", "Location Type",
             "Incident Zip", "Incident Address", "City", "Borough", "Latitude",
             "Longitude"};
 
     public RatReportLoader() {
-        if (reports == null) {
-            reports = new HashMap<>();
-        }
         indexOfCSVColumn = new HashMap<>();
     }
+
+    public static RatReportLoader getInstance() { return instance; }
 
     /*
      * From the given CSV InputStream, adds all rat reports in the stream to memory
      */
-    public void loadRatReportsFromCSV(InputStream csvInput) {
-        if (!reports.isEmpty()) { return; }
+    public List<RatReport> getRatReportsFromCSV(InputStream csvInput) {
+        ArrayList<RatReport> csvRatReports = new ArrayList<>();
         BufferedReader csvReader = new BufferedReader(new InputStreamReader(csvInput));
 
         try {
@@ -44,11 +45,14 @@ public class RatReportLoader {
             while ((currentLine = csvReader.readLine()) != null) {
                 String[] row = currentLine.split(",");
                 RatReport reportFromFile = convertCSVRowToRatReport(row);
-                reports.put(reportFromFile.getKey(), reportFromFile);
+
+                csvRatReports.add(reportFromFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return csvRatReports;
     }
 
     private void getIndicesOfWantedCSVColumns(String[] csvHeader) {
@@ -59,7 +63,7 @@ public class RatReportLoader {
         }
     }
 
-    private boolean contains(String[] arr, String element) {
+    public boolean contains(String[] arr, String element) {
         for (int i = 0; i < arr.length; i++) {
             if (arr[i].equals(element)) { return true; }
         }
@@ -88,7 +92,7 @@ public class RatReportLoader {
         String keyString = getCSVStringForColumn(wantedCSVColumns[0], csvRow);
         return (isNum(keyString)) ? Long.valueOf(keyString) : 0;
     }
-    private boolean isNum(String toBeChecked) {
+    public boolean isNum(String toBeChecked) {  //TODO: Move this to an interface-style class
         try {
             double d = Double.parseDouble(toBeChecked);
         } catch (NumberFormatException e) {

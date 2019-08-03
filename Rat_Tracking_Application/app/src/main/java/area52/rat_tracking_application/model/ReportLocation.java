@@ -1,6 +1,8 @@
 package area52.rat_tracking_application.model;
 
-public class ReportLocation {
+import java.io.Serializable;
+
+public class ReportLocation implements Serializable {
     private double latitude;
     private double longitude;
     private String locationType; //TODO: Convert to an enum if possible

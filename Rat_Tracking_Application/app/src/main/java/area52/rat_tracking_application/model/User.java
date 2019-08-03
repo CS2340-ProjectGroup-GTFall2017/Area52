@@ -1,12 +1,14 @@
 package area52.rat_tracking_application.model;
 
+import java.io.Serializable;
+
 import area52.rat_tracking_application.controllers.RegistrationActivity;
 
 /**
  * Created by Eric on 9/24/2017.
  */
 
-public class User {
+public class User implements Serializable {
     private String email;
     private String pWord;
     private String uName;
@@ -45,7 +47,7 @@ public class User {
      * @param uName username of user instance
      */
     public void setUName(String uName) {
-        uName = regAct.getUsername();
+        this.uName = uName;
     }
 
     /**

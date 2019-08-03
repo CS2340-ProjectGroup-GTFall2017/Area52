@@ -1,0 +1,56 @@
+========================================================
+// Jake's UI Evaluation Notes (merged together for M11)
+========================================================
+
+- So, how do we actually evaluate if one UI design is better than another?
+    - Usually, you'd do this stuff for homework in M11, but we made that optional due to the hurricane
+        - The three parts for this homework: Plan, execute review, report changes you think should be made
+- Now, once we have multiple designs, there are a few techniques we can use, with a few trade-offs:
+    - formative vs summative
+    - with or without end-user testing
+    - using a variety of prototypes
+- Specifically, there're three techniques we'll look at: heuristic evaluation, cognitive walkthrough, and think-aloud observation
+    - "These are designed to evaluate different things, so we can happily use all of these"
+- Remember: we're evaluating the DESIGN of the app in this stage, NOT the functionality!
+
+- HEURISTIC EVALUATION:
+    - Have a small set of evaluators independently examine an interface, and judge it based on the general rules-of-thumb that exist for UI
+        - If you go to "Usability Stuff" folder on T-Square, there's a toolkit for what to be looking for during a UI test, and specifically an "HE Checklist"
+    - This is mainly formative and qualitative; has the advantage that you do NOT need a fully working prototype to evaluate individual screens, relatively straightforward ("Heck, you could use some paper printouts to evaluate it")
+    - The procedure (created by Jakob Nielsen):
+        1) Gather inputs (screens/scenarios you want to test)
+        2) Independent evaluation
+            - INDEPENDENT! This isn't a code review where you should be filling this out with your team; do it on your own!
+            - How many evaluators should there be? Well, there's diminishing returns here; 5 people are enough to catch about 75% of the errors, and after 15 people you have to add a LOT more people to get better results
+            - What counts as a usability bug? Whatever you think it is! A confusing button, a color you don't like, etc.
+        3) Debriefing/collection (get the reports from the evaluators)
+        4) Severity rating (how well did the app fare?)
+            - How often did a problem come up? Does the problem have a mjor impact on users, or is it just a nusiance? Would it affect the market impact of the app? Is it a persistent issue or just a learning curve?
+            - Severity ranking: from 0 (this isn't even a problem) to 4 (catastrophic, makes the app almost unusable)
+
+- COGNITIVE WALKTHROUGH:
+    - Basically, this technique is saying "as a novice, how well can I use this app if I know nothing about it?"; it's about going through your app and pretending you're a new user trying to use it for the first time
+        - What a "novice user" means is different from app to app; a professional movie-editing app will have different users than a grandma-friendly pet shop website
+    - To conduct it:
+        - FIRST, you have to establish who you want your novice users to be, i.e. "Our target audience is 18-24 year-olds on the Malaysian island of Zamputra, where they've never seen a computer before"
+        - Then, for every action you want to evaluate, you should list the GOAL(s) of what they want to do, and the STEPS we WANT them to take to try and do it
+            - e.g. for a login screen, we'd say that our GOAL is to "login to the app", and the STEPS the user would take is 1) Type username in uName box 2) Type password in pWord box 3) Hit the login button
+        - Then, we use a "believability story" to try and evaluate if our steps are something the user would realistically guess 
+            - This means asking 4 key questions:
+                1) Will the user be trying to produce whatever effect the action has?
+                    - i.e., do they know what they SHOULD be doing? Is there a reason for them to guess what you want them to do?
+                2) Will the user be able to notice that the correct action is available?
+                    - Is there a login button on the screen? How do they know it's for login? Does our app follow established conventions/expectations?
+                3) Once the user finds the correct action on the interface, will they know that it's the right one for the effect they're trying to produce?
+                    - How do they KNOW what they're doing is related to the goal?
+                4) After the action is taken, will the user understand the feedback given?
+            - This is ALL about figuring out if the user can figure out what they're supposed to do, and how to do it; "Cognitive Walkthroughs" are NOT about aesthetic design details, but if our design "works"
+
+- Finally, the last technique is THINK-ALOUD, and its whole purpose is to put the app in front of real users and see what they think!
+    - This is NOT as easy as you think, but it is one of the best ways to gather feedback about your interface
+        - Generally, 5 people is enough for us to find most major problems; after 15 people, diminishing returns means we're getting barely any new information
+    - It's called "think-aloud" because you ask the user to tell you what they're thought process is when they're using the app ("okay, I'm opening the login screen now to start using the app, I'm typing my password...")
+        - Whatever you do, do NOT intervene if they're struggling to do something! They have to figure out what to do on their own; if they can't figure out how to do something, then it means you've found something to improve! Intervening will just make the test data skewed and biased
+    - "There's a BIG spreadsheet on T-Square of how to run a succesful think-aloud test, from a group of professors at University of Washington"
+
+-  So, that's as far as we'll go with UX in this class, but there's a TON more we don't get into, of course
